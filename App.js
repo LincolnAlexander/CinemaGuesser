@@ -1,7 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
+
 import * as React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Button, Alert } from 'react-native';
 import { useFonts } from 'expo-font';
+
 
 const customFont = 'RobotoSlab-Medium';
 
@@ -12,6 +13,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <ImageBackground style = {styles.background} source = {require('./assets/images/AppBackground.jpg')}>
+        
         <View style = {styles.header}>
           <Image style = {styles.logo} source={require('./assets/images/AppLogo.png')}></Image>
         </View>
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
   {
     color: 'white',
     textAlign: 'center',
-    fontFamily: customFont,
+    fontFamily: 'RobotoSlab-Medium',
     fontWeight: '500',
     fontSize: 20,
   },
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
     margin: 10,
     color: 'white',
     textAlign: 'center',
-    fontFamily: customFont,
+    fontFamily: 'RobotoSlab-Medium',
     
   },
   
