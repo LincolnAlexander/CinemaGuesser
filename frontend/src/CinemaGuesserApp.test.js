@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import CinemaGuesser from './CinemaGuesserApp';
+import CinemaGuesserApp from './CinemaGuesserApp';
 
 test('renders learn react link', () => {
   render(<CinemaGuesserApp />);
