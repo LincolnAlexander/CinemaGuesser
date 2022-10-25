@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
+import { View } from 'react-native';
+import Background from '../components/Background';
 
-import Background from './components/Background';
-import Login from '../components/Login';
+
 
 const LoginPage = () =>
 {
@@ -16,4 +17,4 @@ const LoginPage = () =>
     );
 };
 
-export default LoginPage;
+export default LoginPage ;

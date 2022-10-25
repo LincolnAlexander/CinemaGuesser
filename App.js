@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Button, Alert } from 'react-native';
 import { useFonts } from 'expo-font';
-
+import LoginPage from './pages/LoginPage';
 
 const customFont = 'RobotoSlab-Medium';
 
@@ -12,8 +12,9 @@ export default function App() {
   });
   return (
     <View style={styles.container}>
+      
       <ImageBackground style = {styles.background} source = {require('./assets/images/AppBackground.jpg')}>
-        
+      
         <View style = {styles.header}>
           <Image style = {styles.logo} source={require('./assets/images/AppLogo.png')}></Image>
         </View>
