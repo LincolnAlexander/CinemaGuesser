@@ -1,9 +1,9 @@
-
-import loginPage from './pages/loginPage';
+import React from 'react';
+import LoginPage from './pages/LoginPage';
 
 function CinemaGuesserApp (){
   return (
-    <loginPage/>
+    <LoginPage />
     
     
     

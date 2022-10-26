@@ -1,5 +1,6 @@
+import React from 'react';
 
-const loginContainer = () => {
+const LoginContainer = () => {
   return (
     
     
@@ -11,4 +12,4 @@ const loginContainer = () => {
   );
 }
 
-export default loginContainer;
+export default LoginContainer;
