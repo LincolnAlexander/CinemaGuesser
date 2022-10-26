@@ -1,5 +1,5 @@
 //change this later
-const app_name = 'testerkl'
+const app_name = 'cinema-guesser'
 exports.buildPath = 
 function buildPath(route)
 {
