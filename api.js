@@ -12,9 +12,8 @@ exports.setApp = function ( app, client )
     
       const { login, password } = req.body;
     
-      const db = client.db();
-      const results = await 
-    db.collection('Users').find({Login:login,Password:password}).toArray();
+      const db = client.db("COP4331");
+      const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
     
       var id = -1;
       var fn = '';
