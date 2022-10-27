@@ -14,7 +14,7 @@ function LoginPage() {
 
 
       </div>
-      <LoginContainer />
+      <LoginContainer/>
     </div>
 
 
