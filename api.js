@@ -30,5 +30,18 @@ exports.setApp = function ( app, client )
       res.status(200).json(ret);
     });
     
+    //Written by Casey
+    app.post('/api/register', async (req, res, next) =>
+    {
+      var error = '';
+      const{FirstName, LastName ,login, password} = req.body;
+      const db = client.db();
+      const results = await
+
+      db.collection('Users').insertOne({FirstName, LastName, login, password});
+
+      var ret = {firstname:FirstName, lastname: LastName, login: login, password:password};
+      res.status(200).json(ret);
+    });
     
 }
