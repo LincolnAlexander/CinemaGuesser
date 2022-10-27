@@ -40,7 +40,7 @@ exports.setApp = function ( app, client )
 
       db.collection('Users').insertOne({FirstName, LastName, Login, Password});
 
-      var ret = {firstname:FirstName, lastname: LastName, login: login, password:password};
+      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
       res.status(200).json(ret);
     });
     
