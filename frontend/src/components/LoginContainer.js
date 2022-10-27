@@ -38,10 +38,24 @@ const LoginContainer = () => {
   
   return (
 
-    <div className="flex justify-center items-start h-full">
-      <div className="flex flex-col content-center items-center w-96 my-28 md:my-36 xl:my-96 mx-2 lg:w-3/5 max-w-lg bg-pr-black rounded-xl shadow border-2 pt-6 pb-8">
-            <input className='bg-pr-black border-b-2 border-pr-yellow focus:border-b-4 focus:outline-0 focus:font-bold mt-8 mb-4 w-64 h-8 placeholder-pr-white text-center text-pr-white' type='text' placeholder='Enter Login' ref={(c) => loginName = c} />
-            <input className='block bg-pr-black border-b-2 border-pr-yellow focus:border-b-4 focus:outline-0 focus:font-bold my-4 w-64 h-8 placeholder-pr-white text-center text-pr-white' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
+    // flex flex-col container mx-auto bg-gray-200 border-solid border-black 
+    // <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+    <div className='flex justify-center items-center border border-black '>
+      <div className = "flex-col justify-center items-center">
+        <div className='m-5'>
+          <p className='text-lg font-medium text-pr-white'>Username</p>
+          <input className = 'border-2 border-pr-yellow rounded border-black w-64 h-8 focus:outline-none bg-transparent text-pr-white ' type = 'text' placeholder='Enter Login' ref={(c) => loginName = c}/>
+        </div>
+        <div className='m-5'>
+          <p className='text-lg font-medium text-pr-white'>Password</p>
+          <input className='border-2 border-pr-yellow rounded border-black w-64 h-8 focus:outline-none bg-transparent text-pr-white' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
+        </div>
+        <div className='m-5'>
+          <button className = 'btn btn-xs sm:btn-sm md:btn-md lg:btn-lg b rounded-full bg-blue-500 text-white w-64 h-10 font-medium ' type = 'button' onClick={doLogin}>Login</button>
+        </div>
+        <div className='m-5 text-center'>
+          <p className='text-md font-medium text-pr-white pr-1.5'>Don't have an account?</p><span><a className = "text-md font-medium text-pr-yellow"href="" >Create Account</a></span>
+        </div>
 
             <button className='block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red hover:border-2 text-white w-36 h-10 font-medium hover:font-extrabold hover:underline hover: bg-pr-yellow' type='button' onClick={doLogin}>Login</button>
             <a className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline hover:text-pr-white' href="#" type='button'>Register</a>
