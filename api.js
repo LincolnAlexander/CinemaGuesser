@@ -34,7 +34,7 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>
     {
       var error = '';
-      const{FirstName, LastName ,login, password} = req.body;
+      const{FirstName, LastName ,Login, Password} = req.body;
       const db = client.db();
       const results = await
 
