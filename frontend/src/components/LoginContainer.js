@@ -38,27 +38,15 @@ const LoginContainer = () => {
   return (
 
     // flex flex-col container mx-auto bg-gray-200 border-solid border-black 
-    <div className="container mx-auto bg-pr-gray rounded-xl shadow border p-8 m-10">
-      <div className="flex-col justify-center items-center">
-        <div className='m-5'>
+    <div className="flex flex-1 flex-col content-center items-center w-96 lg:w-3/5 max-w-lg bg-pr-black rounded-xl shadow border p-8">
           <p className='text-lg font-medium'>Username</p>
-          <input className='border rounded border-black w-64 h-8' type='text' placeholder='Enter Login' ref={(c) => loginName = c} />
-        </div>
-        <div className='m-5'>
+          <input className='border rounded border-pr-white p-1 w-64 h-8 text-center' type='text' placeholder='Enter Login' ref={(c) => loginName = c} />
+
           <p className='text-lg font-medium'>Password</p>
-          <input className='border rounded border-black w-64 h-8' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
-        </div>
-        <div className='m-5'>
-          <button className='border rounded-full bg-blue-500 text-white w-36 h-10 font-medium' type='button'>Login</button>
-        </div>
-        <div className='m-5'>
-          <button className='border rounded-full bg-green-500 text-white w-36 h-10 font-medium' type='button' onClick={doLogin}>Register</button>
-        </div>
+          <input className='block border rounded border-pr-white p-1 w-64 h-8 text-center' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
 
-      </div>
-
-
-
+          <button className='block border my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red text-white w-36 h-10 font-medium' type='button' onClick={doLogin}>Login</button>
+          <a className='text-pr-yellow text-center font-medium' href="#" type='button'>Register</a>
     </div>
   );
 }
