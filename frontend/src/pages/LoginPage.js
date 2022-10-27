@@ -3,8 +3,8 @@ import LoginContainer from "../components/LoginContainer";
 
 function LoginPage() {
   return (
-    <div>
-      <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+    <div className='bg-pr-black w-screen h-screen'>
+      <div className="container mx-auto bg-gray-200 rounded-xl shadow border ">
         <p className="text-3xl text-gray-700 font-bold mb-5">
           Welcome to CinemaGuesser!
         </p>

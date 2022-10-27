@@ -4,7 +4,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
+      colors: 
+      {
         pr: {
           'black': '#0A0A0A',
           'gray': '#ACACAC',
@@ -13,9 +14,14 @@ module.exports = {
           'yellow': '#F1CF54'
         }
       },
-      fontFamily: {
+      fontFamily: 
+      {
         roboslab: ['Roboto Slab', 'serif']
       },
+      backgroundImage: 
+      {
+        
+      }
     },
   },
   plugins: [],

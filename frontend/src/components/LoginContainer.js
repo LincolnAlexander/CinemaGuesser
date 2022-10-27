@@ -39,21 +39,21 @@ const LoginContainer = () => {
 
     // flex flex-col container mx-auto bg-gray-200 border-solid border-black 
     // <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
-    <div className='flex justify-center items-center border border-black'>
+    <div className='flex justify-center items-center border border-black '>
       <div className = "flex-col justify-center items-center">
         <div className='m-5'>
-          <p className='text-lg font-medium'>Username</p>
-          <input className = 'border rounded border-black w-64 h-8 focus:outline-none' type = 'text' placeholder='Enter Login' ref={(c) => loginName = c}/>
+          <p className='text-lg font-medium text-pr-white'>Username</p>
+          <input className = 'border-2 border-pr-yellow rounded border-black w-64 h-8 focus:outline-none bg-transparent text-pr-white ' type = 'text' placeholder='Enter Login' ref={(c) => loginName = c}/>
         </div>
         <div className='m-5'>
-          <p className='text-lg font-medium'>Password</p>
-          <input className='border rounded border-black w-64 h-8' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
+          <p className='text-lg font-medium text-pr-white'>Password</p>
+          <input className='border-2 border-pr-yellow rounded border-black w-64 h-8 focus:outline-none bg-transparent text-pr-white' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
         </div>
         <div className='m-5'>
-          <button className = 'btn btn-xs sm:btn-sm md:btn-md lg:btn-lg border rounded-full bg-blue-500 text-white w-64 h-10 font-medium ' type = 'button'>Login</button>
+          <button className = 'btn btn-xs sm:btn-sm md:btn-md lg:btn-lg b rounded-full bg-blue-500 text-white w-64 h-10 font-medium ' type = 'button' onClick={doLogin}>Login</button>
         </div>
-        <div className='m-5'>
-          <button className = 'border rounded-full bg-green-500 text-white w-64 h-10 font-medium' type = 'button' onClick={doLogin}>Register</button>
+        <div className='m-5 text-center'>
+          <p className='text-md font-medium text-pr-white pr-1.5'>Don't have an account?</p><span><a className = "text-md font-medium text-pr-yellow"href="" >Create Account</a></span>
         </div>
 
       </div>
