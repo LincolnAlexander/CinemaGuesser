@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-
+import Welcome from './Welcome';
 const LoginContainer = () => {
   var loginName;
   var loginPassword;
@@ -38,7 +38,6 @@ const LoginContainer = () => {
   
   return (
 
-    
     <div className="flex justify-center items-start">
       <div className = "flex-col justify-center items-center">
         <form className='mt-12'>
@@ -55,7 +54,7 @@ const LoginContainer = () => {
         <div>
           <span className='text-pr-white pr-2'>Don't have an account?</span>
           <a className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Register</a>
-          <a className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Forgot Password</a>
+          <a className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Forgot Password?</a>
         </div>
             
       </div>

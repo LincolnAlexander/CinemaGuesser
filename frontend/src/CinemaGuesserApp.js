@@ -2,7 +2,7 @@ import React from 'react';
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import LoginContainer from './components/LoginContainer';
+import LoginPage from './pages/LoginPage';
 
 const user = {
   name: 'Tom Cook',
@@ -194,7 +194,7 @@ function CinemaGuesserApp () {
         {/* </div> */}
       {/* </main> */}
   
-      <LoginContainer />
+      <LoginPage />
     </>
   )
 }
