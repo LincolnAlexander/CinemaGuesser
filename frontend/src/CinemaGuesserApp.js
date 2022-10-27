@@ -1,35 +1,34 @@
-import React from 'react';
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import LoginPage from './pages/LoginPage';
+import React from "react";
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import LoginPage from "./pages/LoginPage";
 
 const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
+  name: "Tom Cook",
+  email: "tom@example.com",
   imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+};
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: false },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
-]
-
+  { name: "Dashboard", href: "#", current: false },
+  { name: "Team", href: "#", current: false },
+  { name: "Projects", href: "#", current: false },
+  { name: "Calendar", href: "#", current: false },
+  { name: "Reports", href: "#", current: false },
+];
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
+  { name: "Sign out", href: "#" },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-function CinemaGuesserApp () {
+function CinemaGuesserApp() {
   return (
     <>
       <Disclosure as="nav" className="bg-pr-black">
@@ -41,7 +40,7 @@ function CinemaGuesserApp () {
                   <div className="flex-shrink-0">
                     <img
                       className="h-12 w-17 text-pr-white"
-                      src={require('./images/AppLogo.png')}
+                      src={require("./images/AppLogo.png")}
                       alt="Your Company"
                     />
                   </div>
@@ -53,11 +52,11 @@ function CinemaGuesserApp () {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-pr-black text-pr-white'
-                              : 'text-pr-yellow hover:bg-gray-700 hover:text-white',
-                            'px-3 py-2 rounded-md text-sm font-medium'
+                              ? "bg-pr-black text-pr-white"
+                              : "text-pr-yellow hover:bg-gray-700 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
                           )}
-                          aria-current={item.current ? 'page' : undefined}
+                          aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
                         </a>
@@ -80,7 +79,11 @@ function CinemaGuesserApp () {
                       <div>
                         <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">Open user menu</span>
-                          <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={user.imageUrl}
+                            alt=""
+                          />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -99,8 +102,8 @@ function CinemaGuesserApp () {
                                 <a
                                   href={item.href}
                                   className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
                                   {item.name}
@@ -135,10 +138,12 @@ function CinemaGuesserApp () {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block px-3 py-2 rounded-md text-base font-medium'
+                      item.current
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block px-3 py-2 rounded-md text-base font-medium"
                     )}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>
@@ -147,11 +152,19 @@ function CinemaGuesserApp () {
               <div className="border-t border-gray-700 pt-4 pb-3">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={user.imageUrl}
+                      alt=""
+                    />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                    <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                    <div className="text-base font-medium leading-none text-white">
+                      {user.name}
+                    </div>
+                    <div className="text-sm font-medium leading-none text-gray-400">
+                      {user.email}
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -185,19 +198,18 @@ function CinemaGuesserApp () {
         </div>
       </header> */}
       {/* <main> */}
-        {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
-          {/* Replace with your content */}
-          {/* <div className="px-4 py-6 sm:px-0 bg-pr-yellow"> */}
-            
-          {/* </div> */}
-          {/* /End replace */}
-        {/* </div> */}
+      {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
+      {/* Replace with your content */}
+      {/* <div className="px-4 py-6 sm:px-0 bg-pr-yellow"> */}
+
+      {/* </div> */}
+      {/* /End replace */}
+      {/* </div> */}
       {/* </main> */}
-  
+
       <LoginPage />
     </>
-  )
+  );
 }
 
 export default CinemaGuesserApp;
-
