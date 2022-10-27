@@ -38,27 +38,27 @@ const LoginContainer = () => {
   return (
 
     // flex flex-col container mx-auto bg-gray-200 border-solid border-black 
-    <div className="container mx-auto bg-pr-gray rounded-xl shadow border p-8 m-10">
-      <div className="flex-col justify-center items-center">
+    <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+      <div className = "flex-col justify-center items-center">
         <div className='m-5'>
           <p className='text-lg font-medium'>Username</p>
-          <input className='border rounded border-black w-64 h-8' type='text' placeholder='Enter Login' ref={(c) => loginName = c} />
+          <input className = 'border rounded border-black w-64 h-8' type = 'text' placeholder='Enter Login' ref={(c) => loginName = c}/>
         </div>
         <div className='m-5'>
           <p className='text-lg font-medium'>Password</p>
           <input className='border rounded border-black w-64 h-8' type='password' placeholder='Enter Password' ref={(c) => loginPassword = c} />
         </div>
         <div className='m-5'>
-          <button className='border rounded-full bg-blue-500 text-white w-36 h-10 font-medium' type='button'>Login</button>
+          <button className = 'border rounded-full bg-blue-500 text-white w-36 h-10 font-medium' type = 'button'>Login</button>
         </div>
         <div className='m-5'>
-          <button className='border rounded-full bg-green-500 text-white w-36 h-10 font-medium' type='button' onClick={doLogin}>Register</button>
+          <button className = 'border rounded-full bg-green-500 text-white w-36 h-10 font-medium' type = 'button' onClick={doLogin}>Register</button>
         </div>
 
       </div>
-
-
-
+         
+          
+          
     </div>
   );
 }
