@@ -38,7 +38,7 @@ exports.setApp = function ( app, client )
       const db = client.db();
       const results = await
 
-      db.collection('Users').insertOne({FirstName, LastName, login, password});
+      db.collection('Users').insertOne({FirstName, LastName, Login, Password});
 
       var ret = {firstname:FirstName, lastname: LastName, login: login, password:password};
       res.status(200).json(ret);
