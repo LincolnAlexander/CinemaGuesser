@@ -6,10 +6,10 @@ import Welcome from '../components/Welcome';
   
 function LoginPage() {
   return (
-    <div>
+    <>
       <Welcome></Welcome>
       <LoginContainer></LoginContainer>
-    </div>
+    </>
     
   );
 };
