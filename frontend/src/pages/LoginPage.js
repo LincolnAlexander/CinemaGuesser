@@ -11,7 +11,7 @@ function LoginPage() {
     <>
     <Welcome></Welcome>
     <LoginContainer></LoginContainer>
-    <Blob className='w-60 '/>
+    {/* <Blob className='w-60 '/> */}
     </>
     
   );

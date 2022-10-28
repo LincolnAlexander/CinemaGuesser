@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import AppLogo from '../images/AppLogo.png';
 import {ReactComponent as Circle} from '../images/FigmaImg.svg';
+import {ReactComponent as Blob} from '../images/blob-gradient.svg';
 
 const LoginContainer = () => {
   var loginName;
@@ -40,9 +41,9 @@ const LoginContainer = () => {
   
   return (
     <div className='flex justify-center'>
-      <div className="flex justify-center items-start border border-pr-white w-1/2">
-        <div className = "flex flex-col basis-1/2 justify-center items-center">
-          <form className='mt-12'>
+      <div className="flex justify-center items-start w-1/2">
+        <div className = "flex flex-col basis-1/2 justify-center items-center ">
+          <form className='mt-20'>
             <div className='relative'>
               <input className='peer h-10  border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent' id='username' placeholder='a'></input>
               <label className = 'absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md ' htmlFor='username'>Username</label>
@@ -60,8 +61,9 @@ const LoginContainer = () => {
           </div>
               
         </div>
-        <div className='flex basis-1/2 border border-pr-white w-full h-full justify-center items-center'>
-          <Circle className=''/>
+        <div className='flex basis-1/2 w-full h-full justify-center items-center'>
+          <Blob/>
+          {/* <Circle className=''/> */}
         </div>
       </div>
     </div>
