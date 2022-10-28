@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import Welcome from './Welcome';
+
+
 const LoginContainer = () => {
   var loginName;
   var loginPassword;
