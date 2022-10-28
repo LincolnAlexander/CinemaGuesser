@@ -49,7 +49,7 @@ const LoginContainer = () => {
           <div className='relative mt-8'>
             <input className='peer h-10 w-full border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent' id='username' placeholder='a'></input>
             <label className = 'absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md ' htmlFor='username'>Password</label>
-            <button className='block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red hover:border text-white w-full h-10 font-medium hover:font-extrabold ' type='button' onClick={doLogin}>Login</button>
+            <button className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-full h-10 font-medium hover:font-extrabold ' type='button' onClick={doLogin}>Login</button>
           </div>
         </form>
         <div>
