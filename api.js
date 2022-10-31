@@ -1,5 +1,7 @@
 require('express');
 require('mongodb');
+const axios = require("axios");
+const https = require('https');
 exports.setApp = function ( app, client )
 {
     
@@ -42,6 +44,27 @@ exports.setApp = function ( app, client )
 
       var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
       res.status(200).json(ret);
+    });
+
+    app.post('/api/movies', async (req, res, next) =>
+    {
+      var search = req.body.search;
+      console.log(search);
+      axios
+      .get('http://www.omdbapi.com/', {
+        params : {
+          t: search,
+          apikey: process.env.APIKEY
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        var ret = response.data;
+        res.status(200).json(ret);
+      })
+      .catch(error => {
+        console.log(error);
+      });
     });
     
 }
