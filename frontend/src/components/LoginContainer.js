@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react';
-import AppLogo from '../images/AppLogo.png';
-import {ReactComponent as Circle} from '../images/FigmaImg.svg';
-import {ReactComponent as Blob} from '../images/blob-gradient.svg';
+import RegisterModal from './Modals/RegisterModal';
 
 const LoginContainer = () => {
   var loginName;
@@ -38,6 +36,9 @@ const LoginContainer = () => {
       return;
     }
   };
+
+  const [openRegisterModal, setRegister] = useState(false);
+
   
   return (
     <div className='flex justify-center mt-20'>
@@ -56,15 +57,13 @@ const LoginContainer = () => {
           </form>
           <div>
             <span className='text-pr-white pr-2'>Don't have an account?</span>
-            <a className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Register</a>
+            <button className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' onClick={() => setRegister(true)}>Register</button>
+            <RegisterModal open={openRegisterModal} onClose = {() => setRegister(false)}>
+            </RegisterModal>
             <a className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Forgot Password?</a>
           </div>
               
         </div>
-        {/* <div className='flex basis-1/2 w-full h-full justify-center items-center '>
-          <Blob/>
-          
-        </div> */}
       </div>
     </div>
   );
