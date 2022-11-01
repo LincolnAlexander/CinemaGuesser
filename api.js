@@ -1,7 +1,7 @@
 require('express');
 require('mongodb');
 const axios = require("axios");
-const https = require('https');
+const http = require('http');
 exports.setApp = function ( app, client )
 {
     
@@ -65,20 +65,27 @@ exports.setApp = function ( app, client )
       .catch(error => {
         console.log(error);
       });*/
-      axios({
-        method: 'get',
-        baseURL: 'http://www.omdbapi.com/',
-        params: {
-          t: req.body.search,
-          apikey: process.env.APIKEY
-        }
-      }).then(response => {
-        var ret = response.data;
-        res.status(200).json(ret);
-      })
-      .catch(error => {
-        console.log(error)
-      });
+      var ret = await makeGetRequest(req.body.search);
+      res.status(200).json(ret);
     });
+    function makeGetRequest(search) {
+      return new Promise(function (resolve, reject) {
+          axios.get('http://www.omdbapi.com/', {
+            params : {
+              t: search,
+              apikey: process.env.APIKEY
+            }
+          }).then(
+              (response) => {
+                  var result = response.data;
+                  console.log('Processing Request');
+                  resolve(result);
+              },
+                  (error) => {
+                  reject(error);
+              }
+          );
+      });
+  }//end of function
     
 }
