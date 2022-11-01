@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterModal from './modals/RegisterModal';
-import Register from '../pages/RegisterPage';
-// import RegisterModal from './Modals/RegisterModal';
-import RegisterPage from '../pages/RegisterPage';
-// import LoginPage from '../pages/LoginPage';
-// import { Routes, Route } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginContainer = () => {
-  var loginName;
-  var loginPassword;
+  const loginNameRef = useRef();
+  const loginPasswordRef = useRef();
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -18,8 +11,11 @@ const LoginContainer = () => {
   const doLogin = async (event) => {
     event.preventDefault();
 
-    var obj = { username: loginName.value, password: loginPassword.value };
-    var js = JSON.stringify(obj);
+    const loginName = loginNameRef.current.value;
+    const loginPassword = loginPasswordRef.current.value;
+
+    const obj = { username: loginName, password: loginPassword };
+    const js = JSON.stringify(obj);
 
     try {
       const response = await fetch('http://localhost:5000/api/login', {
@@ -28,12 +24,12 @@ const LoginContainer = () => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      var res = JSON.parse(await response.text());
+      const res = JSON.parse(await response.text());
 
       if (res.id <= 0) {
         setMessage('User/Password combination incorrect');
       } else {
-        var user = {
+        const user = {
           firstName: res.firstName,
           lastName: res.lastName,
           id: res.id,
@@ -49,8 +45,6 @@ const LoginContainer = () => {
     }
   };
 
-  // const [openRegisterModal, setRegister] = useState(false);
-
   return (
     <>
       <div className='flex justify-center mt-20'>
@@ -61,19 +55,23 @@ const LoginContainer = () => {
                 <input
                   className='peer h-10  border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent'
                   id='username'
+                  ref={loginNameRef}
+                  type='text'
                   placeholder='a'
                 ></input>
                 <label
                   className='absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
                   htmlFor='username'
                 >
-                  Username
+                  Login
                 </label>
               </div>
               <div className='relative mt-8'>
                 <input
                   className='peer h-10 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent'
                   id='password'
+                  ref={loginPasswordRef}
+                  type='password'
                   placeholder='a'
                 ></input>
                 <label
@@ -84,7 +82,7 @@ const LoginContainer = () => {
                 </label>
                 <button
                   className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-52 h-10 font-medium hover:font-extrabold '
-                  type='button'
+                  type='submit'
                   onClick={doLogin}
                 >
                   Login
@@ -99,13 +97,9 @@ const LoginContainer = () => {
               >
                 Register
               </button>
-              {/* <RegisterModal open={openRegisterModal} onClose = {() => setRegister(false)}>
-              </RegisterModal> */}
-
               <a
                 className='block text-pr-yellow text-center text-sm font-medium py-2 hover:font-extrabold hover:underline'
-                href='#'
-                type='button'
+                href='/'
               >
                 Forgot Password?
               </a>
