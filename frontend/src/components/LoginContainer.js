@@ -6,13 +6,14 @@ import Register from '../pages/RegisterPage';
 import RegisterPage from '../pages/RegisterPage';
 // import LoginPage from '../pages/LoginPage';
 // import { Routes, Route } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const LoginContainer = () => {
   var loginName;
   var loginPassword;
 
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const doLogin = async (event) => {
     event.preventDefault();
@@ -94,7 +95,7 @@ const LoginContainer = () => {
               <span className='text-pr-white pr-2'>Don't have an account?</span>
               <button
                 className='text-pr-yellow font-medium hover:font-extrabold hover:underline'
-                onClick={() => <Navigate to='/register'></Navigate>}
+                onClick={() => navigate('/register')}
               >
                 Register
               </button>
@@ -102,7 +103,7 @@ const LoginContainer = () => {
               </RegisterModal> */}
 
               <a
-                className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline'
+                className='block text-pr-yellow text-center text-sm font-medium py-2 hover:font-extrabold hover:underline'
                 href='#'
                 type='button'
               >
