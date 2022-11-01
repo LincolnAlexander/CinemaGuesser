@@ -70,7 +70,7 @@ exports.setApp = function ( app, client )
     });
     function makeGetRequest(search) {
       return new Promise(function (resolve, reject) {
-          axios.get(process.env.OMDB_URI, {
+          axios.get(process.env.OMDB_URI + '&', {
             params : {
               t: search
             }
