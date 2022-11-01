@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
-import {BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-=======
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RegisterModal from './modals/RegisterModal';
->>>>>>> 6e37e48 (Rename Modals repo.)
 import Register from '../pages/RegisterPage';
 // import RegisterModal from './Modals/RegisterModal';
 import RegisterPage from '../pages/RegisterPage';
@@ -21,6 +17,8 @@ const LoginContainer = () => {
 
     var obj = { username: loginName.value, password: loginPassword.value };
     var js = JSON.stringify(obj);
+
+    console.log(js);
 
     try {
       const response = await fetch('http://localhost:5000/api/login', {
