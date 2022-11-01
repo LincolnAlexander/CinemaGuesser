@@ -50,7 +50,7 @@ const LoginContainer = () => {
     }
   };
 
-  const [openRegisterModal, setRegister] = useState(false);
+  // const [openRegisterModal, setRegister] = useState(false);
 
   return (
     <div className='flex justify-center mt-20'>
