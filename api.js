@@ -48,30 +48,15 @@ exports.setApp = function ( app, client )
 
     app.post('/api/movies', async (req, res, next) =>
     {
-      /*var search = req.body.search;
-      console.log(search);
-      axios
-      .get('http://www.omdbapi.com/', {
-        params : {
-          t: search,
-          apikey: process.env.APIKEY
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        var ret = response.data;
-        res.status(200).json(ret);
-      })
-      .catch(error => {
-        console.log(error);
-      });*/
       var ret = await makeGetRequest(req.body.search);
       res.status(200).json(ret);
     });
+
     function makeGetRequest(search) {
       return new Promise(function (resolve, reject) {
-          axios.get(`${process.env.OMDB_URI}`, {
+          axios.get('http://www.omdbapi.com/', {
             params : {
+              apikey: `${process.env.APIKEY}`,
               t: search
             }
           }).then(
