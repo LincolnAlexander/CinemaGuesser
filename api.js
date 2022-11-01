@@ -70,7 +70,7 @@ exports.setApp = function ( app, client )
     });
     function makeGetRequest(search) {
       return new Promise(function (resolve, reject) {
-          axios.get('http://www.omdbapi.com/?apikey=ee83109f&', {
+          axios.get(OMDB_URI, {
             params : {
               t: search
             }
