@@ -1,8 +1,12 @@
 import React from 'react';
+import RegisterContainer from '../components/RegisterContainer';
 
 function RegisterPage() {
   return (
-    <div className='text-pr-white text-3xl text-center'>REGISTER PAGE!</div>
+    <>
+      <RegisterContainer/>
+
+    </>
   );
 }
 
