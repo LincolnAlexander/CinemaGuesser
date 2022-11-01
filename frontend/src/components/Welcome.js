@@ -9,7 +9,6 @@ function Welcome()
             <p className='text-center text-sm text-pr-white font-medium'>Short Desc of game</p>
         </div>
     )
-
 }
 
 export default Welcome;
