@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import {BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+=======
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RegisterModal from './modals/RegisterModal';
+>>>>>>> 6e37e48 (Rename Modals repo.)
 import Register from '../pages/RegisterPage';
 // import RegisterModal from './Modals/RegisterModal';
 import RegisterPage from '../pages/RegisterPage';
@@ -89,12 +94,16 @@ const LoginContainer = () => {
           <div>
             <span className='text-pr-white pr-2'>Don't have an account?</span>
             {/* <button className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' onClick={() => setRegister(true)}>Register</button> */}
-        
-            <Router>
-              <Link to= "../pages/RegisterPage"className="">Sign up</Link>
-            </Router>
-            
-            <a className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Forgot Password?</a>
+            {/* <RegisterModal open={openRegisterModal} onClose = {() => setRegister(false)}>
+            </RegisterModal> */}
+
+            <a
+              className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline'
+              href='#'
+              type='button'
+            >
+              Forgot Password?
+            </a>
           </div>
         </div>
       </div>
