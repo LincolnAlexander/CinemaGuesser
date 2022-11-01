@@ -6,6 +6,7 @@ import Register from '../pages/RegisterPage';
 import RegisterPage from '../pages/RegisterPage';
 // import LoginPage from '../pages/LoginPage';
 // import { Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const LoginContainer = () => {
   var loginName;
@@ -89,9 +90,14 @@ const LoginContainer = () => {
                 </button>
               </div>
             </form>
-            <div>
+            <div className='text-center'>
               <span className='text-pr-white pr-2'>Don't have an account?</span>
-              {/* <button className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' onClick={() => setRegister(true)}>Register</button> */}
+              <button
+                className='text-pr-yellow font-medium hover:font-extrabold hover:underline'
+                onClick={() => <Navigate to='/register'></Navigate>}
+              >
+                Register
+              </button>
               {/* <RegisterModal open={openRegisterModal} onClose = {() => setRegister(false)}>
               </RegisterModal> */}
 
