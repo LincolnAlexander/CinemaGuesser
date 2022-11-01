@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterModal from './Modals/RegisterModal';
+import {BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Register from '../pages/RegisterPage';
+// import RegisterModal from './Modals/RegisterModal';
+import RegisterPage from '../pages/RegisterPage';
+// import LoginPage from '../pages/LoginPage';
 
 const LoginContainer = () => {
   var loginName;
@@ -87,9 +89,11 @@ const LoginContainer = () => {
           <div>
             <span className='text-pr-white pr-2'>Don't have an account?</span>
             {/* <button className='text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' onClick={() => setRegister(true)}>Register</button> */}
-            {/* <RegisterModal open={openRegisterModal} onClose = {() => setRegister(false)}>
-            </RegisterModal> */}
-
+        
+            <Router>
+              <Link to= "../pages/RegisterPage"className="">Sign up</Link>
+            </Router>
+            
             <a className='block text-pr-yellow text-center font-medium hover:font-extrabold hover:underline' href="#" type='button'>Forgot Password?</a>
           </div>
         </div>

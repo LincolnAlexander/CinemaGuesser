@@ -1,6 +1,6 @@
 import React from "react";
 
-function Register()
+function RegisterPage()
 {
     return(
         <div>
@@ -9,4 +9,4 @@ function Register()
     )
 }
 
-export default Register;
+export default RegisterPage;
