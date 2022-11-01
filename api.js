@@ -70,10 +70,9 @@ exports.setApp = function ( app, client )
     });
     function makeGetRequest(search) {
       return new Promise(function (resolve, reject) {
-          axios.get('http://www.omdbapi.com/', {
+          axios.get('http://www.omdbapi.com/?apikey=' + process.env.APIKEY, {
             params : {
-              t: search,
-              apikey: process.env.APIKEY
+              t: search
             }
           }).then(
               (response) => {
