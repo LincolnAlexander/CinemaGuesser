@@ -51,12 +51,7 @@ exports.setApp = function ( app, client )
       var search = req.body.search;
       console.log(search);
       axios
-      .get('http://www.omdbapi.com/', {
-        params : {
-          t: search,
-          apikey: process.env.APIKEY
-        }
-      })
+      .get(process.env.OMDB_URI + 't=' + search)
       .then(response => {
         console.log(response.data);
         var ret = response.data;
