@@ -48,7 +48,7 @@ exports.setApp = function ( app, client )
 
     app.post('/api/movies', async (req, res, next) =>
     {
-      var search = req.body.search;
+      /*var search = req.body.search;
       console.log(search);
       axios
       .get('http://www.omdbapi.com/', {
@@ -64,6 +64,20 @@ exports.setApp = function ( app, client )
       })
       .catch(error => {
         console.log(error);
+      });*/
+      axios({
+        method: 'get',
+        baseURL: 'http://www.omdbapi.com/',
+        params: {
+          t: req.body.search,
+          apikey: process.env.APIKEY
+        }
+      }).then(response => {
+        var ret = response.data;
+        res.status(200).json(ret);
+      })
+      .catch(error => {
+        console.log(error)
       });
     });
     
