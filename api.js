@@ -71,7 +71,7 @@ exports.setApp = function ( app, client )
     function makeGetRequest(search) {
       return new Promise(function (resolve, reject) {
         //need to find better solution for this
-          axios.get('http://www.omdbapi.com/?apikey=ee83109f&', {
+          axios.get(process.env.OMDB_URI, {
             params : {
               t: search
             }
