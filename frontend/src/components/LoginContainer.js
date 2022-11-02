@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
     var js = JSON.stringify(obj);
 
     try {
-      var bp = require('./Path.js');
+      var bp = require('./Paths.js');
             const response = await(fetch(bp.buildPath('api/login'), {
                 method:'POST',
                 body:js,
