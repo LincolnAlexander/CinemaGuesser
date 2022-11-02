@@ -14,17 +14,26 @@ import { useNavigate } from 'react-router-dom';
     const loginName = loginNameRef.current.value;
     const loginPassword = loginPasswordRef.current.value;
 
-    const obj = { username: loginName, password: loginPassword };
-    const js = JSON.stringify(obj);
+    var obj = { username: loginName, password: loginPassword };
+    var js = JSON.stringify(obj);
 
     try {
-      const response = await fetch('https:cinemaguesser.xyz/api/login', {
-        method: 'POST',
-        body: js,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      var bp = require('./Path.js');
+            const response = await(fetch(bp.buildPath('api/login'), {
+                method:'POST',
+                body:js,
+                headers:{
+                    'Content-Type': 'applications/json'
+                }
+            }))
+            var res = JSON.parse(await response.text());
+      // const response = await fetch('api/login', {
+      //   method: 'POST',
+      //   body: js,
+      //   headers: { 'Content-Type': 'application/json' },
+      // });
 
-      const res = JSON.parse(await response.text());
+      // const res = JSON.parse(await response.text());
 
       if (res.id <= 0) {
         setMessage('User/Password combination incorrect');

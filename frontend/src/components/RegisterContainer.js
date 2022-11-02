@@ -20,22 +20,31 @@ function RegisterContainer()
         const lastName = lastNameRef.current.value;
         const email = emailRef.current.value;
     
-        const obj = {FirstName: firstName, LastName: lastName, Login: loginName, Password: loginPassword};
-        const js = JSON.stringify(obj);
+        var obj = {FirstName: firstName, LastName: lastName, Login: loginName, Password: loginPassword};
+        var js = JSON.stringify(obj);
     
         try {
-          const response = await fetch('https:cinemaguesser.xyz/api/register', {
-            method: 'POST',
-            body: js,
-            headers: { 'Content-Type': 'application/json' },
-          });
-            // const response = await fetch(buildPath('api/login’) {
-            //     method: 'POST',
-            //     body: js,
-            //     headers: { 'Content-Type': 'application/json' },
-            //   });
+            var bp = require('./Path.js');
+            const response = await(fetch(bp.buildPath('api/register'), {
+                method:'POST',
+                body:js,
+                headers:{
+                    'Content-Type': 'applications/json'
+                }
+            }))
+            var res = JSON.parse(await response.text());
+        //   const response = await fetch('api/register', {
+        //     method: 'POST',
+        //     body: js,
+        //     headers: { 'Content-Type': 'application/json' },
+        //   });
+        //     // const response = await fetch(buildPath('api/login’) {
+        //     //     method: 'POST',
+        //     //     body: js,
+        //     //     headers: { 'Content-Type': 'application/json' },
+        //     //   });
     
-          const res = JSON.parse(await response.text());
+        //   const res = JSON.parse(await response.text());
     
           if (res.id <= 0) 
           {
