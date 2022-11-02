@@ -20,11 +20,11 @@ function RegisterContainer()
         const lastName = lastNameRef.current.value;
         const email = emailRef.current.value;
     
-        const obj = { username: loginName, password: loginPassword };
+        const obj = {FirstName: firstName, LastName: lastName, Login: loginName, Password: loginPassword};
         const js = JSON.stringify(obj);
     
         try {
-          const response = await fetch('http://localhost:5000/api/login', {
+          const response = await fetch('http://localhost:5000/api/register', {
             method: 'POST',
             body: js,
             headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@ function RegisterContainer()
             //   lastName: res.lastName,
             //   id: res.id,
             // };
-            // localStorage.setItem('user_data', JSON.stringify(user));
+            localStorage.setItem('user_data', JSON.stringify(user));
     
             setMessage('');
             navigate('/register');
