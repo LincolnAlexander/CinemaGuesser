@@ -1,10 +1,14 @@
 import React from 'react';
+import GameContainer from '../components/GameContainer'
 import UserGreeting from '../components/UserGreeting';
 
 export default function GamePage() {
+   {/* <UserGreeting firstName={localStorage.user.firstName} /> */}
   return (
-    <div>
-      <UserGreeting firstName={localStorage.user.firstName} />
-    </div>
+    <>
+      
+      <GameContainer/>
+    </>
+    
   );
 }
