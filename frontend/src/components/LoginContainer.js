@@ -37,7 +37,7 @@ import { useNavigate } from 'react-router-dom';
         localStorage.setItem('user_data', JSON.stringify(user));
 
         setMessage('');
-        window.location.href = '/cards';
+        navigate('/game');
       }
     } catch (e) {
       alert(e.toString());

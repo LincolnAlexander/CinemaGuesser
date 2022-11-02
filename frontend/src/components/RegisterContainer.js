@@ -50,7 +50,7 @@ function RegisterContainer()
             // localStorage.setItem('user_data', JSON.stringify(user));
     
             setMessage('');
-            navigate('/register');
+            navigate('/game');
           }
         } catch (e) {
           alert(e.toString());
