@@ -148,7 +148,7 @@ function RegisterContainer()
                             <button
                                 className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-52 h-10 font-medium hover:font-extrabold '
                                 type='submit'
-                                onClick={() => navigate('/')}>
+                                onClick={doRegister}>
                                 Register
                             </button>
                         </div>

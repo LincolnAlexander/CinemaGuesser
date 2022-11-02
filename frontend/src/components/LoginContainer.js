@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LoginContainer = () => {
+  const LoginContainer = () => {
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  
   const doLogin = async (event) => {
     event.preventDefault();
 
@@ -81,7 +81,7 @@ const LoginContainer = () => {
                   Password
                 </label>
                 <button
-                  className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-52 h-10 font-medium hover:font-extrabold '
+                  className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-44 h-10 sm:w-52 font-medium hover:font-extrabold '
                   type='submit'
                   onClick={doLogin}
                 >
