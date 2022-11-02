@@ -24,11 +24,16 @@ function RegisterContainer()
         const js = JSON.stringify(obj);
     
         try {
-          const response = await fetch('http://localhost:5000/api/register', {
+          const response = await fetch('https:cinemaguesser.xyz/api/register', {
             method: 'POST',
             body: js,
             headers: { 'Content-Type': 'application/json' },
           });
+            // const response = await fetch(buildPath('api/login’) {
+            //     method: 'POST',
+            //     body: js,
+            //     headers: { 'Content-Type': 'application/json' },
+            //   });
     
           const res = JSON.parse(await response.text());
     

@@ -1,12 +1,12 @@
 //change this later
-const app_name = 'cinema-guesser'
+const app_name = 'cinemaguesser'
 //hi
 exports.buildPath = 
 function buildPath(route)
 {
     if (process.env.NODE_ENV === 'production') 
     {
-        return 'https://' + app_name +  '.herokuapp.com/' + route;
+        return 'https://' + app_name +  '.xyz' + route;
     }
     else
     {        
