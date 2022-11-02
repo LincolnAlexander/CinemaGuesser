@@ -24,7 +24,7 @@ function RegisterContainer()
         var js = JSON.stringify(obj);
     
         try {
-            var bp = require('./Path.js');
+            var bp = require('./Paths.js');
             const response = await(fetch(bp.buildPath('api/register'), {
                 method:'POST',
                 body:js,
