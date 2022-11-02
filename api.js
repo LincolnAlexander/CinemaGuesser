@@ -56,7 +56,6 @@ exports.setApp = function ( app, client )
       return new Promise(function (resolve, reject) {
           axios.get(`http://www.omdbapi.com/?apikey=${process.env.APIKEY}&`, {
             params : {
-              //apikey: `${process.env.APIKEY}`,
               t: search
             }
           }).then(
