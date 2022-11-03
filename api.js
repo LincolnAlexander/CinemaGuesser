@@ -1,7 +1,7 @@
 require('express');
 require('mongodb');
 const axios = require("axios");
-const http = require('http');
+var sha256 = require('js-sha256');
 exports.setApp = function ( app, client )
 {
     
@@ -13,9 +13,9 @@ exports.setApp = function ( app, client )
      var error = '';
     
       const { login, password } = req.body;
-    
+      const hash = sha256.hmac('key', password);
       const db = client.db();
-      const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
+      const results = await db.collection('Users').find({Login:login,Password:hash}).toArray();
     
       var fn = '';
       var ln = '';
@@ -36,13 +36,13 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>
     {
       var error = '';
-      const{FirstName, LastName ,Login, Password} = req.body;
-      console.log(req.body);
-      
+      const { FirstName, LastName, Login, Password } = req.body;
+      const hash = sha256.hmac('key', Password);
       const db = client.db();
+
       const results = await
 
-      db.collection('Users').insertOne({FirstName, LastName, Login, Password});
+      db.collection('Users').insertOne({FirstName, LastName, Login, hash});
 
       var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
       res.status(200).json(ret);
