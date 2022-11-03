@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-  const LoginContainer = () => {
+const LoginContainer = () => {
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  
+
   const doLogin = async (event) => {
     event.preventDefault();
 
@@ -19,7 +19,11 @@ import { useNavigate } from 'react-router-dom';
 
     try {
       var bp = require('./Paths.js');
-      const response = await fetch(bp.buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+      const response = await fetch(bp.buildPath('api/login'), {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
       var res = JSON.parse(await response.text());
       // const response = await fetch('api/login', {
       //   method: 'POST',
@@ -51,7 +55,7 @@ import { useNavigate } from 'react-router-dom';
     <>
       <div className='flex justify-center mt-20'>
         <div className='flex justify-center items-start w-1/2'>
-          <div className='flex flex-col basis-1/2 justify-center items-center rounded-md bg-slate-500 bg-opacity-10 backdrop-blur-sm'>
+          <div className='flex flex-col flex-none basis-72 justify-center items-center rounded-md bg-slate-500 bg-opacity-10 backdrop-blur-sm'>
             <form className='mt-10'>
               <div className='relative'>
                 <input
