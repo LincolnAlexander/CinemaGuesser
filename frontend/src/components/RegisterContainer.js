@@ -53,7 +53,7 @@ function RegisterContainer()
             // localStorage.setItem('user_data', JSON.stringify(user));
     
             setMessage('');
-            navigate('/game');
+            navigate('/home');
           }
         } catch (e) {
           alert(e.toString());

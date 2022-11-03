@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import NotFoundPage from './pages/NotFoundPage';
 import RegisterPage from './pages/RegisterPage';
 import GamePage from './pages/GamePage';
+import HomePage from './pages/HomePage';
 
 function CinemaGuesserApp() {
   return (
@@ -15,7 +16,7 @@ function CinemaGuesserApp() {
         <Route path='/' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/game' element={<GamePage />} />
-
+        <Route path='/home' element={<HomePage />} />
         {/* For unknown path go to login page*/}
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
