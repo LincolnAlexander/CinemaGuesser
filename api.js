@@ -38,7 +38,7 @@ exports.setApp = function ( app, client )
     {
       var error = '';
       const { FirstName, LastName, Login, password } = req.body;
-      const Password = sha256.hmac('key', Password);
+      const Password = sha256.hmac('key', password);
       const db = client.db();
 
       const results = await
