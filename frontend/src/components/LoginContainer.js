@@ -19,14 +19,8 @@ import { useNavigate } from 'react-router-dom';
 
     try {
       var bp = require('./Paths.js');
-            const response = await(fetch(bp.buildPath('api/login'), {
-                method:'POST',
-                body:js,
-                headers:{
-                    'Content-Type': 'applications/json'
-                }
-            }))
-            var res = JSON.parse(await response.text());
+      const response = await fetch(bp.buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+      var res = JSON.parse(await response.text());
       // const response = await fetch('api/login', {
       //   method: 'POST',
       //   body: js,

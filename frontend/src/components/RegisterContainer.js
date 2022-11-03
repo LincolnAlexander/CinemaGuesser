@@ -20,8 +20,6 @@ function RegisterContainer()
         const lastName = lastNameRef.current.value;
         const email = emailRef.current.value;
 
-        console.log(loginName);
-        
         var obj = {FirstName: firstName, LastName: lastName, Login: loginName, Password: loginPassword}
         var js = JSON.stringify(obj);
     
