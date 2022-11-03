@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
     const loginName = loginNameRef.current.value;
     const loginPassword = loginPasswordRef.current.value;
 
-    var obj = { username: loginName, password: loginPassword };
+    var obj = { login: loginName, password: loginPassword };
     var js = JSON.stringify(obj);
 
     try {
