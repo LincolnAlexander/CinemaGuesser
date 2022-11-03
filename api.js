@@ -8,7 +8,7 @@ exports.setApp = function ( app, client )
     app.post('/api/login', async (req, res, next) => 
     {
       // incoming: login, password
-      // outgoing: id, firstName, lastName, error
+      // outgoing: firstName, lastName, error
     
      var error = '';
     
@@ -17,18 +17,18 @@ exports.setApp = function ( app, client )
       const db = client.db();
       const results = await db.collection('Users').find({Login:login,Password:password}).toArray();
     
-      var id = -1;
       var fn = '';
       var ln = '';
+      var err = 'invalid login';
     
       if( results.length > 0 )
       {
-        id = results[0].UserId;
         fn = results[0].FirstName;
         ln = results[0].LastName;
+        err = '';
       }
     
-      var ret = { id:id, firstName:fn, lastName:ln, error:''};
+      var ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
     
