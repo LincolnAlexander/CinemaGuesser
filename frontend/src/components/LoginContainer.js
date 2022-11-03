@@ -35,13 +35,12 @@ import { useNavigate } from 'react-router-dom';
 
       // const res = JSON.parse(await response.text());
 
-      if (res.id <= 0) {
+      if (res.error !== '') {
         setMessage('User/Password combination incorrect');
       } else {
         const user = {
           firstName: res.firstName,
           lastName: res.lastName,
-          id: res.id,
         };
         localStorage.setItem('user_data', JSON.stringify(user));
 

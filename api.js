@@ -37,6 +37,8 @@ exports.setApp = function ( app, client )
     {
       var error = '';
       const{FirstName, LastName ,Login, Password} = req.body;
+      console.log(req.body);
+      
       const db = client.db();
       const results = await
 
