@@ -44,8 +44,8 @@ exports.setApp = function ( app, client )
       const results = await
 
       db.collection('Users').insertOne({FirstName, LastName, Login, Password});
-      //changes here 
-      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:req.body.Password};
+      //change here to not reveal hashed password
+      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
       res.status(200).json(ret);
     });
 
