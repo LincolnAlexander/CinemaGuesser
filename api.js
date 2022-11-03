@@ -14,13 +14,14 @@ exports.setApp = function ( app, client )
     
       const { login, password } = req.body;
       const hash = sha256.hmac('key', password);
-      console.log(hash);
+
       const db = client.db();
       const results = await db.collection('Users').find({Login:login,Password:hash}).toArray();
     
       var fn = '';
       var ln = '';
       var err = 'invalid login';
+      var pass = hash;
     
       if( results.length > 0 )
       {
@@ -29,7 +30,7 @@ exports.setApp = function ( app, client )
         err = '';
       }
     
-      var ret = { firstName:fn, lastName:ln, error: err};
+      var ret = { firstName:fn, lastName:ln, error: err, pass: pass};
       res.status(200).json(ret);
     });
     
