@@ -37,15 +37,15 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>
     {
       var error = '';
-      const { FirstName, LastName, Login, password } = req.body;
-      const Password = sha256.hmac('key', password);
+      const { FirstName, LastName, Login, Pass } = req.body;
+      const Password = sha256.hmac('key', req.body.Password);
       const db = client.db();
 
       const results = await
 
       db.collection('Users').insertOne({FirstName, LastName, Login, Password});
 
-      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:password};
+      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:req.body.Password};
       res.status(200).json(ret);
     });
 
