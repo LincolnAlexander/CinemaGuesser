@@ -21,7 +21,6 @@ exports.setApp = function ( app, client )
       var fn = '';
       var ln = '';
       var err = 'invalid login';
-      var pass = hash;
     
       if( results.length > 0 )
       {
@@ -30,7 +29,7 @@ exports.setApp = function ( app, client )
         err = '';
       }
     
-      var ret = { firstName:fn, lastName:ln, error: err, pass: pass};
+      var ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
     
@@ -38,15 +37,15 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>
     {
       var error = '';
-      const { FirstName, LastName, Login, Password } = req.body;
-      const hash = sha256.hmac('key', Password);
+      const { FirstName, LastName, Login, password } = req.body;
+      const Password = sha256.hmac('key', Password);
       const db = client.db();
 
       const results = await
 
-      db.collection('Users').insertOne({FirstName, LastName, Login, hash});
+      db.collection('Users').insertOne({FirstName, LastName, Login, Password});
 
-      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
+      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:password};
       res.status(200).json(ret);
     });
 
