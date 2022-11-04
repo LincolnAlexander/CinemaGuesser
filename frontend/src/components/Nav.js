@@ -1,10 +1,8 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-
-const navigation = [{ name: 'Home', href: '/home', current: false }];
 
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -22,9 +20,11 @@ const userData = {
   lastName: 'Foo',
 };
 
-function Nav() {
+function Nav(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(userData ? true : false);
-  let pathname = window.location.pathname;
+  let pathname = useLocation().pathname;
+  const navigation = [{ name: 'Home', href: '/home', current: false }];
+
   let currentPage = navigation.find((obj) => obj['href'] === pathname);
 
   if (currentPage) currentPage.current = true;
@@ -58,21 +58,23 @@ function Nav() {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          to={isLoggedIn ? item.href : '/'}
-                          className={classNames(
-                            item.current
-                              ? 'bg-pr-black text-pr-white'
-                              : 'text-pr-yellow hover:bg-pr-gray hover:text-pr-white',
-                            'px-3 py-2 rounded-md text-sm font-medium'
-                          )}
-                          aria-current={item.current ? 'page' : undefined}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
+                      {isLoggedIn
+                        ? navigation.map((item) => (
+                            <Link
+                              key={item.name}
+                              to={isLoggedIn ? item.href : '/'}
+                              className={classNames(
+                                item.current
+                                  ? 'bg-pr-black text-pr-white'
+                                  : 'text-pr-yellow hover:bg-pr-gray hover:text-pr-white',
+                                'px-3 py-2 rounded-md text-sm font-medium'
+                              )}
+                              aria-current={item.current ? 'page' : undefined}
+                            >
+                              {item.name}
+                            </Link>
+                          ))
+                        : undefined}
                     </div>
                   </div>
                 </div>
@@ -150,22 +152,24 @@ function Nav() {
 
             <Disclosure.Panel className='md:hidden'>
               <div className='space-y-1 px-2 pt-2 pb-3 sm:px-3'>
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={isLoggedIn ? item.href : '/'}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block px-3 py-2 rounded-md text-base font-medium'
-                    )}
-                    aria-current={item.current ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
+                {isLoggedIn
+                  ? navigation.map((item) => (
+                      <Disclosure.Button
+                        key={item.name}
+                        as={Link}
+                        to={isLoggedIn ? item.href : '/'}
+                        className={classNames(
+                          item.current
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block px-3 py-2 rounded-md text-base font-medium'
+                        )}
+                        aria-current={item.current ? 'page' : undefined}
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    ))
+                  : undefined}
               </div>
               <div className='border-t border-gray-700 pt-4 pb-3'>
                 <div className='flex items-center px-5'>
