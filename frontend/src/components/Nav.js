@@ -22,7 +22,7 @@ const userData = {
 
 function Nav(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(userData ? true : false);
-  let pathname = useLocation().pathname;
+  const pathname = useLocation().pathname;
   const navigation = [{ name: 'Home', href: '/home', current: false }];
 
   let currentPage = navigation.find((obj) => obj['href'] === pathname);
