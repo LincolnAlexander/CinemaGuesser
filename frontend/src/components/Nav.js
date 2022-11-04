@@ -8,14 +8,14 @@ const user = {
   email: 'tom@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  isLoggedIn: true,
 };
 
-const navigation = [{ name: 'Home', href: '/', current: false }];
+const navigation = [{ name: 'Home', href: '/home', current: false }];
 
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
-  { name: 'Play', href: '/' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Sign out', href: '/' },
 ];
 
 function classNames(...classes) {
@@ -32,22 +32,24 @@ function Nav() {
               <div className='flex h-16 items-center justify-between'>
                 <div className='flex items-center'>
                   <div className='flex-shrink-0'>
-                    <img
-                      className='h-12 w-17 text-pr-white'
-                      src={require('../images/AppLogo.png')}
-                      alt='Your Company'
-                    />
+                    <Link to={user.isLoggedIn ? '/home' : '/'}>
+                      <img
+                        className='h-12 w-17 text-pr-white'
+                        src={require('../images/AppLogo.png')}
+                        alt='Your Company'
+                      />
+                    </Link>
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
                       {navigation.map((item) => (
                         <Link
                           key={item.name}
-                          to={item.href}
+                          to={user.isLoggedIn ? item.href : '/'}
                           className={classNames(
                             item.current
                               ? 'bg-pr-black text-pr-white'
-                              : 'text-pr-yellow hover:bg-gray-700 hover:text-white',
+                              : 'text-pr-yellow hover:bg-pr-gray hover:text-pr-white',
                             'px-3 py-2 rounded-md text-sm font-medium'
                           )}
                           aria-current={item.current ? 'page' : undefined}
@@ -60,14 +62,6 @@ function Nav() {
                 </div>
                 <div className='hidden md:block'>
                   <div className='ml-4 flex items-center md:ml-6'>
-                    {/* <button
-                                            type="button"
-                                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                            >
-                                            <span className="sr-only">View notifications</span>
-                                            <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                        </button> */}
-
                     {/* Profile dropdown */}
                     <Menu as='div' className='relative ml-3'>
                       <div>
@@ -75,7 +69,11 @@ function Nav() {
                           <span className='sr-only'>Open user menu</span>
                           <img
                             className='h-8 w-8 rounded-full'
-                            src={user.imageUrl}
+                            src={
+                              user.isLoggedIn
+                                ? user.imageUrl
+                                : require('../images/question-mark.png')
+                            }
                             alt=''
                           />
                         </Menu.Button>
@@ -90,21 +88,32 @@ function Nav() {
                         leaveTo='transform opacity-0 scale-95'
                       >
                         <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <Link
-                                  to={item.href}
-                                  className={classNames(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
-                                  )}
-                                >
-                                  {item.name}
-                                </Link>
-                              )}
+                          {user.isLoggedIn ? (
+                            userNavigation.map((item) => (
+                              <Menu.Item key={item.name}>
+                                {({ active }) => (
+                                  <Link
+                                    to={item.href}
+                                    className={classNames(
+                                      active ? 'bg-pr-yellow' : '',
+                                      'block px-4 py-2 text-sm text-pr-black'
+                                    )}
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            ))
+                          ) : (
+                            <Menu.Item>
+                              <Link
+                                to='/'
+                                className='bg-gray-100 block px-4 py-2 text-sm text-pr-black hover:bg-pr-yellow'
+                              >
+                                Sign in
+                              </Link>
                             </Menu.Item>
-                          ))}
+                          )}
                         </Menu.Items>
                       </Transition>
                     </Menu>
@@ -160,13 +169,6 @@ function Nav() {
                       {user.email}
                     </div>
                   </div>
-                  <button
-                    type='button'
-                    className='ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
-                  >
-                    <span className='sr-only'>View notifications</span>
-                    <BellIcon className='h-6 w-6' aria-hidden='true' />
-                  </button>
                 </div>
                 <div className='mt-3 space-y-1 px-2'>
                   {userNavigation.map((item) => (
@@ -185,21 +187,6 @@ function Nav() {
           </>
         )}
       </Disclosure>
-
-      {/* <header className="bg-white shadow">
-            <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-            </div>
-        </header> */}
-      {/* <main> */}
-      {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
-      {/* Replace with your content */}
-      {/* <div className="px-4 py-6 sm:px-0 bg-pr-yellow"> */}
-
-      {/* </div> */}
-      {/* /End replace */}
-      {/* </div> */}
-      {/* </main> */}
     </>
   );
 }
