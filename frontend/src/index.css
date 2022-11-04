@@ -9,3 +9,14 @@
     @apply font-roboslab;
   }
 }
+
+/* To hide validation messages of register form on initial load */
+@layer components {
+  input:invalid[focused='false'] ~ span {
+    @apply hidden;
+  }
+
+  input:invalid[focused='true'] ~ span {
+    @apply visible;
+  }
+}

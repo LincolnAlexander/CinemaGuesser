@@ -9,7 +9,6 @@ function RegisterContainer() {
   const emailRef = useRef();
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  const [focused, setFocused] = useState(false);
 
   const doRegister = async (event) => {
     event.preventDefault();
@@ -69,7 +68,8 @@ function RegisterContainer() {
   };
 
   const handleFocus = (e) => {
-    setFocused(true);
+    const input = e.target;
+    input.setAttribute('focused', 'true');
   };
 
   return (
@@ -86,10 +86,10 @@ function RegisterContainer() {
                   type='text'
                   placeholder='a'
                   onBlur={handleFocus}
-                  focused={focused.toString()}
+                  focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden peer-invalid:visible'>
+                <span className='text-pr-yellow text-xs peer-valid:hidden'>
                   First name can't be empty!
                 </span>
                 <label
@@ -106,9 +106,11 @@ function RegisterContainer() {
                   ref={lastNameRef}
                   type='text'
                   placeholder='a'
+                  onBlur={handleFocus}
+                  focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden peer-invalid:visible'>
+                <span className='text-pr-yellow text-xs peer-valid:hidden'>
                   Last name can't be empty!
                 </span>
                 <label
@@ -125,9 +127,11 @@ function RegisterContainer() {
                   ref={loginNameRef}
                   type='text'
                   placeholder='a'
+                  onBlur={handleFocus}
+                  focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden peer-invalid:visible'>
+                <span className='text-pr-yellow text-xs peer-valid:hidden'>
                   Login can't be empty!
                 </span>
                 <label
@@ -145,9 +149,11 @@ function RegisterContainer() {
                   type='password'
                   placeholder='a'
                   pattern='^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$'
+                  onBlur={handleFocus}
+                  focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden peer-invalid:visible'>
+                <span className='text-pr-yellow text-xs peer-valid:hidden'>
                   Must be 8-20 characters long and contain 1 letter, 1 number, 1
                   special character!
                 </span>
@@ -166,9 +172,11 @@ function RegisterContainer() {
                   type='email'
                   placeholder='a'
                   pattern='^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+                  onBlur={handleFocus}
+                  focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden peer-invalid:visible'>
+                <span className='text-pr-yellow text-xs peer-valid:hidden'>
                   Email should be valid!
                 </span>
                 <label
@@ -194,4 +202,5 @@ function RegisterContainer() {
     </div>
   );
 }
+
 export default RegisterContainer;
