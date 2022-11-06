@@ -17,6 +17,6 @@
   }
 
   input:invalid[focused='true'] ~ span {
-    @apply visible;
+    @apply block;
   }
 }

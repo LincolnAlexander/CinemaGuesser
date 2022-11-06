@@ -153,7 +153,7 @@ function RegisterContainer() {
                   focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden'>
+                <span className='text-pr-yellow text-xs w-52 peer-valid:hidden'>
                   Must be 8-20 characters long and contain 1 letter, 1 number, 1
                   special character!
                 </span>
