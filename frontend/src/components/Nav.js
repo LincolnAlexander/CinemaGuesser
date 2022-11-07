@@ -108,7 +108,12 @@ function Nav(props) {
                                     to={item.href}
                                     onClick={
                                       item.name === 'Sign out'
-                                        ? () => setIsLoggedIn(false)
+                                        ? () => {
+                                            setIsLoggedIn(false);
+                                            localStorage.removeItem(
+                                              'user_data'
+                                            );
+                                          }
                                         : undefined
                                     }
                                     className={classNames(
@@ -196,7 +201,10 @@ function Nav(props) {
                         to={item.href}
                         onClick={
                           item.name === 'Sign out'
-                            ? () => setIsLoggedIn(false)
+                            ? () => {
+                                setIsLoggedIn(false);
+                                localStorage.removeItem('user_data');
+                              }
                             : undefined
                         }
                         className='block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
