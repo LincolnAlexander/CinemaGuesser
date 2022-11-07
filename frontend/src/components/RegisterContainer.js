@@ -90,7 +90,7 @@ function RegisterContainer() {
                   required
                 ></input>
                 <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  First name can't be empty!
+                  Empty Field!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
@@ -111,7 +111,7 @@ function RegisterContainer() {
                   required
                 ></input>
                 <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  Last name can't be empty!
+                  Empty Field!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
@@ -132,7 +132,7 @@ function RegisterContainer() {
                   required
                 ></input>
                 <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  Login can't be empty!
+                  Empty Field!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5  text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
@@ -154,7 +154,7 @@ function RegisterContainer() {
                   required
                 ></input>
                 <span className='text-pr-yellow text-xs w-52 peer-valid:hidden'>
-                  Must be 8-20 characters long and contain 1 letter, 1 number, 1
+                  Must be 8-20 characters and contain 1 letter, 1 number, 1
                   special character!
                 </span>
                 <label
@@ -177,7 +177,7 @@ function RegisterContainer() {
                   required
                 ></input>
                 <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  Email should be valid!
+                  Invalid Email!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5  text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
