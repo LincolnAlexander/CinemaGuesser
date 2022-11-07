@@ -9,7 +9,7 @@ exports.setApp = function ( app, client )
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
-    
+      // Hello test
      var error = '';
     
       const { login, password } = req.body;
