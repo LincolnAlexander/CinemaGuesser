@@ -1,15 +1,17 @@
 
-import * as React from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Button, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Button, Alert, TextInput } from 'react-native';
 import { useFonts } from 'expo-font';
 
 
 const customFont = 'RobotoSlab-Medium';
 
 export default function LoginPage() {
-  // const [fontsLoaded] = useFonts({
-  //   'RobotoSlab-Medium': require('./assets/fonts/RobotoSlab-Medium.ttf'),
-  // });
+  const [fontsLoaded] = useFonts({
+    'RobotoSlab-Medium': require('../assets/fonts/RobotoSlab-Medium.ttf'),
+  });
+  const [username, setUsername] = useState('');
+  
   return (
     <View style={styles.container}>
       
@@ -22,7 +24,12 @@ export default function LoginPage() {
         <View style = {styles.loginContainer}>
 
           <View style = {styles.username}>
-            <Text style = {styles.text}>Username</Text>
+          <TextInput
+          style = {{textcolor:'blue'}}
+          placeholder="Type here to translate!"
+          onChangeText={newText => setUsername(newText)}
+          defaultValue={username}
+          />
             <View style={styles.horizontalBar}></View>
           </View>
           <View style = {styles.password}>
