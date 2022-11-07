@@ -1,153 +1,151 @@
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  Button,
+  Alert,
+  TextInput,
+} from "react-native";
+import { useFonts } from "expo-font";
 
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Button, Alert, TextInput } from 'react-native';
-import { useFonts } from 'expo-font';
-
-
-const customFont = 'RobotoSlab-Medium';
+const customFont = "RobotoSlab-Medium";
 
 export default function LoginPage() {
   const [fontsLoaded] = useFonts({
-    'RobotoSlab-Medium': require('../assets/fonts/RobotoSlab-Medium.ttf'),
+    "RobotoSlab-Medium": require("../assets/fonts/RobotoSlab-Medium.ttf"),
   });
-  const [username, setUsername] = useState('');
-  
+  const [username, setUsername] = useState("");
+
   return (
     <View style={styles.container}>
-      
-      <ImageBackground style = {styles.background} source = {require('../assets/images/AppBackground.jpg')}>
-      
-        <View style = {styles.header}>
-          <Image style = {styles.logo} source={require('../assets/images/AppLogo.png')}></Image>
+      <ImageBackground
+        style={styles.background}
+        source={require("../assets/images/AppBackground.jpg")}
+      >
+        <View style={styles.header}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/images/AppLogo.png")}
+          ></Image>
         </View>
 
-        <View style = {styles.loginContainer}>
+        <View style={styles.loginContainer}>
+          <View style={styles.username}>
+            <TextInput
+              style={{ textcolor: "blue" }}
+              placeholder="Type here to translate!"
+              onChangeText={(newText) => setUsername(newText)}
+              defaultValue={username}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
+          <View style={styles.password}>
+            <Text style={styles.text}>Password</Text>
+            <View style={styles.horizontalBar}></View>
+          </View>
 
-          <View style = {styles.username}>
-          <TextInput
-          style = {{textcolor:'blue'}}
-          placeholder="Type here to translate!"
-          onChangeText={newText => setUsername(newText)}
-          defaultValue={username}
-          />
-            <View style={styles.horizontalBar}></View>
-          </View>
-          <View style = {styles.password}>
-            <Text style = {styles.text}>Password</Text>
-            <View style={styles.horizontalBar}></View>
-            
-          </View>
-          
-          <View style = {styles.touchables}>
-            <TouchableOpacity style = {styles.loginBtn} onPress={() => Alert.alert('Log in')} >
-              <Image source = {require('../assets/images/LoginButton.png')}></Image> 
+          <View style={styles.touchables}>
+            <TouchableOpacity
+              style={styles.loginBtn}
+              onPress={() => Alert.alert("Log in")}
+            >
+              <Image
+                source={require("../assets/images/LoginButton.png")}
+              ></Image>
             </TouchableOpacity>
 
-            <TouchableOpacity style = {{flexDirection: 'row', alignItems: 'center'}}> 
-              <Text style = {styles.loginText} onPress = {() => Alert.alert('Log in')}>Create Account</Text>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+              <Text
+                style={styles.loginText}
+                onPress={() => Alert.alert("Log in")}
+              >
+                Create Account
+              </Text>
               <View style={styles.verticalBar}></View>
               <TouchableOpacity>
-                <Text style = {styles.loginText} onPress = {() => Alert.alert('Log in')}>Forgot Password?</Text>
+                <Text
+                  style={styles.loginText}
+                  onPress={() => Alert.alert("Log in")}
+                >
+                  Forgot Password?
+                </Text>
               </TouchableOpacity>
             </TouchableOpacity>
-
           </View>
-          
-          
-          
-          
         </View>
-      
       </ImageBackground>
-      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: 
-  {
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  header:
-  {
-    flex : 1,
-    marginTop: '15%',
-  },
-  background: 
-  {
-    
+  header: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    alignItems: 'center',
-    
+    marginTop: "15%",
   },
-  loginContainer:
-  {
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    alignItems: "center",
+  },
+  loginContainer: {
     flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     // margin: '5%',
   },
 
-  username:
-  {
-    margin:15,
-  },
-
-  password:
-  {
+  username: {
     margin: 15,
   },
-  text:
-  {
-    color: 'white',
-    textAlign: 'center',
-    fontFamily: 'RobotoSlab-Medium',
-    fontWeight: '500',
+
+  password: {
+    margin: 15,
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
+    fontWeight: "500",
     fontSize: 20,
   },
-  
 
-  horizontalBar:
-  {
-    
-    backgroundColor: '#F1CF54',
+  horizontalBar: {
+    backgroundColor: "#F1CF54",
     height: 3,
     width: 275,
   },
-  verticalBar:
-  {
-    
-    backgroundColor: '#F1CF54',
+  verticalBar: {
+    backgroundColor: "#F1CF54",
     height: 20,
     width: 2,
-    
   },
-  
-  touchables:
-  {
+
+  touchables: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     // justifyContent: 'center',
   },
-  loginText:
-  {
-    
-    
-    fontWeight: '500',
+  loginText: {
+    fontWeight: "500",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 10,
-    color: 'white',
-    textAlign: 'center',
-    fontFamily: 'RobotoSlab-Medium',
-    
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
   },
-  
-
 });
