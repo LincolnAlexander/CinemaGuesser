@@ -34,7 +34,7 @@ const LoginContainer = () => {
       // const res = JSON.parse(await response.text());
 
       if (res.error !== '') {
-        setMessage('User/Password combination incorrect');
+        setMessage('Incorrect User/Password!');
       } else {
         const user = {
           firstName: res.firstName,
@@ -80,6 +80,9 @@ const LoginContainer = () => {
                   type='password'
                   placeholder='a'
                 ></input>
+                <span className='block text-center mt-6 text-transparent bg-clip-text bg-gradient-to-l from-pr-yellow to-pr-red'>
+                  {message}
+                </span>
                 <label
                   className='absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
                   htmlFor='password'
