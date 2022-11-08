@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -13,24 +12,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-// const userData = localStorage.getItem('user_data');
-
-const userData = {
-  firstName: 'Foo',
-  lastName: 'Foo',
-};
-
-function Nav(props) {
-  const [isLoggedIn, setIsLoggedIn] = useState(userData ? true : false);
+function Nav() {
   const pathname = useLocation().pathname;
   const navigation = [{ name: 'Home', href: '/home', current: false }];
+  const auth = localStorage.getItem('user_data');
+  const userData = JSON.parse(auth);
 
   let currentPage = navigation.find((obj) => obj['href'] === pathname);
-
   if (currentPage) currentPage.current = true;
 
   function getUserInitials() {
-    if (!userData) return '?';
+    if (!auth) return '?';
 
     const userInitials =
       userData.firstName.substring(0, 1).toUpperCase() +
@@ -48,7 +40,7 @@ function Nav(props) {
               <div className='flex h-16 items-center justify-between'>
                 <div className='flex items-center'>
                   <div className='flex-shrink-0'>
-                    <Link to={isLoggedIn ? '/home' : '/'}>
+                    <Link to={auth ? '/home' : '/'}>
                       <img
                         className='h-12 w-17 text-pr-white'
                         src={require('../images/AppLogo.png')}
@@ -58,11 +50,11 @@ function Nav(props) {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      {isLoggedIn
+                      {auth
                         ? navigation.map((item) => (
                             <Link
                               key={item.name}
-                              to={isLoggedIn ? item.href : '/'}
+                              to={auth ? item.href : '/'}
                               className={classNames(
                                 item.current
                                   ? 'bg-pr-black text-pr-white'
@@ -86,7 +78,7 @@ function Nav(props) {
                         <Menu.Button className='flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
                           <span className='sr-only'>Open user menu</span>
                           <div className='flex-none flex justify-center items-center bg-pr-yellow text-pr-white text-xl font-bold h-10 w-10 rounded-full'>
-                            <span>{isLoggedIn ? getUserInitials() : '?'}</span>
+                            <span>{auth ? getUserInitials() : '?'}</span>
                           </div>
                         </Menu.Button>
                       </div>
@@ -100,7 +92,7 @@ function Nav(props) {
                         leaveTo='transform opacity-0 scale-95'
                       >
                         <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                          {isLoggedIn ? (
+                          {auth ? (
                             userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
@@ -109,10 +101,7 @@ function Nav(props) {
                                     onClick={
                                       item.name === 'Sign out'
                                         ? () => {
-                                            setIsLoggedIn(false);
-                                            localStorage.removeItem(
-                                              'user_data'
-                                            );
+                                            localStorage.clear();
                                           }
                                         : undefined
                                     }
@@ -157,12 +146,12 @@ function Nav(props) {
 
             <Disclosure.Panel className='md:hidden'>
               <div className='space-y-1 px-2 pt-2 pb-3 sm:px-3'>
-                {isLoggedIn
+                {auth
                   ? navigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
                         as={Link}
-                        to={isLoggedIn ? item.href : '/'}
+                        to={auth ? item.href : '/'}
                         className={classNames(
                           item.current
                             ? 'bg-gray-900 text-white'
@@ -179,13 +168,11 @@ function Nav(props) {
               <div className='border-t border-gray-700 pt-4 pb-3'>
                 <div className='flex items-center px-5'>
                   <div className='flex-none flex justify-center items-center bg-pr-yellow text-pr-white text-xl font-bold h-9 w-9 rounded-full'>
-                    <span>{isLoggedIn ? getUserInitials() : '?'}</span>
+                    <span>{auth ? getUserInitials() : '?'}</span>
                   </div>
                   <div className='ml-3'>
                     <div className='text-base font-medium leading-none text-white'>
-                      {isLoggedIn
-                        ? userData.firstName + ' ' + userData.lastName
-                        : ''}
+                      {auth ? userData.firstName + ' ' + userData.lastName : ''}
                     </div>
                     {/* <div className='text-sm font-medium leading-none text-gray-400'>
                       {user.email}
@@ -193,7 +180,7 @@ function Nav(props) {
                   </div>
                 </div>
                 <div className='mt-3 space-y-1 px-2'>
-                  {isLoggedIn ? (
+                  {auth ? (
                     userNavigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
@@ -202,8 +189,7 @@ function Nav(props) {
                         onClick={
                           item.name === 'Sign out'
                             ? () => {
-                                setIsLoggedIn(false);
-                                localStorage.removeItem('user_data');
+                                localStorage.clear();
                               }
                             : undefined
                         }
