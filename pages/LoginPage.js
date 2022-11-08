@@ -12,8 +12,29 @@ import {
   TextInput,
 } from "react-native";
 import { useFonts } from "expo-font";
-
 const customFont = "RobotoSlab-Medium";
+
+const FadeInView = (props) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 10000,
+    }).start();
+  }, [fadeAnim]);
+
+  return (
+    <Animated.View // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim, // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+};
 
 export default function LoginPage() {
   const [fontsLoaded] = useFonts({
