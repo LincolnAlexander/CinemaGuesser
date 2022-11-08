@@ -2,6 +2,8 @@ require('express');
 require('mongodb');
 const axios = require("axios");
 var sha256 = require('js-sha256');
+
+//Gaming
 exports.setApp = function ( app, client )
 {
     
