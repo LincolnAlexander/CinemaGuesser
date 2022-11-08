@@ -9,7 +9,6 @@ exports.setApp = function ( app, client )
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
-      // Hello test
      var error = '';
     
       const { login, password } = req.body;
@@ -41,11 +40,26 @@ exports.setApp = function ( app, client )
       const Password = sha256.hmac('key', req.body.Password);
       const db = client.db();
 
-      const results = await
+      var err = 'Username Taken';
+      var pass = '';
+      var fn = '';
+      var ln = '';
+      var lgn = '';
 
-      db.collection('Users').insertOne({FirstName, LastName, Login, Password});
-      //change here to not reveal hashed password
-      var ret = {firstname:FirstName, lastname: LastName, login: Login, password:Password};
+      const results = await db.collection('Users').find({Login:Login}).toArray();
+
+
+      if(results.length == 0)
+      {
+        db.collection('Users').insertOne({FirstName, LastName, Login, Password});
+        fn = FirstName;
+        ln = LastName;
+        lgn = Login;
+        pass = Pass;
+        err = '';
+      }
+
+      var ret = {firstname: fn, lastname: ln, login: lgn, error: err}
       res.status(200).json(ret);
     });
 
