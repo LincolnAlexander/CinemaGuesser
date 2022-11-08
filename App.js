@@ -12,7 +12,7 @@ import * as React from "react";
 import { useFonts } from "expo-font";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { NavigationContainer } from "react-navigation/native";
+//import { NavigationContainer } from "react-navigation/native";
 const axios = require("axios");
 
 const customFont = "RobotoSlab-Medium";
