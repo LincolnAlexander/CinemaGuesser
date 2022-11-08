@@ -26,6 +26,13 @@ export default function RegisterPage() {
         style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
       </ImageBackground>
+
+      <View>
+        <Image
+          style={styles.logo}
+          source={require("../assets/images/AppLogo.png")}
+        ></Image>
+      </View>
     </View>
   );
 }
