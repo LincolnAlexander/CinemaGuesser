@@ -49,7 +49,7 @@ function RegisterContainer() {
       //   const res = JSON.parse(await response.text());
 
       if (res.id <= 0) {
-        setMessage('Username is taken, please try a different one');
+        setMessage('Username is taken, please try a different one.');
       } else {
         // const user = {
         //   firstName: res.firstName,
@@ -185,6 +185,9 @@ function RegisterContainer() {
                 >
                   Email
                 </label>
+                <span className='block text-center mt-5 w-52 text-transparent bg-clip-text bg-gradient-to-l from-pr-yellow to-pr-red'>
+                  {message}
+                </span>
               </div>
             </div>
 
