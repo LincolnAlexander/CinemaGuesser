@@ -4,12 +4,14 @@ import './index.css';
 import CinemaGuesserApp from './CinemaGuesserApp';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import GamePage from './pages/GamePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <CinemaGuesserApp />
+      {/* <GamePage/> */}
     </BrowserRouter>
   </React.StrictMode>
 );
