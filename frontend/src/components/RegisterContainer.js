@@ -13,6 +13,8 @@ function RegisterContainer() {
   const doRegister = async (event) => {
     event.preventDefault();
 
+    console.log(event);
+
     const loginName = loginNameRef.current.value;
     const loginPassword = loginPasswordRef.current.value;
     const firstName = firstNameRef.current.value;
@@ -48,7 +50,7 @@ function RegisterContainer() {
 
       //   const res = JSON.parse(await response.text());
 
-      if (res.id <= 0) {
+      if (res.error !== '') {
         setMessage('Username is taken, please try a different one.');
       } else {
         // const user = {
@@ -57,9 +59,8 @@ function RegisterContainer() {
         //   id: res.id,
         // };
         // localStorage.setItem('user_data', JSON.stringify(user));
-
         setMessage('');
-        navigate('/');
+        navigate('/register-success');
       }
     } catch (e) {
       alert(e.toString());
