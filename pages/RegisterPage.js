@@ -12,27 +12,57 @@ import {
   TextInput,
 } from "react-native";
 import { useFonts } from "expo-font";
+const axios = require("axios");
 const customFont = "RobotoSlab-Medium";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function RegisterPage() {
+function HomeScreen() {
+  return <LoginPage />;
+}
+
+const FadeInView = (props) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 10000,
+    }).start();
+  }, [fadeAnim]);
+
+  return (
+    <Animated.View // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim, // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+};
+
+export default function LoginPage() {
   const [fontsLoaded] = useFonts({
     "RobotoSlab-Medium": require("../assets/fonts/RobotoSlab-Medium.ttf"),
   });
+  const ref = React.useRef(null);
   const [username, setUsername] = useState("");
 
   return (
     <View style={styles.container}>
-      <ImageBackground>
+      <ImageBackground
         style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
+      >
+        <View style={styles.header}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/images/AppLogo.png")}
+          ></Image>
+        </View>
       </ImageBackground>
-
-      <View>
-        <Image
-          style={styles.logo}
-          source={require("../assets/images/AppLogo.png")}
-        ></Image>
-      </View>
     </View>
   );
 }
