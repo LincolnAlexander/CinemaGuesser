@@ -22,10 +22,10 @@ export default function RegisterPage() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <ImageBackground>
         style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
-      ></ImageBackground>
+      </ImageBackground>
     </View>
   );
 }
