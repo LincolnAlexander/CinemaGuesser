@@ -24,5 +24,6 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     "RobotoSlab-Medium": require("./assets/fonts/RobotoSlab-Medium.ttf"),
   });
+
   return <LoginPage />;
 }
