@@ -1,7 +1,9 @@
-1) npm install @react-navigation/native
+1) install react nav
+a) npm install @react-navigation/native
+b) npx expo install react-native-screens react-native-safe-area-context
 
 2) install axios
-        a) npm init -y
-            b) npm install axios
+a) npm init -y
+b) npm install axios
 
-            
+
