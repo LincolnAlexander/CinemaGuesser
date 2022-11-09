@@ -20,6 +20,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 function HomeScreen() {
   return <LoginPage />;
 }
+function HomeScreen() {
+  return <LoginPage />;
+}
 
 const FadeInView = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -61,70 +64,69 @@ export default function RegisterPage() {
         style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
       >
-        <View style={styles.logo}>
-          <Image
-            style={styles.logo}
-            source={require("../assets/images/AppLogo.png")}
-          ></Image>
-        </View>
-        <View style={styles.loginContainer}>
-          <View style={styles.loginText}>
-            <TextInput
-              style={styles.text}
-              placeholderTextColor="white"
-              placeholder="First Name"
-              onChangeText={(newText) => setFirst(newText)}
-              defaultValue={firstName}
-            />
-            <View style={styles.horizontalBar}></View>
+        <View style={styles.header}>
+          <View style={styles.logo}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/images/AppLogo.png")}
+            ></Image>
           </View>
-        </View>
-        <View style={styles.loginContainer}>
-          <View style={styles.loginText}>
-            <TextInput
-              style={styles.text}
-              placeholderTextColor="white"
-              placeholder="Last Name"
-              onChangeText={(newText) => setLast(newText)}
-              defaultValue={lastName}
-            />
-            <View style={styles.horizontalBar}></View>
-          </View>
-        </View>
-        <View style={styles.loginContainer}>
-          <View style={styles.loginText}>
-            <TextInput
-              style={styles.text}
-              placeholderTextColor="white"
-              placeholder="Username"
-              onChangeText={(newText) => setUsername(newText)}
-              defaultValue={username}
-            />
-            <View style={styles.horizontalBar}></View>
-          </View>
-        </View>
-        <View style={styles.loginContainer}>
-          <View style={styles.loginText}>
-            <TextInput
-              style={styles.text}
-              placeholderTextColor="white"
-              placeholder="Password"
-              onChangeText={(newText) => setPassword(newText)}
-              defaultValue={password}
-            />
-            <View style={styles.horizontalBar}></View>
-          </View>
-        </View>
-        <View style={styles.loginContainer}>
-          <View style={styles.loginText}>
-            <TextInput
-              style={styles.text}
-              placeholderTextColor="white"
-              placeholder="Email"
-              onChangeText={(newText) => setEmail(newText)}
-              defaultValue={email}
-            />
-            <View style={styles.horizontalBar}></View>
+
+          <View style={styles.loginContainer}>
+            <View style={styles.loginText}>
+              <TextInput
+                style={{ color: "white" }}
+                placeholderTextColor="white"
+                placeholder="First Name"
+                onChangeText={(newText) => setFirst(newText)}
+                defaultValue={firstName}
+              />
+              <View style={styles.horizontalBar}></View>
+            </View>
+
+            <View style={styles.loginText}>
+              <TextInput
+                style={{ color: "white" }}
+                placeholderTextColor="white"
+                placeholder="Last Name"
+                onChangeText={(newText) => setLast(newText)}
+                defaultValue={lastName}
+              />
+              <View style={styles.horizontalBar}></View>
+            </View>
+
+            <View style={styles.loginText}>
+              <TextInput
+                style={{ color: "white" }}
+                placeholderTextColor="white"
+                placeholder="Username"
+                onChangeText={(newText) => setUsername(newText)}
+                defaultValue={username}
+              />
+              <View style={styles.horizontalBar}></View>
+            </View>
+
+            <View style={styles.loginText}>
+              <TextInput
+                style={{ color: "white" }}
+                placeholderTextColor="white"
+                placeholder="Password"
+                onChangeText={(newText) => setPassword(newText)}
+                defaultValue={password}
+              />
+              <View style={styles.horizontalBar}></View>
+            </View>
+
+            <View style={styles.loginText}>
+              <TextInput
+                style={{ color: "white" }}
+                placeholderTextColor="white"
+                placeholder="Email"
+                onChangeText={(newText) => setEmail(newText)}
+                defaultValue={email}
+              />
+              <View style={styles.horizontalBar}></View>
+            </View>
           </View>
         </View>
       </ImageBackground>
