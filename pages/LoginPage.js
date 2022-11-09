@@ -1,4 +1,4 @@
-//import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -12,7 +12,11 @@ import {
   TextInput,
 } from "react-native";
 import { useFonts } from "expo-font";
+import RegisterPage from "./RegisterPage";
 const customFont = "RobotoSlab-Medium";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+const Stack = createStackNavigator();
 
 const FadeInView = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -36,11 +40,17 @@ const FadeInView = (props) => {
   );
 };
 
+function Register() {
+  return <RegisterPage />;
+}
+
 export default function LoginPage() {
   const [fontsLoaded] = useFonts({
     "RobotoSlab-Medium": require("../assets/fonts/RobotoSlab-Medium.ttf"),
   });
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const ref = React.useRef(null);
 
   return (
     <View style={styles.container}>
@@ -72,7 +82,7 @@ export default function LoginPage() {
               placeholderTextColor="white"
               placeholder="Password"
               onChangeText={(newText) => setPassword(newText)}
-              defaultValue={username}
+              defaultValue={password}
             />
             <View style={styles.horizontalBar}></View>
           </View>
@@ -92,7 +102,7 @@ export default function LoginPage() {
             >
               <Text
                 style={styles.loginText}
-                onPress={() => Alert.alert("Log in")}
+                onPress={() => ref.current && ref.current.navigate("Register")}
               >
                 Create Account
               </Text>
@@ -100,7 +110,9 @@ export default function LoginPage() {
               <TouchableOpacity>
                 <Text
                   style={styles.loginText}
-                  onPress={() => Alert.alert("Log in")}
+                  onPress={() =>
+                    ref.current && ref.current.navigate("Register")
+                  }
                 >
                   Forgot Password?
                 </Text>
