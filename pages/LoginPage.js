@@ -58,15 +58,22 @@ export default function LoginPage() {
         <View style={styles.loginContainer}>
           <View style={styles.username}>
             <TextInput
-              style={{ textcolor: "blue" }}
-              placeholder="Type here to translate!"
+              style={{ color: "white" }}
+              placeholderTextColor="white"
+              placeholder="username"
               onChangeText={(newText) => setUsername(newText)}
               defaultValue={username}
             />
             <View style={styles.horizontalBar}></View>
           </View>
           <View style={styles.password}>
-            <Text style={styles.text}>Password</Text>
+            <TextInput
+              style={{ color: "white" }}
+              placeholderTextColor="white"
+              placeholder="Password"
+              onChangeText={(newText) => setPassword(newText)}
+              defaultValue={username}
+            />
             <View style={styles.horizontalBar}></View>
           </View>
 

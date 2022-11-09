@@ -47,8 +47,13 @@ export default function RegisterPage() {
   const [fontsLoaded] = useFonts({
     "RobotoSlab-Medium": require("../assets/fonts/RobotoSlab-Medium.ttf"),
   });
+
   const ref = React.useRef(null);
   const [username, setUsername] = useState("");
+  const [firstName, setFirst] = useState("");
+  const [lastName, setLast] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
@@ -61,6 +66,66 @@ export default function RegisterPage() {
             style={styles.logo}
             source={require("../assets/images/AppLogo.png")}
           ></Image>
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.loginText}>
+            <TextInput
+              style={styles.text}
+              placeholderTextColor="white"
+              placeholder="First Name"
+              onChangeText={(newText) => setFirst(newText)}
+              defaultValue={firstName}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.loginText}>
+            <TextInput
+              style={styles.text}
+              placeholderTextColor="white"
+              placeholder="Last Name"
+              onChangeText={(newText) => setLast(newText)}
+              defaultValue={lastName}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.loginText}>
+            <TextInput
+              style={styles.text}
+              placeholderTextColor="white"
+              placeholder="Username"
+              onChangeText={(newText) => setUsername(newText)}
+              defaultValue={username}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.loginText}>
+            <TextInput
+              style={styles.text}
+              placeholderTextColor="white"
+              placeholder="Password"
+              onChangeText={(newText) => setPassword(newText)}
+              defaultValue={password}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
+        </View>
+        <View style={styles.loginContainer}>
+          <View style={styles.loginText}>
+            <TextInput
+              style={styles.text}
+              placeholderTextColor="white"
+              placeholder="Email"
+              onChangeText={(newText) => setEmail(newText)}
+              defaultValue={email}
+            />
+            <View style={styles.horizontalBar}></View>
+          </View>
         </View>
       </ImageBackground>
     </View>
