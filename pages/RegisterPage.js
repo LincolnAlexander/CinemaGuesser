@@ -56,7 +56,7 @@ export default function LoginPage() {
         style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
       >
-        <View style={styles.header}>
+        <View style={styles.logo}>
           <Image
             style={styles.logo}
             source={require("../assets/images/AppLogo.png")}
