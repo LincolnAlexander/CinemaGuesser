@@ -20,9 +20,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 function HomeScreen() {
   return <LoginPage />;
 }
-function HomeScreen() {
-  return <LoginPage />;
-}
 
 const FadeInView = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -126,6 +123,16 @@ export default function RegisterPage() {
                 defaultValue={email}
               />
               <View style={styles.horizontalBar}></View>
+              <View style={styles.touchables}>
+                <TouchableOpacity
+                  style={styles.loginBtn}
+                  onPress={() => Alert.alert("Log in")}
+                >
+                  <Image
+                    source={require("../assets/images/LoginButton.png")}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
