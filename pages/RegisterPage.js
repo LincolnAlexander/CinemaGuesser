@@ -43,7 +43,7 @@ const FadeInView = (props) => {
   );
 };
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [fontsLoaded] = useFonts({
     "RobotoSlab-Medium": require("../assets/fonts/RobotoSlab-Medium.ttf"),
   });
