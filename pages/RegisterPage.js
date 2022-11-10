@@ -122,7 +122,7 @@ export default function RegisterPage() {
                   onPress={() => Alert.alert("Log in")}
                 >
                   <Image
-                    source={require("../assets/images/LoginButton.png")}
+                    source={require("../assets/images/RegisterButton.png")}
                   ></Image>
                 </TouchableOpacity>
               </View>
