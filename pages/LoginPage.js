@@ -16,6 +16,9 @@ import RegisterPage from "./RegisterPage";
 const customFont = "RobotoSlab-Medium";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import axios from "axios";
+import { createErrorHandler } from "expo/build/errors/ExpoErrorManager";
+import { setStatusBarBackgroundColor } from "expo-status-bar";
 const Stack = createStackNavigator();
 
 const FadeInView = (props) => {
@@ -43,6 +46,38 @@ const FadeInView = (props) => {
 function Register() {
   return <RegisterPage />;
 }
+
+const errorHandler = () => {
+  setStatusBarBackgroundColor("red");
+};
+
+const login = async () => {
+  const payload = {
+    username: username,
+    password: password,
+  };
+
+  try {
+    const baseURL = "https://cinema-guesser.herokuapp.com/";
+
+    const response = await axios.post(baseURL + "/api/user/login", payload);
+  } catch (error) {
+    console.log(error.response.data);
+    errorHandler;
+  }
+};
+
+const callAPI = () => {
+  axios
+    .get()
+
+    .then(function (response) {
+      alerts(JSON.stringify(response));
+    })
+    .catch(function (error) {
+      alert(error);
+    });
+};
 
 export default function LoginPage() {
   const [fontsLoaded] = useFonts({
