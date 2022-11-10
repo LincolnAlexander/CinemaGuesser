@@ -62,13 +62,6 @@ export default function RegisterPage() {
         source={require("../assets/images/AppBackground.jpg")}
       >
         <View style={styles.header}>
-          <View style={styles.logo}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/images/AppLogo.png")}
-            ></Image>
-          </View>
-
           <View style={styles.loginContainer}>
             <View style={styles.loginText}>
               <TextInput
