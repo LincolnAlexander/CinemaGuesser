@@ -1,32 +1,3 @@
-/*
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-  Button,
-  Alert,
-} from "react-native";
-import * as React from "react";
-import { useFonts } from "expo-font";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-const axios = require("axios");
-const customFont = "RobotoSlab-Medium";
-
-export default function App() {
-  const [fontsLoaded] = useFonts({
-    "RobotoSlab-Medium": require("./assets/fonts/RobotoSlab-Medium.ttf"),
-  });
-  //return <RegisterPage />;
-  return <LoginPage />;
-}
-
-*/
 import { useFonts } from "expo-font";
 import * as React from "react";
 import { View, Text, Button } from "react-native";
@@ -71,6 +42,7 @@ function App() {
           <Stack.Screen name="testReact" component={Test} />
         </Stack.Navigator>
       </NavigationContainer>
+
       <Button
         onPress={() => ref.current && ref.current.navigate("Register")}
         title="Register"
