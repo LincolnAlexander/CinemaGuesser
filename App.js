@@ -40,7 +40,7 @@ function App() {
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={ref}>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={HomeScreen} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="testReact" component={Test} />
@@ -49,7 +49,7 @@ function App() {
       </NavigationContainer>
 
       <Button
-        onPress={() => ref.current && ref.current.navigate("Home")}
+        onPress={() => ref.current && ref.current.navigate("Register")}
         title="Register"
       />
     </View>

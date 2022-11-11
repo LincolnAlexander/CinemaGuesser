@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
-    marginTop: "15%",
+    marginTop: "50%",
   },
   background: {
     flex: 1,
