@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoginPage from "./pages/LoginPage";
 //import TestReactNative from "./pages/TestReactNative";
 import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
 import { Transition } from "react-transition-group";
 const axios = require("axios");
 import { useRef, useEffect, useState } from "react";
@@ -25,6 +26,9 @@ function Register() {
 function Test() {
   return <TestReactNative />;
 }
+function Home() {
+  return <HomePage />;
+}
 
 function App() {
   const [fontsLoaded] = useFonts({
@@ -36,15 +40,16 @@ function App() {
   return (
     <View style={{ flex: 1 }}>
       <NavigationContainer ref={ref}>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator>
           <Stack.Screen name="Login" component={HomeScreen} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="testReact" component={Test} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
 
       <Button
-        onPress={() => ref.current && ref.current.navigate("Register")}
+        onPress={() => ref.current && ref.current.navigate("Home")}
         title="Register"
       />
     </View>

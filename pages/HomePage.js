@@ -99,62 +99,6 @@ export default function LoginPage() {
             source={require("../assets/images/AppLogo.png")}
           ></Image>
         </View>
-
-        <View style={styles.loginContainer}>
-          <View style={styles.username}>
-            <TextInput
-              style={{ color: "white" }}
-              placeholderTextColor="white"
-              placeholder="username"
-              onChangeText={(newText) => setUsername(newText)}
-              defaultValue={username}
-            />
-            <View style={styles.horizontalBar}></View>
-          </View>
-          <View style={styles.password}>
-            <TextInput
-              style={{ color: "white" }}
-              placeholderTextColor="white"
-              placeholder="Password"
-              onChangeText={(newText) => setPassword(newText)}
-              defaultValue={password}
-            />
-            <View style={styles.horizontalBar}></View>
-          </View>
-
-          <View style={styles.touchables}>
-            <TouchableOpacity
-              style={styles.loginBtn}
-              onPress={() => Alert.alert("Log in")}
-            >
-              <Image
-                source={require("../assets/images/LoginButton.png")}
-              ></Image>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center" }}
-            >
-              <Text
-                style={styles.loginText}
-                onPress={() => ref.current && ref.current.navigate("Register")}
-              >
-                Create Account
-              </Text>
-              <View style={styles.verticalBar}></View>
-              <TouchableOpacity>
-                <Text
-                  style={styles.loginText}
-                  onPress={() =>
-                    ref.current && ref.current.navigate("Register")
-                  }
-                >
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        </View>
       </ImageBackground>
     </View>
   );
