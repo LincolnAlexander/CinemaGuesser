@@ -21,6 +21,7 @@ import { createErrorHandler } from "expo/build/errors/ExpoErrorManager";
 import { setStatusBarBackgroundColor } from "expo-status-bar";
 const Stack = createStackNavigator();
 
+/*
 const FadeInView = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
 
@@ -159,6 +160,7 @@ export default function LoginPage() {
     </View>
   );
 }
+*/
 
 const styles = StyleSheet.create({
   container: {
