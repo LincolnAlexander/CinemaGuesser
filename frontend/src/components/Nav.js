@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
+import RulesModal from '../components/modals/RulesModal';
 
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -50,6 +51,11 @@ function Nav() {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
+                      <RulesModal
+                        classes={
+                          'text-pr-yellow hover:bg-pr-gray hover:text-pr-white focus:bg-pr-black focus:text-pr-white px-3 py-2 rounded-md text-sm font-medium'
+                        }
+                      />
                       {auth
                         ? navigation.map((item) => (
                             <Link
@@ -180,6 +186,11 @@ function Nav() {
                   </div>
                 </div>
                 <div className='mt-3 space-y-1 px-2'>
+                  <RulesModal
+                    classes={
+                      'block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                    }
+                  />
                   {auth ? (
                     userNavigation.map((item) => (
                       <Disclosure.Button
@@ -193,7 +204,7 @@ function Nav() {
                               }
                             : undefined
                         }
-                        className='block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                        className='block rounded-md max-w-fit px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
                       >
                         {item.name}
                       </Disclosure.Button>
@@ -202,7 +213,7 @@ function Nav() {
                     <Disclosure.Button
                       as={Link}
                       to='/'
-                      className='block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                      className='block rounded-md max-w-fit px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
                     >
                       Sign in
                     </Disclosure.Button>
