@@ -40,7 +40,7 @@ const Input = ({
           }}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
-          style={{ color: COLORS.darkBlue, flex: 1 }}
+          style={{ color: COLORS.white, flex: 1 }}
           {...props}
         />
         {password && (
