@@ -1,10 +1,10 @@
 const COLORS = {
-  white: "#FFF",
-  black: "#000",
-  blue: "#5D5FEE",
+  white: "#000",
+  black: "#F3F4FB",
+  blue: "#e8b923",
   grey: "#BABBC3",
   light: "#F3F4FB",
-  darkBlue: "#7978B5",
+  darkBlue: "#e8b923",
 };
 
 export default COLORS;

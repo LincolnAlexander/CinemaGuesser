@@ -217,19 +217,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import {
   View,
+  StyleSheet,
+  ImageBackground,
   Text,
+  TouchableOpacity,
   SafeAreaView,
   Keyboard,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 
-import COLORS from "../../conts/colors";
+import COLORS from "../components/const/colors";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Loader from "../components/Loader";
 
-const RegistrationScreen = ({ navigation }) => {
+const RegisterPage = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({
     email: "",
     fullname: "",
@@ -256,11 +260,6 @@ const RegistrationScreen = ({ navigation }) => {
       isValid = false;
     }
 
-    if (!inputs.phone) {
-      handleError("Please input phone number", "phone");
-      isValid = false;
-    }
-
     if (!inputs.password) {
       handleError("Please input password", "password");
       isValid = false;
@@ -280,7 +279,7 @@ const RegistrationScreen = ({ navigation }) => {
       try {
         setLoading(false);
         AsyncStorage.setItem("userData", JSON.stringify(inputs));
-        navigation.navigate("LoginScreen");
+        navigation.navigate("LoginPage");
       } catch (error) {
         Alert.alert("Error", "Something went wrong");
       }
@@ -302,62 +301,131 @@ const RegistrationScreen = ({ navigation }) => {
         <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
           Register
         </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
-          Enter Your Details to Register
-        </Text>
-        <View style={{ marginVertical: 20 }}>
-          <Input
-            onChangeText={(text) => handleOnchange(text, "email")}
-            onFocus={() => handleError(null, "email")}
-            iconName="email-outline"
-            label="Email"
-            placeholder="Enter your email address"
-            error={errors.email}
-          />
-
-          <Input
-            onChangeText={(text) => handleOnchange(text, "fullname")}
-            onFocus={() => handleError(null, "fullname")}
-            iconName="account-outline"
-            label="Full Name"
-            placeholder="Enter your full name"
-            error={errors.fullname}
-          />
-
-          <Input
-            keyboardType="numeric"
-            onChangeText={(text) => handleOnchange(text, "phone")}
-            onFocus={() => handleError(null, "phone")}
-            iconName="phone-outline"
-            label="Phone Number"
-            placeholder="Enter your phone no"
-            error={errors.phone}
-          />
-          <Input
-            onChangeText={(text) => handleOnchange(text, "password")}
-            onFocus={() => handleError(null, "password")}
-            iconName="lock-outline"
-            label="Password"
-            placeholder="Enter your password"
-            error={errors.password}
-            password
-          />
-          <Button title="Register" onPress={validate} />
-          <Text
-            onPress={() => navigation.navigate("LoginScreen")}
-            style={{
-              color: COLORS.black,
-              fontWeight: "bold",
-              textAlign: "center",
-              fontSize: 16,
-            }}
+        <View style={styles.container}>
+          <ImageBackground
+            style={styles.background}
+            source={require("../assets/images/AppBackground.jpg")}
           >
-            Already have account ?Login
-          </Text>
+            <View style={{ marginVertical: 20 }}>
+              <Input
+                onChangeText={(text) => handleOnchange(text, "email")}
+                onFocus={() => handleError(null, "email")}
+                iconName="email-outline"
+                label="Email"
+                placeholder="Enter email address"
+                error={errors.email}
+              />
+
+              <Input
+                onChangeText={(text) => handleOnchange(text, "fullname")}
+                onFocus={() => handleError(null, "fullname")}
+                iconName="account-outline"
+                label="Full Name"
+                placeholder="Enter full name"
+                error={errors.fullname}
+              />
+              <Input
+                onChangeText={(text) => handleOnchange(text, "password")}
+                onFocus={() => handleError(null, "password")}
+                iconName="lock-outline"
+                label="Password"
+                placeholder="Enter password"
+                error={errors.password}
+                password
+              />
+
+              <View style={styles.touchables}>
+                <TouchableOpacity style={styles.loginBtn} onPress={validate}>
+                  <Image
+                    onPress={() => navigation.navigate("LoginPage")}
+                    source={require("../assets/images/RegisterButton.png")}
+                  ></Image>
+                </TouchableOpacity>
+                <Button title="Register" onPress={validate} />
+                <Text
+                  onPress={() => navigation.navigate("LoginPage")}
+                  style={{
+                    color: COLORS.black,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    fontSize: 16,
+                  }}
+                >
+                  Already have account? Login
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default RegistrationScreen;
+export default RegisterPage;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    flex: 1,
+    marginTop: "15%",
+  },
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    alignItems: "center",
+  },
+  loginContainer: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    // margin: '5%',
+  },
+
+  username: {
+    margin: 15,
+  },
+
+  password: {
+    margin: 15,
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
+    fontWeight: "500",
+    fontSize: 20,
+  },
+
+  horizontalBar: {
+    backgroundColor: "#F1CF54",
+    height: 3,
+    width: 275,
+  },
+  verticalBar: {
+    backgroundColor: "#F1CF54",
+    height: 20,
+    width: 2,
+  },
+
+  touchables: {
+    flex: 1,
+    alignItems: "center",
+    // justifyContent: 'center',
+  },
+  loginText: {
+    fontWeight: "500",
+    fontSize: 16,
+    textAlign: "center",
+    margin: 10,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
+  },
+});

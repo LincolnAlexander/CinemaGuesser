@@ -237,13 +237,20 @@ const styles = StyleSheet.create({
 
 import React from "react";
 import { View, Text, SafeAreaView, Keyboard, Alert } from "react-native";
-import COLORS from "../../conts/colors";
+import COLORS from "../components/const/colors";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../components/Loader";
+import {
+  StyleSheet,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 
-const LoginScreen = ({ navigation }) => {
+const LoginPage = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({ email: "", password: "" });
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
@@ -275,7 +282,7 @@ const LoginScreen = ({ navigation }) => {
           inputs.email == userData.email &&
           inputs.password == userData.password
         ) {
-          navigation.navigate("HomeScreen");
+          navigation.navigate("HomePage");
           AsyncStorage.setItem(
             "userData",
             JSON.stringify({ ...userData, loggedIn: true })
@@ -299,47 +306,120 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
-      <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
-        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
-          Log In
-        </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
-          Enter Your Details to Login
-        </Text>
-        <View style={{ marginVertical: 20 }}>
-          <Input
-            onChangeText={(text) => handleOnchange(text, "email")}
-            onFocus={() => handleError(null, "email")}
-            iconName="email-outline"
-            label="Email"
-            placeholder="Enter your email address"
-            error={errors.email}
-          />
-          <Input
-            onChangeText={(text) => handleOnchange(text, "password")}
-            onFocus={() => handleError(null, "password")}
-            iconName="lock-outline"
-            label="Password"
-            placeholder="Enter your password"
-            error={errors.password}
-            password
-          />
-          <Button title="Log In" onPress={validate} />
-          <Text
-            onPress={() => navigation.navigate("RegistrationScreen")}
-            style={{
-              color: COLORS.black,
-              fontWeight: "bold",
-              textAlign: "center",
-              fontSize: 16,
-            }}
-          >
-            Don't have account ?Register
-          </Text>
-        </View>
+
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <View style={styles.header}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/images/AppLogo.png")}
+            ></Image>
+            <View style={{ paddingTop: 10, paddingHorizontal: 20 }}></View>
+            <View style={{ marginVertical: 20 }}>
+              <Input
+                onChangeText={(text) => handleOnchange(text, "email")}
+                onFocus={() => handleError(null, "email")}
+                iconName="email-outline"
+                label="Email"
+                placeholder="Enter email address"
+                error={errors.email}
+              />
+              <Input
+                onChangeText={(text) => handleOnchange(text, "password")}
+                onFocus={() => handleError(null, "password")}
+                iconName="lock-outline"
+                label="Password"
+                placeholder="Enter your password"
+                error={errors.password}
+                password
+              />
+              <Button title="Log In" onPress={validate} />
+              <Text
+                onPress={() => navigation.navigate("RegisterPage")}
+                style={{
+                  color: COLORS.black,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 16,
+                }}
+              >
+                Don't have account? Register
+              </Text>
+            </View>
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default LoginPage;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    flex: 1,
+    marginTop: "15%",
+  },
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    alignItems: "center",
+  },
+  loginContainer: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    // margin: '5%',
+  },
+
+  username: {
+    margin: 15,
+  },
+
+  password: {
+    margin: 15,
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
+    fontWeight: "500",
+    fontSize: 20,
+  },
+
+  horizontalBar: {
+    backgroundColor: "#F1CF54",
+    height: 3,
+    width: 275,
+  },
+  verticalBar: {
+    backgroundColor: "#F1CF54",
+    height: 20,
+    width: 2,
+  },
+
+  touchables: {
+    flex: 1,
+    alignItems: "center",
+    // justifyContent: 'center',
+  },
+  loginText: {
+    fontWeight: "500",
+    fontSize: 16,
+    textAlign: "center",
+    margin: 10,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "RobotoSlab-Medium",
+  },
+});

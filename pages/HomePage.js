@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import Button from "../components/Button";
-const HomeScreen = ({ navigation }) => {
+const HomePage = ({ navigation }) => {
   const [userDetails, setUserDetails] = React.useState();
   React.useEffect(() => {
     getUserData();
@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
       "userData",
       JSON.stringify({ ...userDetails, loggedIn: false })
     );
-    navigation.navigate("LoginScreen");
+    navigation.navigate("LoginPage");
   };
 
   return (
@@ -40,4 +40,4 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+export default HomePage;
