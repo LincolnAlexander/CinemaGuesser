@@ -33,7 +33,7 @@ exports.setApp = function ( app, client )
       var ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
-    
+ 
     //Written by Casey
     app.post('/api/register', async (req, res, next) =>
     {
@@ -65,6 +65,8 @@ exports.setApp = function ( app, client )
       res.status(200).json(ret);
     });
 
+
+    
     app.post('/api/movies', async (req, res, next) =>
     {
       var ret = await makeGetRequest(req.body.search);
@@ -89,5 +91,6 @@ exports.setApp = function ( app, client )
           );
       });
   }//end of function
-    
+
+
 }
