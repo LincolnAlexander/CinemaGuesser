@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import GameImageSample from '../images/GameImageSample.jpg'
 import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
 import PlayAgainModal from './modals/PlayAgainModal'
+
 function GameContainer()
 {
     const navigate = useNavigate();
+    const [turnOn, setModal] = useState(false);
     let numGuesses = 0;
     function showModal(event)
     {
@@ -14,9 +16,11 @@ function GameContainer()
       numGuesses++;
       if(numGuesses == 3)
       {
-        // console.log("Showing PlayAgainModal");
+        console.log("Showing PlayAgainModal");
         numGuesses = 0;
-        navigate('/home');
+        setModal(true);
+        // <PlayAgainModal value = {turnOn}/>
+        // navigate('/home');
       }
       console.log(numGuesses);
     }
@@ -61,6 +65,7 @@ function GameContainer()
           
         </div>
       </div>
+      <PlayAgainModal value = {turnOn}/>
     </div>
     
     )
