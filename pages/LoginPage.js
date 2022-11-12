@@ -51,32 +51,41 @@ const errorHandler = () => {
   setStatusBarBackgroundColor("red");
 };
 
-const login = async () => {
-  const payload = {
-    username: username,
-    password: password,
-  };
+const Login = async () => {
+  let uError = (pError = null);
 
-  try {
-    const baseURL = "https://cinema-guesser.herokuapp.com/";
+  if (username == null || password == null) {
+    if (username == null) {
+      uError = "Please Enter your Username";
+    }
 
-    const response = await axios.post(baseURL + "/api/user/login", payload);
-  } catch (error) {
-    console.log(error.response.data);
-    errorHandler;
+    if (password == null) {
+      pError = "Please Enter your Password";
+    }
+  } else {
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      setLoad(true);
+
+      const baseURL = "https://cinema-guesser.herokuapp.com";
+
+      const response = await axios.post(baseURL + "/api/user/login/", payload);
+
+      console.log(response.data);
+    } catch (error) {
+      uError = "Incorrect Username";
+
+      pError = "Incorrect Password";
+    }
   }
-};
 
-const callAPI = () => {
-  axios
-    .get()
+  setError({ username: uError, password: pError });
 
-    .then(function (response) {
-      alerts(JSON.stringify(response));
-    })
-    .catch(function (error) {
-      alert(error);
-    });
+  setLoad(false);
 };
 
 export default function LoginPage() {
@@ -123,10 +132,7 @@ export default function LoginPage() {
           </View>
 
           <View style={styles.touchables}>
-            <TouchableOpacity
-              style={styles.loginBtn}
-              onPress={() => Alert.alert("Log in")}
-            >
+            <TouchableOpacity style={styles.loginBtn} onPress={Login}>
               <Image
                 source={require("../assets/images/LoginButton.png")}
               ></Image>
