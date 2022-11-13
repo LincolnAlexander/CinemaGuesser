@@ -65,11 +65,26 @@ exports.setApp = function ( app, client )
       res.status(200).json(ret);
     });
 
-
-    
     app.post('/api/movies', async (req, res, next) =>
     {
-      var ret = await makeGetRequest(req.body.search);
+      const db = client.db();
+      var err = '';
+      const results = await db.collection('Movies').aggregate([
+        {
+          '$sample': {
+            'size': 1
+          }
+        }
+      ]).toArray();
+      const Title = results[0].Title;
+
+      const omdb_ret = await makeGetRequest(Title);
+      if(omdb_ret.Response == 'False'){
+        err = 'Invalid Movie: remove ' + Title;
+        //Add auto removal of invalid movie here
+      }
+
+      var ret = {omdb: omdb_ret, title: Title, error: err};
       res.status(200).json(ret);
     });
 
