@@ -40,6 +40,7 @@ exports.setApp = function ( app, client )
       var error = '';
       const { FirstName, LastName, Login, Pass } = req.body;
       const Password = sha256.hmac('key', req.body.Password);
+      const Score = 0;
       const db = client.db();
 
       var err = 'Username Taken';
@@ -53,7 +54,7 @@ exports.setApp = function ( app, client )
 
       if(results.length == 0)
       {
-        db.collection('Users').insertOne({FirstName, LastName, Login, Password});
+        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score});
         fn = FirstName;
         ln = LastName;
         lgn = Login;
@@ -62,6 +63,52 @@ exports.setApp = function ( app, client )
       }
 
       var ret = {firstname: fn, lastname: ln, login: lgn, error: err}
+      res.status(200).json(ret);
+    });
+
+    //get scores (ADJUST FOR JWT TOKEN)
+    app.post('/api/get_score', async (req, res, next) =>         //get_score
+    {
+      //REQ: login
+      const db = client.db();
+      const{login} = req.body;
+      const results = await db.collection('Users').find({Login:login}).toArray();
+      var err = '';
+      var Score;
+      //check if record exists
+      if(results.length == 0)
+      {
+        err = 'no record found';
+      }
+      else
+      {
+        Score = results[0].Score;
+      }
+      var ret = {score: Score};
+      res.status(200).json(ret);
+    });
+
+    //update scores (ADJUST FOR JWT TOKEN)
+    app.post('/api/update_score', async (req, res, next) =>         //update_score
+    {
+      //REQ: login, score
+      const db = client.db();
+      const{login} = req.body;
+      const results = await db.collection('Users').find({Login:login}).toArray();
+      var err = '';
+      var Score = results[0].Score;
+      //check if record exists
+      if(results.length == 0)
+      {
+        err = 'no record found';
+      }
+      else
+      {
+        Score = req.body.score;
+        const replace_result = await db.collection('Users').updateOne({Login:login}, {$set: { "Score" : Score}});
+        console.log(replace_result);
+      }
+      var ret = {score: Score};
       res.status(200).json(ret);
     });
 
