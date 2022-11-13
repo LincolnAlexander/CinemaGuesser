@@ -65,7 +65,7 @@ exports.setApp = function ( app, client )
       res.status(200).json(ret);
     });
 
-    app.post('/api/movies', async (req, res, next) =>
+    app.get('/api/movies', async (req, res, next) =>
     {
       const db = client.db();
       var err = '';
