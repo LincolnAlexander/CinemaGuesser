@@ -66,7 +66,7 @@ exports.setApp = function ( app, client )
     });
 
     //gets random movies
-    app.get('/api/movies', async (req, res, next) =>             //movies
+    app.post('/api/movies', async (req, res, next) =>             //movies
     {
       const db = client.db();
       var err = '';
@@ -95,7 +95,7 @@ exports.setApp = function ( app, client )
     //gets random movies from MoviesSaved database 
     //(unethical, but I wanted to develop this)
     //this also gives more limited information compared to api/movies
-    app.get('/api/movies_saved', async (req, res, next) =>       //movies_saved
+    app.post('/api/movies_saved', async (req, res, next) =>       //movies_saved
     {
       const db = client.db();
       var err = '';
@@ -109,7 +109,7 @@ exports.setApp = function ( app, client )
         }
       ]).toArray();
       const title_search = results[0].Title;
-      
+
       //look in MoviesSaved
       const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
 
