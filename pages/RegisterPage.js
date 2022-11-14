@@ -296,7 +296,7 @@ const RegisterPage = ({ navigation }) => {
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
       <ScrollView
-        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}
+        contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 50 }}
       >
         <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
           Register
@@ -334,7 +334,7 @@ const RegisterPage = ({ navigation }) => {
                 password
               />
 
-              <View style={styles.touchables}>
+              <View style={styles.container}>
                 <TouchableOpacity style={styles.loginBtn} onPress={validate}>
                   <Image
                     onPress={() => navigation.navigate("LoginPage")}
