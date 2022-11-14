@@ -101,7 +101,6 @@ exports.setApp = function ( app, client )
       pipeline[0]['$sort'][req.body.sortby] = 1;
 
       const results = await db.collection('Users').aggregate(pipeline).toArray();
-      console.log(pipeline);
       var ret = {list: results};
       res.status(200).json(ret);
     });
