@@ -306,7 +306,6 @@ const LoginPage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
-
       <View style={styles.container}>
         <ImageBackground
           style={styles.background}

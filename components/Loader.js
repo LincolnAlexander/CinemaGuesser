@@ -24,7 +24,7 @@ const Loader = ({ visible = false }) => {
 const style = StyleSheet.create({
   loader: {
     height: 70,
-    backgroundColor: COLORS.white,
+    backgroundColor: "#ffff",
     marginHorizontal: 50,
     borderRadius: 5,
     flexDirection: "row",
