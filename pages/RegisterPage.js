@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-
 import {
   View,
   StyleSheet,
@@ -299,7 +298,15 @@ const RegisterPage = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}
       >
-        <View style={{ paddingTop: 10, paddingHorizontal: 20 }}>
+        {/* <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
+          Register
+        </Text> */}
+
+        <View style={styles.container}>
+          {/* <ImageBackground
+            style={styles.background}
+            source={require("../assets/images/AppBackground.jpg")}
+          > */}
           <View style={{ marginVertical: 20 }}>
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
@@ -328,19 +335,28 @@ const RegisterPage = ({ navigation }) => {
               password
             />
 
-            {<Button title="Register" onPress={validate} />}
-            <Text
-              onPress={() => navigation.navigate("LoginPage")}
-              style={{
-                color: COLORS.black,
-                fontWeight: "bold",
-                textAlign: "center",
-                fontSize: 16,
-              }}
-            >
-              Already have account? Login
-            </Text>
+            <View style={styles.touchables}>
+              {/* <TouchableOpacity style={styles.loginBtn} onPress={validate}>
+                  <Image
+                    onPress={() => navigation.navigate("LoginPage")}
+                    source={require("../assets/images/RegisterButton.png")}
+                  ></Image>
+                </TouchableOpacity> */}
+              {<Button title="Register" onPress={validate} />}
+              <Text
+                onPress={() => navigation.navigate("LoginPage")}
+                style={{
+                  color: COLORS.black,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 16,
+                }}
+              >
+                Already have account? Login
+              </Text>
+            </View>
           </View>
+          {/* </ImageBackground>  */}
         </View>
         {/* </ImageBackground>  */}
       </ScrollView>
@@ -350,7 +366,7 @@ const RegisterPage = ({ navigation }) => {
 
 export default RegisterPage;
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
