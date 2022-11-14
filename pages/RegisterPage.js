@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+
 import {
   View,
   StyleSheet,
@@ -296,66 +297,67 @@ const RegisterPage = ({ navigation }) => {
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
       <ScrollView
-        contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 50 }}
+        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}
       >
-        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
+        {/* <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
           Register
-        </Text>
+        </Text> */}
+
         <View style={styles.container}>
-          <ImageBackground
+          {/* <ImageBackground
             style={styles.background}
             source={require("../assets/images/AppBackground.jpg")}
-          >
-            <View style={{ marginVertical: 20 }}>
-              <Input
-                onChangeText={(text) => handleOnchange(text, "email")}
-                onFocus={() => handleError(null, "email")}
-                iconName="email-outline"
-                label="Email"
-                placeholder="Enter email address"
-                error={errors.email}
-              />
+          > */}
+          <View style={{ marginVertical: 20 }}>
+            <Input
+              onChangeText={(text) => handleOnchange(text, "email")}
+              onFocus={() => handleError(null, "email")}
+              iconName="email-outline"
+              label="Email"
+              placeholder="Enter email address"
+              error={errors.email}
+            />
 
-              <Input
-                onChangeText={(text) => handleOnchange(text, "fullname")}
-                onFocus={() => handleError(null, "fullname")}
-                iconName="account-outline"
-                label="Full Name"
-                placeholder="Enter full name"
-                error={errors.fullname}
-              />
-              <Input
-                onChangeText={(text) => handleOnchange(text, "password")}
-                onFocus={() => handleError(null, "password")}
-                iconName="lock-outline"
-                label="Password"
-                placeholder="Enter password"
-                error={errors.password}
-                password
-              />
+            <Input
+              onChangeText={(text) => handleOnchange(text, "fullname")}
+              onFocus={() => handleError(null, "fullname")}
+              iconName="account-outline"
+              label="Full Name"
+              placeholder="Enter full name"
+              error={errors.fullname}
+            />
+            <Input
+              onChangeText={(text) => handleOnchange(text, "password")}
+              onFocus={() => handleError(null, "password")}
+              iconName="lock-outline"
+              label="Password"
+              placeholder="Enter password"
+              error={errors.password}
+              password
+            />
 
-              <View style={styles.container}>
-                <TouchableOpacity style={styles.loginBtn} onPress={validate}>
+            <View style={styles.touchables}>
+              {/* <TouchableOpacity style={styles.loginBtn} onPress={validate}>
                   <Image
                     onPress={() => navigation.navigate("LoginPage")}
                     source={require("../assets/images/RegisterButton.png")}
                   ></Image>
-                </TouchableOpacity>
-                <Button title="Register" onPress={validate} />
-                <Text
-                  onPress={() => navigation.navigate("LoginPage")}
-                  style={{
-                    color: COLORS.black,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    fontSize: 16,
-                  }}
-                >
-                  Already have account? Login
-                </Text>
-              </View>
+                </TouchableOpacity> */}
+              {<Button title="Register" onPress={validate} />}
+              <Text
+                onPress={() => navigation.navigate("LoginPage")}
+                style={{
+                  color: COLORS.black,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 16,
+                }}
+              >
+                Already have account? Login
+              </Text>
             </View>
-          </ImageBackground>
+          </View>
+          {/* </ImageBackground>  */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -364,7 +366,7 @@ const RegisterPage = ({ navigation }) => {
 
 export default RegisterPage;
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
