@@ -5,7 +5,6 @@ import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FlipCard from "react-native-flip-card";
 
 // <Button title="Logout" onPress={logout} />
 const HomePage = ({ navigation }) => {
@@ -34,45 +33,47 @@ const HomePage = ({ navigation }) => {
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Home! hey</Text>
       </View>
+    );
+  }
 
-      //     <FlipCard
-      //       style={styles.card}
-      //       friction={6}
-      //       perspective={1000}
-      //       flipHorizontal={true}
-      //       flipVertical={false}
-      //       flip={false}
-      //       clickable={true}
-      //       onFlipEnd={(isFlipEnd) => {
-      //         console.log("isFlipEnd", isFlipEnd);
-      //       }}
-      //     >
-      //       {/* Face Side */}
-      //       <View style={styles.face}>
-      //         <Text>The Face</Text>
-      //       </View>
-      //       {/* Back Side */}
-      //       <View style={styles.back}>
-      //         <Text>The Back</Text>
-      //       </View>
-      //     </FlipCard>
-      //   );
-      // }
+  //     <FlipCard
+  //       style={styles.card}
+  //       friction={6}
+  //       perspective={1000}
+  //       flipHorizontal={true}
+  //       flipVertical={false}
+  //       flip={false}
+  //       clickable={true}
+  //       onFlipEnd={(isFlipEnd) => {
+  //         console.log("isFlipEnd", isFlipEnd);
+  //       }}
+  //     >
+  //       {/* Face Side */}
+  //       <View style={styles.face}>
+  //         <Text>The Face</Text>
+  //       </View>
+  //       {/* Back Side */}
+  //       <View style={styles.back}>
+  //         <Text>The Back</Text>
+  //       </View>
+  //     </FlipCard>
+  //   );
+  // }
 
-      // function SettingsPage() {
-      //   return (
-      //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      //       <Text>Settings!</Text>
-      //       <Button title="Logout" onPress={logout} />
-      //     </View>
-      //   );
-      // }
+  function SettingsPage() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Settings!</Text>
+        <Button title="Logout" onPress={logout} />
+      </View>
+    );
+  }
 
-      // function WatchListPage() {
-      //   return (
-      //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      //       <Text>Watch List!</Text>
-      //     </View>
+  function WatchListPage() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Watch List!</Text>
+      </View>
     );
   }
 
