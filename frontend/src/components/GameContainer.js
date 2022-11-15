@@ -8,7 +8,7 @@ function GameContainer()
 {   let movieInfo = 
     {
       title: null,
-      desc: null,
+      desc: "osandji",
       boxOffice: null,
       genre: null,
       actors: null,
@@ -18,9 +18,9 @@ function GameContainer()
 
     const loadMovieInfo = async(event) => 
     {
-      event.preventDefault();
+      // event.preventDefault();
 
-      console.log(event);
+      // console.log(event);
 
       let obj = {
         
@@ -30,13 +30,14 @@ function GameContainer()
       try 
       {
         let bp = require('./Paths.js');
-        const response = await fetch(bp.buildPath('api/movies_saved'), {
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
           method: 'GET',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
+          
+          
         });
         let res = JSON.parse(await response.text());
-  
+        console.log("Results:");
+        console.log(response);
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {
@@ -52,12 +53,13 @@ function GameContainer()
       } 
       catch (e) 
       {
-        alert(e.toString());
+        console.log(e);
         return;
       }
     }
-
-    console.log("Hello");
+    console.log("Calling Movie Info");
+    loadMovieInfo();
+  
     const navigate = useNavigate();
     const [turnOn, setModal] = useState(false);
     let numGuesses = 0;
@@ -96,7 +98,7 @@ function GameContainer()
         </div>
         <div className='min-h-[50px] '>
           <p className='text-pr-yellow'>Description:</p>
-          <p className='text-pr-white'></p>
+          <p className='text-pr-white'>{movieInfo.desc}</p>
         </div>
         <div className='min-h-[50px]'>
           <span className='text-pr-yellow mr-2'>Genre:</span>
