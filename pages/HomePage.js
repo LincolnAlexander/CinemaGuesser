@@ -107,7 +107,7 @@ const HomePage = ({ navigation }) => {
           let iconName;
 
           if (route.name === "Play") {
-            iconName = focused ? "game" : "game-controller-outline";
+            iconName = focused ? "Game" : "game-controller-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
           } else if (route.name === "Watch List") {
