@@ -128,7 +128,13 @@ exports.setApp = function ( app, client )
       var field;
       var err = '';
       var value;
+
+      //Courtney Additions
+      var score;
+      var gamesPlayed;
+
       var ret;
+
       //check if record exists
       if(results.length == 0)
       {
@@ -142,6 +148,11 @@ exports.setApp = function ( app, client )
       {
         field = req.body.field
         value = results[0][field];
+
+        //Courtney Addition
+        score = results[0].Score;
+        gamesPlayed = results[0].GamesPlayed;
+
       }
       ret = {value: value, field: field, error: err};
       res.status(200).json(ret);
@@ -202,7 +213,7 @@ exports.setApp = function ( app, client )
      });
 //-----------------------------------MOVIE ENDPOINTS-----------------------------------
     //gets random movies (KEY)
-    app.get('/api/movies', async (req, res, next) =>             //movies
+    app.post('/api/movies', async (req, res, next) =>             //movies
     {
       const db = client.db();
       var err = '';
@@ -231,7 +242,7 @@ exports.setApp = function ( app, client )
     //gets random movies from MoviesSaved database 
     //(unethical, but I wanted to develop this)
     //this also gives more limited information compared to api/movies
-    app.get('/api/movies_saved', async (req, res, next) =>       //movies_saved
+    app.post('/api/movies_saved', async (req, res, next) =>       //movies_saved
     {
       const db = client.db();
       var err = '';
