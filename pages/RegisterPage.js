@@ -296,7 +296,7 @@ const RegisterPage = ({ navigation }) => {
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
       <ScrollView
-        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}
+        contentContainerStyle={{ paddingTop: 100, paddingHorizontal: 1 }}
       >
         {/* <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
           Register
@@ -307,7 +307,8 @@ const RegisterPage = ({ navigation }) => {
             style={styles.background}
             source={require("../assets/images/AppBackground.jpg")}
           > */}
-          <View style={{ marginVertical: 20 }}>
+
+          <View style={{ paddingTop: 1, paddingHorizontal: 10 }}>
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
               onFocus={() => handleError(null, "email")}
