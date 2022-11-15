@@ -37,18 +37,6 @@ function RegisterContainer() {
         headers: { 'Content-Type': 'application/json' },
       });
       let res = JSON.parse(await response.text());
-      //   const response = await fetch('api/register', {
-      //     method: 'POST',
-      //     body: js,
-      //     headers: { 'Content-Type': 'application/json' },
-      //   });
-      //     // const response = await fetch(buildPath('api/login’) {
-      //     //     method: 'POST',
-      //     //     body: js,
-      //     //     headers: { 'Content-Type': 'application/json' },
-      //     //   });
-
-      //   const res = JSON.parse(await response.text());
 
       if (res.error !== '') {
         setMessage('Username is taken, please try a different one.');

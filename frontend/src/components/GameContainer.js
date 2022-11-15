@@ -5,16 +5,69 @@ import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
 import PlayAgainModal from './modals/PlayAgainModal'
 
 function GameContainer()
-{
+{   let movieInfo = 
+    {
+      title: null,
+      desc: null,
+      boxOffice: null,
+      genre: null,
+      actors: null,
+      poster:null,
+      rating:null
+    }
+
+    const loadMovieInfo = async(event) => 
+    {
+      event.preventDefault();
+
+      console.log(event);
+
+      let obj = {
+        
+      };
+      let js = JSON.stringify(obj);
+
+      try 
+      {
+        let bp = require('./Paths.js');
+        const response = await fetch(bp.buildPath('api/movies_saved'), {
+          method: 'GET',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
+        });
+        let res = JSON.parse(await response.text());
+  
+        if (res.error !== '') {
+          // setMessage('Username is taken, please try a different one.');
+        } else {
+          // const user = {
+          //   firstName: res.firstName,
+          //   lastName: res.lastName,
+          //   id: res.id,
+          // };
+          // localStorage.setItem('user_data', JSON.stringify(user));
+          // setMessage('');
+          // navigate('/register-success');
+        }
+      } 
+      catch (e) 
+      {
+        alert(e.toString());
+        return;
+      }
+    }
+
+    console.log("Hello");
     const navigate = useNavigate();
     const [turnOn, setModal] = useState(false);
     let numGuesses = 0;
+
     function showModal(event)
     {
       event.preventDefault();
       
       numGuesses++;
-      if(numGuesses == 3)
+      if(numGuesses === 3)
       {
         console.log("Showing PlayAgainModal");
         numGuesses = 0;
@@ -23,6 +76,10 @@ function GameContainer()
         // navigate('/home');
       }
       console.log(numGuesses);
+    }
+    
+    function closeModal() {
+      setModal(false);
     }
     return(
     <div className='flex justify-center mt-20 '>
@@ -65,7 +122,7 @@ function GameContainer()
           
         </div>
       </div>
-      <PlayAgainModal value = {turnOn}/>
+      <PlayAgainModal value = {turnOn} closeModal={closeModal}/>
     </div>
     
     )

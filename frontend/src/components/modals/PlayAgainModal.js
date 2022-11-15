@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ReactComponent as PlayAgainBtn } from '../../images/PlayAgainBtn.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function PlayAgainModal(props)
 {
-    console.log(props.value);
-    const [modal, setModal] = useState(props.value);
-    console.log(modal);
+    // console.log("Prop value:" + props.value);
+    const navigate = useNavigate();
+    console.log(props);
+    const [modal, setModal] = useState(false);
+
+    useEffect(()=> {
+      setModal(props.value)
+    }, [props.value])
+    console.log("Modal value:"+ modal);
     const toggleModal = () =>
     {
-        props.value = !props.value;
-        // setModal(!modal);
+        // props.value = !props.value;
+        setModal(false);
+        props.closeModal();
     }
     return(
         <>
 
-      {props.value && (
+      {modal && (
         <div className='overflow-x-scroll w-screen h-screen fixed top-0 right-0 bottom-0 left-0 z-50'>
           <div
             onClick={toggleModal}
@@ -35,8 +44,8 @@ export default function PlayAgainModal(props)
               ante ipsum primis in faucibus. Aliquam blandit urna vitae magna
               dapibus, id tincidunt nulla consectetur.
             </p>
-            <button>
-              k
+            <button onClick={()=> {props.closeModal(); navigate('/game')}}>
+              <PlayAgainBtn/>
             </button>
             <XMarkIcon
               className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
