@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PlayAgainModal(props)
 {
-    // console.log("Prop value:" + props.value);
+    
     const navigate = useNavigate();
-    console.log(props);
+    // console.log(props);
     const [modal, setModal] = useState(false);
 
     useEffect(()=> {
       setModal(props.value)
     }, [props.value])
-    console.log("Modal value:"+ modal);
+    // console.log("Modal value:"+ modal);
     const toggleModal = () =>
     {
         // props.value = !props.value;

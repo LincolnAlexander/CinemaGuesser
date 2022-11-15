@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameImageSample from '../images/GameImageSample.jpg'
 import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
 import PlayAgainModal from './modals/PlayAgainModal'
 
 function GameContainer()
-{   let movieInfo = 
+{   
+
+  // Code for Movie Info ***************************************************************************************************************
+  let movieInfo = 
     {
       title: null,
       desc: null,
@@ -15,8 +18,8 @@ function GameContainer()
       poster:null,
       rating:null
     }
-    // const [desc, setDesc] = useState(false);
-
+    const [desc, setDesc] = useState(false);
+    let res;
     const loadMovieInfo = async(event) => 
     {
       // event.preventDefault();
@@ -27,7 +30,7 @@ function GameContainer()
         
       };
       let js = JSON.stringify(obj);
-
+      
       try 
       {
         let bp = require('./Paths.js');
@@ -38,20 +41,21 @@ function GameContainer()
           
           
         });
-        let res = JSON.parse(await response.text());
+        res = JSON.parse(await response.text());
         movieInfo.poster = res.omdb.Poster;
         movieInfo.desc = res.omdb.Plot;
-        // setDesc(res.omdb.Poster);
+
+        // useEffect(()=> 
+        // {
+        //   setDesc(res.omdb.Plot)
+        // }, [])
+        
         console.log("Results:");
-        console.log(movieInfo.desc);
+        console.log(res.omdb);
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {
-          // const user = {
-          //   firstName: res.firstName,
-          //   lastName: res.lastName,
-          //   id: res.id,
-          // };
+          
           // localStorage.setItem('user_data', JSON.stringify(user));
           // setMessage('');
           // navigate('/register-success');
@@ -62,10 +66,14 @@ function GameContainer()
         console.log(e);
         return;
       }
+
     }
+    
     console.log("Calling Movie Info");
     loadMovieInfo();
-  
+    // End of Code for Movie Info ***********************************************************************************************************************
+
+    // Code for Modal *********************************************************************************************************************************** 
     const navigate = useNavigate();
     const [turnOn, setModal] = useState(false);
     let numGuesses = 0;
@@ -80,8 +88,6 @@ function GameContainer()
         console.log("Showing PlayAgainModal");
         numGuesses = 0;
         setModal(true);
-        // <PlayAgainModal value = {turnOn}/>
-        // navigate('/home');
       }
       console.log(numGuesses);
     }
@@ -89,6 +95,8 @@ function GameContainer()
     function closeModal() {
       setModal(false);
     }
+
+    // End of Code for Modal ***************************************************************************************************************************** 
     return(
     <div className='flex justify-center mt-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
@@ -100,21 +108,21 @@ function GameContainer()
           <span className='text-pr-red '>pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={movieInfo.poster} alt = 'MoviePostery'></img>
+          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={GameImageSample} alt = 'MoviePostery'></img>
         </div>
-        <div className='min-h-[50px] '>
+        <div className='min-h-[50px] text-center sm:text-left'>
           <p className='text-pr-yellow'>Description:</p>
           <p className='text-pr-white'>{movieInfo.desc}</p>
         </div>
-        <div className='min-h-[50px]'>
+        <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2'>Genre:</span>
           <span className='text-pr-white'></span>
         </div>
-        <div className='min-h-[50px]'>
+        <div className='min-h-[50px] text-center sm:text-left' >
           <span className='text-pr-yellow mr-2'>Box Office:</span>
           <span className='text-pr-white'></span>
         </div>
-        <div className='min-h-[50px]'>
+        <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2'>Actors:</span>
           <span className='text-pr-white'></span>
         </div>
