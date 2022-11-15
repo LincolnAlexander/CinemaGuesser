@@ -123,7 +123,7 @@ const HomePage = ({ navigation }) => {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Home" component={HomePage} />
+      <Tab.Screen name="Game" component={GamePage} />
       <Tab.Screen name="Watch List" component={WatchListPage} />
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
