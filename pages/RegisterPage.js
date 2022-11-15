@@ -308,7 +308,7 @@ const RegisterPage = ({ navigation }) => {
             source={require("../assets/images/AppBackground.jpg")}
           > */}
 
-          <View style={{ paddingTop: 1, paddingHorizontal: 10 }}>
+          <View style={{ paddingTop: 35, paddingHorizontal: 10 }}>
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
               onFocus={() => handleError(null, "email")}

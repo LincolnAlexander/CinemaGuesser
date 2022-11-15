@@ -73,6 +73,17 @@ const HomePage = ({ navigation }) => {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Watch List!</Text>
+        <Text>Implement a plus symbol on the home page that will allow the user to add the movie 
+        to their watch list. The watch list will be a list of movies that the user can reference.
+        </Text>
+      </View>
+    );
+  }
+
+  function RulesPage() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Rules Page!</Text>
       </View>
     );
   }
@@ -92,6 +103,9 @@ const HomePage = ({ navigation }) => {
           } else if (route.name === "Watch List") {
             iconName = focused ? "film" : "film-outline";
           }
+          else if (route.name === "Rules") {
+            iconName = focused ? "newspaper" : "newspaper-outline";
+          }
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -101,8 +115,9 @@ const HomePage = ({ navigation }) => {
       })}
     >
       <Tab.Screen name="Home" component={HomePage} />
-      <Tab.Screen name="Settings" component={SettingsPage} />
       <Tab.Screen name="Watch List" component={WatchListPage} />
+      <Tab.Screen name="Rules" component={RulesPage} />
+      <Tab.Screen name="Settings" component={SettingsPage} />
     </Tab.Navigator>
   );
 };
