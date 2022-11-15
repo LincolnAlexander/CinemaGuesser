@@ -5,7 +5,6 @@ import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import CardFlip from "react-native-card-flip";
 
 // <Button title="Logout" onPress={logout} />
 const HomePage = ({ navigation }) => {
@@ -31,30 +30,8 @@ const HomePage = ({ navigation }) => {
 
   function HomePage() {
     return (
-      // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      //   <Text>Home! hey</Text>
-      // </View>
-
-      <View style={styles.container}>
-        <CardFlip
-          style={styles.cardContainer}
-          ref={(card) => (this.card = card)}
-        >
-          <TouchableOpacity
-            activeOpacity={1}
-            style={[styles.card, styles.card1]}
-            onPress={() => this.card.flip()}
-          >
-            <Text style={styles.label}>AB</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={[styles.card, styles.card2]}
-            onPress={() => this.card.flip()}
-          >
-            <Text style={styles.label}>CD</Text>
-          </TouchableOpacity>
-        </CardFlip>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Home! hey</Text>
       </View>
     );
   }
