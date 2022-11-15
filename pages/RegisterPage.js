@@ -298,16 +298,7 @@ const RegisterPage = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={{ paddingTop: 100, paddingHorizontal: 1 }}
       >
-        {/* <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: "bold" }}>
-          Register
-        </Text> */}
-
         <View style={styles.container}>
-          {/* <ImageBackground
-            style={styles.background}
-            source={require("../assets/images/AppBackground.jpg")}
-          > */}
-
           <View style={{ paddingTop: 35, paddingHorizontal: 10 }}>
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
@@ -337,12 +328,6 @@ const RegisterPage = ({ navigation }) => {
             />
 
             <View style={styles.touchables}>
-              {/* <TouchableOpacity style={styles.loginBtn} onPress={validate}>
-                  <Image
-                    onPress={() => navigation.navigate("LoginPage")}
-                    source={require("../assets/images/RegisterButton.png")}
-                  ></Image>
-                </TouchableOpacity> */}
               {<Button title="Register" onPress={validate} />}
               <Text
                 onPress={() => navigation.navigate("LoginPage")}
@@ -385,7 +370,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginContainer: {
-    flex: 2,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     // margin: '5%',

@@ -5,6 +5,14 @@ import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {
+  StyleSheet,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+} from "react-native";
 
 // <Button title="Logout" onPress={logout} />
 const HomePage = ({ navigation }) => {
@@ -73,8 +81,10 @@ const HomePage = ({ navigation }) => {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Watch List!</Text>
-        <Text>Implement a plus symbol on the home page that will allow the user to add the movie 
-        to their watch list. The watch list will be a list of movies that the user can reference.
+        <Text>
+          Implement a plus symbol on the home page that will allow the user to
+          add the movie to their watch list. The watch list will be a list of
+          movies that the user can reference.
         </Text>
       </View>
     );
@@ -102,8 +112,7 @@ const HomePage = ({ navigation }) => {
             iconName = focused ? "settings" : "settings-outline";
           } else if (route.name === "Watch List") {
             iconName = focused ? "film" : "film-outline";
-          }
-          else if (route.name === "Rules") {
+          } else if (route.name === "Rules") {
             iconName = focused ? "newspaper" : "newspaper-outline";
           }
 
