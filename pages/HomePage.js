@@ -36,10 +36,10 @@ const HomePage = ({ navigation }) => {
     navigation.navigate("LoginPage");
   };
 
-  function HomePage() {
+  function GamePage() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Home! hey</Text>
+        <Text>Click now to play</Text>
       </View>
     );
   }
@@ -106,8 +106,8 @@ const HomePage = ({ navigation }) => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
+          if (route.name === "Play") {
+            iconName = focused ? "game" : "game-controller-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
           } else if (route.name === "Watch List") {
