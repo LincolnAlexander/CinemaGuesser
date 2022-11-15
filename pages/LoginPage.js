@@ -316,8 +316,9 @@ const LoginPage = ({ navigation }) => {
               style={styles.logo}
               source={require("../assets/images/AppLogo.png")}
             ></Image>
-            <View style={{ paddingTop: 10, paddingHorizontal: 20 }}></View>
-            <View style={{ marginVertical: 20 }}>
+
+            <View style={{ marginVertical: 1 }}>
+              <View style={{ paddingTop: 10, paddingHorizontal: 20 }}></View>
               <Input
                 onChangeText={(text) => handleOnchange(text, "email")}
                 onFocus={() => handleError(null, "email")}
