@@ -120,41 +120,33 @@ exports.setApp = function ( app, client )
     //get scores (ADJUST FOR JWT TOKEN)
     app.post('/api/get_stats', async (req, res, next) =>         //get_stats
     {
-      //REQ: login, field (default = 'Score')
+      //REQ: login
       
       const db = client.db();
       const{login} = req.body;
       const results = await db.collection('Users').find({Login:login}).toArray();
-      var field;
       var err = '';
-      var value;
 
       //Courtney Additions
       var score;
       var gamesPlayed;
-
       var ret;
+      var retlogin;
 
       //check if record exists
       if(results.length == 0)
       {
         err = 'no record found';
       }
-      else if(req.body.field != "Score" && req.body.field != "GamesPlayed")
-      {
-        err = 'invalid field specified';
-      }
       else
       {
-        field = req.body.field
-        value = results[0][field];
-
         //Courtney Addition
         score = results[0].Score;
         gamesPlayed = results[0].GamesPlayed;
+        retlogin = login;
 
       }
-      ret = {value: value, field: field, error: err};
+      ret = {login: retlogin, score: score, gamesPlayed: gamesPlayed, error: err};
       res.status(200).json(ret);
     });
 
