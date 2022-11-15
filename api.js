@@ -22,15 +22,27 @@ exports.setApp = function ( app, client )
       var fn = '';
       var ln = '';
       var err = 'invalid login';
+      var ret;
     
       if( results.length > 0 )
       {
         fn = results[0].FirstName;
         ln = results[0].LastName;
         err = '';
+        try {
+          const token = require('./createJWT.js');
+          ret = token.createToken(fn, ln);
+        }
+        catch (e) {
+          ret = {error: e.message };
+      }
+      }
+      else
+      {
+        ret = {error: "Login/Password incorrect"};
       }
     
-      var ret = { firstName:fn, lastName:ln, error: err};
+      //ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
  
@@ -104,145 +116,92 @@ exports.setApp = function ( app, client )
       var ret = {list: results};
       res.status(200).json(ret);
     });
-//-----------------------------------GAMES PLAYED ENDPOINTS-----------------------------------
+//-----------------------------------STATS ENDPOINTS-----------------------------------
     //get scores (ADJUST FOR JWT TOKEN)
-    app.post('/api/get_games_played', async (req, res, next) =>         //get_games_played
+    app.post('/api/get_stats', async (req, res, next) =>         //get_stats
     {
-      //REQ: login
+      //REQ: login, field (default = 'Score')
+      
       const db = client.db();
       const{login} = req.body;
       const results = await db.collection('Users').find({Login:login}).toArray();
+      var field;
       var err = '';
-      var GamesPlayed;
+      var value;
+      var ret;
       //check if record exists
       if(results.length == 0)
       {
         err = 'no record found';
       }
+      else if(req.body.field != "Score" && req.body.field != "GamesPlayed")
+      {
+        err = 'invalid field specified';
+      }
       else
       {
-        GamesPlayed = results[0].GamesPlayed;
+        field = req.body.field
+        value = results[0][field];
       }
-      var ret = {gamesplayed: GamesPlayed};
+      ret = {value: value, field: field, error: err};
       res.status(200).json(ret);
     });
 
      //perform operations on scores (ADJUST FOR JWT TOKEN)
-     app.post('/api/op_games_played', async (req, res, next) =>         //op_games_played
+     app.post('/api/op_stats', async (req, res, next) =>         //op_stats
      {
-       //REQ: login, value, mode
+       //REQ: login, value, mode, field
        //MODE OPs
        /*
        0: set
        1: add
        */
-       var mode;
-       var op = '';
-       if(!req.body.mode){
-         mode = 0;
-       }
-       else{
-        mode = req.body.mode;
-       }
-       const db = client.db();
-       const{login} = req.body;
-       const results = await db.collection('Users').find({Login:login}).toArray();
-       var err = '';
-       var GamesPlayed = results[0].GamesPlayed;
-       //check if record exists
-       if(results.length == 0)
+      var op;
+      var field;
+      var ret;
+      var value;
+      var mode;
+      var err = '';
+      
+      const db = client.db();
+      const{login} = req.body;
+      const results = await db.collection('Users').find({Login:login}).toArray();
+      
+      //check if record exists
+      if(req.body.field != "Score" && req.body.field != "GamesPlayed"){
+        err = 'invalid field specified';
+      }
+      else if(results.length == 0)
        {
-         err = 'no record found';
+        err = 'no record found';
        }
        else
        {
+        mode = req.body.mode;
+        field = req.body.field;
+        value = results[0][field];
+        if(!req.body.mode){
+          mode = 0;
+        }
          //set mode
          if(mode == 0){
-          GamesPlayed = req.body.value;
-          console.log(GamesPlayed);
+          value = req.body.value;
           op = 'set';
          }
          //add mode
          else if(mode == 1){
-          GamesPlayed += req.body.value;
+          value += req.body.value;
           op = 'add';
          }
-         
-         await db.collection('Users').updateOne({Login:login}, {$set: { "GamesPlayed" : GamesPlayed}});
+         var obj = {'$set': {}};
+         obj['$set'][field] = value;
+         await db.collection('Users').updateOne({Login:login}, obj);
        }
-       var ret = {gamesplayed: GamesPlayed, operation: op};
+       ret = {value: value, operation: op, field: field, error: err};
        res.status(200).json(ret);
      });
-//-----------------------------------SCORE ENDPOINTS-----------------------------------
-    //get scores (ADJUST FOR JWT TOKEN)
-    app.post('/api/get_score', async (req, res, next) =>         //get_score
-    {
-      //REQ: login
-      const db = client.db();
-      const{login} = req.body;
-      const results = await db.collection('Users').find({Login:login}).toArray();
-      var err = '';
-      var Score;
-      //check if record exists
-      if(results.length == 0)
-      {
-        err = 'no record found';
-      }
-      else
-      {
-        Score = results[0].Score;
-      }
-      var ret = {score: Score};
-      res.status(200).json(ret);
-    });
-
-    //perform operations on scores (ADJUST FOR JWT TOKEN)
-    app.post('/api/op_score', async (req, res, next) =>         //op_score
-    {
-      //REQ: login, value, mode
-      //MODE OPs
-      /*
-      0: set
-      1: add
-      */
-      var mode;
-      var op = ''
-      if(!req.body.mode){
-        mode = 0;
-      }
-      else{
-        mode = req.body.mode;
-       }
-      const db = client.db();
-      const{login} = req.body;
-      const results = await db.collection('Users').find({Login:login}).toArray();
-      var err = '';
-      var Score = results[0].Score;
-      //check if record exists
-      if(results.length == 0)
-      {
-        err = 'no record found';
-      }
-      else
-      {
-        //set mode
-        if(mode == 0){
-          Score = req.body.value;
-          op = 'set';
-        }
-        //add mode
-        else if(mode == 1){
-          Score += req.body.value;
-          op = 'add';
-        }
-        
-        await db.collection('Users').updateOne({Login:login}, {$set: { "Score" : Score}});
-      }
-      var ret = {score: Score, operation: op};
-      res.status(200).json(ret);
-    });
 //-----------------------------------MOVIE ENDPOINTS-----------------------------------
-    //gets random movies
+    //gets random movies (KEY)
     app.get('/api/movies', async (req, res, next) =>             //movies
     {
       const db = client.db();
