@@ -107,7 +107,7 @@ const HomePage = ({ navigation }) => {
           let iconName;
 
           if (route.name === "Play") {
-            iconName = focused ? "Game" : "game-controller-outline";
+            iconName = focused ? "play" : "play-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
           } else if (route.name === "Watch List") {
@@ -123,7 +123,7 @@ const HomePage = ({ navigation }) => {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Game" component={GamePage} />
+      <Tab.Screen name="Play" component={GamePage} />
       <Tab.Screen name="Watch List" component={WatchListPage} />
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
