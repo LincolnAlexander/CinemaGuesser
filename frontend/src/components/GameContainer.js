@@ -8,13 +8,14 @@ function GameContainer()
 {   let movieInfo = 
     {
       title: null,
-      desc: "osandji",
+      desc: null,
       boxOffice: null,
       genre: null,
       actors: null,
       poster:null,
       rating:null
     }
+    // const [desc, setDesc] = useState(false);
 
     const loadMovieInfo = async(event) => 
     {
@@ -31,13 +32,18 @@ function GameContainer()
       {
         let bp = require('./Paths.js');
         const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
-          method: 'GET',
+          method: 'POST',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
           
           
         });
         let res = JSON.parse(await response.text());
+        movieInfo.poster = res.omdb.Poster;
+        movieInfo.desc = res.omdb.Plot;
+        // setDesc(res.omdb.Poster);
         console.log("Results:");
-        console.log(response);
+        console.log(movieInfo.desc);
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {
@@ -94,7 +100,7 @@ function GameContainer()
           <span className='text-pr-red '>pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={GameImageSample} alt = 'MoviePostery'></img>
+          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={movieInfo.poster} alt = 'MoviePostery'></img>
         </div>
         <div className='min-h-[50px] '>
           <p className='text-pr-yellow'>Description:</p>
