@@ -118,6 +118,7 @@ exports.setApp = function ( app, client )
     });
 //-----------------------------------STATS ENDPOINTS-----------------------------------
     //get scores (ADJUST FOR JWT TOKEN)
+    // Adjusted for JWT tokens ------
     app.post('/api/get_stats', async (req, res, next) =>         //get_stats
     {
       //REQ: login
@@ -186,6 +187,7 @@ exports.setApp = function ( app, client )
        0: set
        1: add
        */
+         
       var op;
       var field;
       var ret;
@@ -193,10 +195,28 @@ exports.setApp = function ( app, client )
       var mode;
       var err = '';
       
+
+      let token = require('./createJWT.js');
+      const{login, jwtToken} = req.body;
+
+      try
+      {
+        if(token.isExpired(jwtToken))
+        {
+          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+          res.status(200).json(r);
+          return;
+        }
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+
+
+
       const db = client.db();
-      const{login} = req.body;
       const results = await db.collection('Users').find({Login:login}).toArray();
-      
       //check if record exists
       if(req.body.field != "Score" && req.body.field != "GamesPlayed"){
         err = 'invalid field specified';
@@ -227,7 +247,21 @@ exports.setApp = function ( app, client )
          obj['$set'][field] = value;
          await db.collection('Users').updateOne({Login:login}, obj);
        }
-       ret = {value: value, operation: op, field: field, error: err};
+
+
+       var refreshedToken = null;
+
+      try
+      {
+        refreshedToken = token.refresh(jwtToken);
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+
+
+       ret = {value: value, operation: op, field: field, error: err, jwtToken: refreshedToken};
        res.status(200).json(ret);
      });
 //-----------------------------------MOVIE ENDPOINTS-----------------------------------
