@@ -29,20 +29,20 @@ exports.setApp = function ( app, client )
         fn = results[0].FirstName;
         ln = results[0].LastName;
         err = '';
-        try {
+        /*(try {
           const token = require('./createJWT.js');
           ret = token.createToken(fn, ln);
         }
         catch (e) {
           ret = {error: e.message };
-      }
+      }*/
       }
       else
       {
         ret = {error: "Login/Password incorrect"};
       }
     
-      //ret = { firstName:fn, lastName:ln, error: err};
+      ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
  
@@ -51,6 +51,7 @@ exports.setApp = function ( app, client )
     {
       var error = '';
       const { FirstName, LastName, Login, Pass } = req.body;
+      console.log(req.body.Password);
       const Password = sha256.hmac('key', req.body.Password);
       //stats and list(s) for user
       const Score = 0;
@@ -60,7 +61,6 @@ exports.setApp = function ( app, client )
       
 
       var err = 'Username Taken';
-      var pass = '';
       var fn = '';
       var ln = '';
       var lgn = '';
@@ -74,7 +74,6 @@ exports.setApp = function ( app, client )
         fn = FirstName;
         ln = LastName;
         lgn = Login;
-        pass = Pass;
         err = '';
       }
 
