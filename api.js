@@ -122,8 +122,24 @@ exports.setApp = function ( app, client )
     {
       //REQ: login
       
+      let token = require('./createJWT.js');
+      const{login, jwtToken} = req.body;
+
+      try
+      {
+        if(token.isExpired(jwtToken))
+        {
+          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+          res.status(200).json(r);
+          return;
+        }
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+
       const db = client.db();
-      const{login} = req.body;
       const results = await db.collection('Users').find({Login:login}).toArray();
       var err = '';
 
@@ -146,7 +162,18 @@ exports.setApp = function ( app, client )
         retlogin = login;
 
       }
-      ret = {login: retlogin, score: score, gamesPlayed: gamesPlayed, error: err};
+
+      var refreshedToken = null;
+
+      try
+      {
+        refreshedToken = token.refresh(jwtToken);
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+      ret = {login: retlogin, score: score, gamesPlayed: gamesPlayed, error: err, jwtToken: refreshedToken};
       res.status(200).json(ret);
     });
 
