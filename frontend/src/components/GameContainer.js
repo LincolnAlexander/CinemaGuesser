@@ -19,12 +19,12 @@ function GameContainer()
       rating:null
     }
     const [desc, setDesc] = useState(false);
-    const [poster, setPoster] = useState(false);
+    const [poster, setPoster] = useState(null);
     const [title, setTitle] = useState(false);
     const [boxOffice, setBoxOffice] = useState(false);
     const [genre, setGenre] = useState(false);
     const [actors, setActors] = useState(false);
-    const [rating, setRating] = useState(false);
+    const [rating, setRating] = useState(0);
     let res;
     useEffect(() =>
     {
@@ -98,7 +98,7 @@ function GameContainer()
     
     function closeModal() {
       setModal(false);
-      loadMovieInfo();
+      // loadMovieInfo();
     }
 
     // End of Code for Modal ***************************************************************************************************************************** 
@@ -113,7 +113,7 @@ function GameContainer()
           <span className='text-pr-red '>pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={poster} alt = 'MoviePoster'></img>
+          <img className='w-32 sm:w-60 sm:h-84 rounded-lg ' src={poster} alt = 'MoviePoster'></img>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
           <p className='text-pr-yellow'>Description:</p>
@@ -143,7 +143,7 @@ function GameContainer()
           
         </div>
       </div>
-      <PlayAgainModal value = {turnOn} closeModal={closeModal}/>
+      <PlayAgainModal value = {turnOn} closeModal={closeModal} loadMovieInfo = {loadMovieInfo}rating = {rating / 10}/>
     </div>
     
     )
