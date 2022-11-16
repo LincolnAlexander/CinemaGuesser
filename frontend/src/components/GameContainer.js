@@ -19,18 +19,25 @@ function GameContainer()
       rating:null
     }
     const [desc, setDesc] = useState(false);
+    const [poster, setPoster] = useState(false);
+    const [title, setTitle] = useState(false);
+    const [boxOffice, setBoxOffice] = useState(false);
+    const [genre, setGenre] = useState(false);
+    const [actors, setActors] = useState(false);
+    const [rating, setRating] = useState(false);
     let res;
+    useEffect(() =>
+    {
+      loadMovieInfo();
+    },[]);
     const loadMovieInfo = async(event) => 
     {
       // event.preventDefault();
 
       // console.log(event);
 
-      let obj = {
-        
-      };
+      let obj = {};
       let js = JSON.stringify(obj);
-      
       try 
       {
         let bp = require('./Paths.js');
@@ -38,17 +45,17 @@ function GameContainer()
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
-          
-          
         });
         res = JSON.parse(await response.text());
-        movieInfo.poster = res.omdb.Poster;
-        movieInfo.desc = res.omdb.Plot;
+        
+        setDesc(res.omdb.Plot);
+        setActors(res.omdb.Actors);
+        setBoxOffice(res.omdb.BoxOffice);
+        setGenre(res.omdb.Genre);
+        setPoster(res.omdb.Poster);
+        setRating(res.omdb.Rating);
+        setTitle(res.omdb.Title);
 
-        // useEffect(()=> 
-        // {
-        //   setDesc(res.omdb.Plot)
-        // }, [])
         
         console.log("Results:");
         console.log(res.omdb);
@@ -68,9 +75,6 @@ function GameContainer()
       }
 
     }
-    
-    console.log("Calling Movie Info");
-    loadMovieInfo();
     // End of Code for Movie Info ***********************************************************************************************************************
 
     // Code for Modal *********************************************************************************************************************************** 
@@ -101,30 +105,30 @@ function GameContainer()
     <div className='flex justify-center mt-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
-          <p className='text-pr-yellow'>Name of Movie</p>
+          <p className='text-pr-yellow text-xl'>{title}</p>
         </div>
         <div className='min-h-[50px] text-center mt-5'>
           <span className='text-pr-yellow mr-2'>Score:</span>
           <span className='text-pr-red '>pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={GameImageSample} alt = 'MoviePostery'></img>
+          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={poster} alt = 'MoviePoster'></img>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
           <p className='text-pr-yellow'>Description:</p>
-          <p className='text-pr-white'>{movieInfo.desc}</p>
+          <p className='text-pr-white pr-2'>{desc}</p>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2'>Genre:</span>
-          <span className='text-pr-white'></span>
+          <span className='text-pr-white pr-2'>{genre}</span>
         </div>
         <div className='min-h-[50px] text-center sm:text-left' >
           <span className='text-pr-yellow mr-2'>Box Office:</span>
-          <span className='text-pr-white'></span>
+          <span className='text-pr-white pr-2'>{boxOffice}</span>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
-          <span className='text-pr-yellow mr-2'>Actors:</span>
-          <span className='text-pr-white'></span>
+          <span className='text-pr-yellow mr-2 '>Actors:</span>
+          <span className='text-pr-white pr-2'>{actors}</span>
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
