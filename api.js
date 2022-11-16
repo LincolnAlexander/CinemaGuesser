@@ -7,6 +7,7 @@ var sha256 = require('js-sha256');
 exports.setApp = function ( app, client )
 {
 //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
+// JWT Added by Casey
     app.post('/api/login', async (req, res, next) =>             //login
     {
       // incoming: login, password
@@ -14,11 +15,10 @@ exports.setApp = function ( app, client )
      var error = '';
     
       const { login, password } = req.body;
-      const hash = sha256.hmac('key', password);
-
+      const Password = sha256.hmac('key', req.body.Password);
+      const Login = req.body.login;
       const db = client.db();
-      const results = await db.collection('Users').find({Login:login,Password:hash}).toArray();
-    
+      const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
       var fn = '';
       var ln = '';
       var err = 'invalid login';
@@ -29,20 +29,19 @@ exports.setApp = function ( app, client )
         fn = results[0].FirstName;
         ln = results[0].LastName;
         err = '';
-        /*(try {
+        try {
           const token = require('./createJWT.js');
           ret = token.createToken(fn, ln);
         }
         catch (e) {
           ret = {error: e.message };
-      }*/
+      }
       }
       else
       {
         ret = {error: "Login/Password incorrect"};
       }
     
-      ret = { firstName:fn, lastName:ln, error: err};
       res.status(200).json(ret);
     });
  
@@ -51,7 +50,6 @@ exports.setApp = function ( app, client )
     {
       var error = '';
       const { FirstName, LastName, Login, Pass } = req.body;
-      console.log(req.body.Password);
       const Password = sha256.hmac('key', req.body.Password);
       //stats and list(s) for user
       const Score = 0;
@@ -80,6 +78,9 @@ exports.setApp = function ( app, client )
       var ret = {firstname: fn, lastname: ln, login: lgn, error: err}
       res.status(200).json(ret);
     });
+
+
+
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
     //leaderboard endpoint that sorts by gamesplayed or score
     app.post('/api/leaderboard', async (req, res, next) =>         //leaderboard
