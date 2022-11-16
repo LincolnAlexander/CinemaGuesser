@@ -11,7 +11,7 @@ exports.setApp = function ( app, client )
     app.post('/api/login', async (req, res, next) =>             //login
     {
       // incoming: login, password
-      // outgoing: firstName, lastName, error
+      // outgoing: fn, ln, accessToken
      var error = '';
     
       const { login, password } = req.body;
@@ -41,7 +41,6 @@ exports.setApp = function ( app, client )
       {
         ret = {error: "Login/Password incorrect"};
       }
-    
       res.status(200).json(ret);
     });
  
