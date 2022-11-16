@@ -98,6 +98,7 @@ function GameContainer()
     
     function closeModal() {
       setModal(false);
+      loadMovieInfo();
     }
 
     // End of Code for Modal ***************************************************************************************************************************** 
