@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GameImageSample from '../images/GameImageSample.jpg'
 import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
 import PlayAgainModal from './modals/PlayAgainModal'
 
 function GameContainer()
 {   
-
   // Code for Movie Info ***************************************************************************************************************
     const [desc, setDesc] = useState(false);
     const [poster, setPoster] = useState(null);
@@ -15,6 +13,8 @@ function GameContainer()
     const [genre, setGenre] = useState(false);
     const [actors, setActors] = useState(false);
     const [rating, setRating] = useState(0);
+    let [prevRating, setPrevRating] = useState(0);
+    const [score, setScore] = useState(0);
     let res;
     useEffect(() =>
     {
@@ -23,8 +23,7 @@ function GameContainer()
     const loadMovieInfo = async(event) => 
     {
       // event.preventDefault();
-
-      // console.log(event);
+      //console.log(event);
 
       let obj = {};
       let js = JSON.stringify(obj);
@@ -43,8 +42,9 @@ function GameContainer()
         setBoxOffice(res.omdb.BoxOffice);
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
-        setRating(parseInt(res.omdb.Rating) / 10);
+        setRating(parseInt(res.omdb.Rating));
         setTitle(res.omdb.Title);
+        // setPrevRating(rating);
 
         
         console.log("Results:");
@@ -70,31 +70,68 @@ function GameContainer()
     // Code for Modal *********************************************************************************************************************************** 
     const navigate = useNavigate();
     const [turnOn, setModal] = useState(false);
-    const [curGuess, setGuess] = useState(null);
-    let numGuesses = 0;
-    let guesses = [];
+    var [curGuess, setGuess] = useState(1);
+    let [prevScore, setPrevScore] = useState(0);
+    const [message, setMessage] = useState('');
+    
+    let guesses = useRef(null);
     
     const handleGuess = event =>{
-      guesses[numGuesses] = event.target.value;
+      console.log(guesses.current.value);
+      
+      // if( event.target.value === undefined)
+      // {
+      //   console.log(true);
+      //   guesses = 0;
+      //   showModal(event, guesses);
+      // }
+      // else
+      // {
+      //   guesses = event.target.value;
+      //   showModal(event, guesses);
+      // }
+      
+      showModal(event, guesses.current.value);
     }
-    function showModal(event)
+    function showModal(event, g)
     {
       event.preventDefault();
       
-      numGuesses++;
-      if(numGuesses === 3)
+      
+      setGuess(curGuess + 1);
+
+      
+      // setPrevRating(prevRating);
+      setScore(score + pointsAwarded(Math.abs(g - rating)));
+      // setPrevScore(score);
+      console.log("Score: "+score);
+      console.log("Rating: "+rating);
+      console.log("Guess: "+g);
+
+      if(curGuess === 5)
       {
+        setGuess(1);
+        setPrevScore(0);
+        setScore(0);
         console.log("Showing PlayAgainModal");
-        console.log("Users guesses" + guesses);
-        numGuesses = 0;
+        console.log("Users guesses" + g);
         setModal(true);
       }
-      // console.log(numGuesses);
+      else
+        loadMovieInfo();
+      // console.log(curGuess);
     }
     
     function closeModal() {
       setModal(false);
-      // loadMovieInfo();
+      loadMovieInfo();
+    }
+
+    function pointsAwarded(delta) {
+      if (delta >= 20) return 0;
+      
+      let exp = delta - 20;
+      return 0.25 * exp * exp;
     }
 
     // End of Code for Modal ***************************************************************************************************************************** 
@@ -106,7 +143,7 @@ function GameContainer()
         </div>
         <div className='min-h-[50px] text-center mt-5'>
           <span className='text-pr-yellow mr-2'>Score:</span>
-          <span className='text-pr-red '>pts</span>
+          <span className='text-pr-red pr-2 '>{score}pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
           <img className='w-32 sm:w-60 sm:h-84 rounded-lg ' src={poster} alt = 'MoviePoster'></img>
@@ -129,9 +166,10 @@ function GameContainer()
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
-          <form className = 'sm:flex justify-center'>
-          <input className='peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center' onChange = {handleGuess} placeholder='Guess Rating' id='guess' type='number' min='1' max= '10' ></input>
-            <button className='mx-5' onClick={showModal} >
+          <form 
+           className = 'sm:flex justify-center'>
+          <input className='peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center' ref = {guesses} placeholder='Guess Rating' id='guess' type='number' min='1' max= '100' ></input>
+            <button className='mx-5' onClick={handleGuess} >
               <SubmitBtn className = 'w-20 sm: w-24 self-center'/>
             </button>
           </form>
