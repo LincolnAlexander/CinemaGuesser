@@ -32,11 +32,12 @@ function GameContainer()
       try 
       {
         let bp = require('./Paths.js');
-        const response = await fetch(bp.buildPath("/api/movies_saved"), {
+        const response = await fetch(bp.buildPath("api/movies_saved"), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
         });
+        console.log(res);
         res = JSON.parse(await response.text());
         
         setDesc(res.omdb.Plot);
