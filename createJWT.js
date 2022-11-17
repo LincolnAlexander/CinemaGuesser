@@ -22,7 +22,7 @@ _createToken = function (fn, ln) {
                         '365d'
         */
 
-        ret = { accessToken: accessToken, fn: fn, ln: ln};
+        ret = { accessToken: accessToken, firstName: fn, lastName: ln};
     }
     catch (e) {
         ret = { error: e.message };

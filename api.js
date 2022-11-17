@@ -31,7 +31,7 @@ exports.setApp = function ( app, client )
         err = '';
         try {
           const token = require('./createJWT.js');
-          ret = token.createToken(fn, ln);
+          ret = token.createToken(firstName, lastName);
         }
         catch (e) {
           ret = {error: e.message };
