@@ -12,16 +12,21 @@ exports.setApp = function ( app, client )
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
-     var error = '';
+
     
       const { login, password } = req.body;
-      const Password = sha256.hmac('key', req.body.password);
+      console.log("here " + password + " a");
+
+      var Password = '';
+      if(password){
+        Password = sha256.hmac('key', password);
+      }
       const Login = req.body.login;
       const db = client.db();
       const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
       var firstName = '';
       var lastName = '';
-      var err = 'invalid login';
+      var err;
       var ret;
     
       if( results.length > 0 )
@@ -40,8 +45,9 @@ exports.setApp = function ( app, client )
       else
       {
         ret = {error: "Login/Password incorrect"};
+        err = "Login/Password incorrect"
       }
-    
+      //ret = {firstName: firstName, lastName: lastName, error: err}
       res.status(200).json(ret);
     });
  
