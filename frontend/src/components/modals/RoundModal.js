@@ -19,7 +19,7 @@ export default function RoundModal(props)
         // props.value = !props.value;
 
         setModal(false);
-        props.closeModal();
+        props.closeRoundModal();
         
     }
     return(
@@ -51,7 +51,7 @@ export default function RoundModal(props)
                 <span className='text-pr-white pr-2'>{props.score}pts</span>
               </div>
               <div className='justify-self-center min-h-[50px]'>
-                <button onClick={()=> {props.closeModal(); navigate('/game'); }}>
+                <button onClick={()=> {props.closeRoundModal(); navigate('/game'); }}>
                   <PlayAgainBtn/>
                 </button>
               </div>

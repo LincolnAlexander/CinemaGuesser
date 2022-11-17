@@ -49,7 +49,7 @@ export default function PlayAgainModal(props)
                 <span className='text-pr-white pr-2'>{props.score}pts</span>
               </div>
               <div className='justify-self-center min-h-[50px]'>
-                <button onClick={()=> {props.closeModal(); navigate('/game'); }}>
+                <button onClick={()=> {props.closePlayAgainModal(); navigate('/game'); }}>
                   <PlayAgainBtn/>
                 </button>
               </div>
