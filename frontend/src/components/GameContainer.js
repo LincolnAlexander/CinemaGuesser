@@ -77,7 +77,7 @@ function GameContainer()
     let guesses = useRef(null);
     
     const handleGuess = event =>{
-      // console.log(guesses.current.value);
+      console.log(guesses.current.value);
       
       // if( event.target.value === undefined)
       // {
@@ -103,21 +103,19 @@ function GameContainer()
       
       // setPrevRating(prevRating);
       setScore(score + pointsAwarded(Math.abs(g - rating)));
-      
       // setPrevScore(score);
       console.log("Score: "+score);
       console.log("Rating: "+rating);
       console.log("Guess: "+g);
-      
+
       if(curGuess === 5)
       {
         setGuess(1);
-        console.log(score);
-        // setScore(0);
+        setPrevScore(0);
+        setScore(0);
         console.log("Showing PlayAgainModal");
         console.log("Users guesses" + g);
         setModal(true);
-        
       }
       else
         loadMovieInfo();
@@ -127,7 +125,6 @@ function GameContainer()
     function closeModal() {
       setModal(false);
       loadMovieInfo();
-      setScore(0);
     }
 
     function pointsAwarded(delta) {
@@ -180,7 +177,7 @@ function GameContainer()
           
         </div>
       </div>
-      <PlayAgainModal value = {turnOn} closeModal={closeModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} />
+      <PlayAgainModal value = {turnOn} closeModal={closeModal} loadMovieInfo = {loadMovieInfo} rating = {rating}/>
     </div>
     
     )

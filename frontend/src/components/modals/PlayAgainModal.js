@@ -17,10 +17,8 @@ export default function PlayAgainModal(props)
     const toggleModal = () =>
     {
         // props.value = !props.value;
-
         setModal(false);
         props.closeModal();
-        
     }
     return(
         <>
@@ -39,8 +37,8 @@ export default function PlayAgainModal(props)
                 </h2>
               </div>
               <div className='min-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Total Score</span>
-                <span className='text-pr-white pr-2'>{props.score}</span>
+                <span className='text-pr-yellow mr-2'>Movie Rating:</span>
+                <span className='text-pr-white pr-2'>{props.rating}</span>
               </div>
               <div className='min-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>Your Best Guess:</span>

@@ -15,7 +15,7 @@ exports.setApp = function ( app, client )
      var error = '';
     
       const { login, password } = req.body;
-      const Password = sha256.hmac('key', req.body.Password);
+      const Password = sha256.hmac('key', req.body.password);
       const Login = req.body.login;
       const db = client.db();
       const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
