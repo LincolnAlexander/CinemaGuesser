@@ -137,6 +137,7 @@ function GameContainer()
     function closeModal() {
       setModal(false);
       loadMovieInfo();
+      setScore(0);
     }
 
     function closePlayAgainModal()
