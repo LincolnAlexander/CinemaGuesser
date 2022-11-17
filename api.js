@@ -19,15 +19,15 @@ exports.setApp = function ( app, client )
       const Login = req.body.login;
       const db = client.db();
       const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
-      var fn = '';
-      var ln = '';
+      var firstName = '';
+      var lastName = '';
       var err = 'invalid login';
       var ret;
     
       if( results.length > 0 )
       {
-        fn = results[0].FirstName;
-        ln = results[0].LastName;
+        firstName = results[0].FirstName;
+        lastName = results[0].LastName;
         err = '';
         try {
           const token = require('./createJWT.js');
