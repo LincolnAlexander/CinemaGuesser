@@ -151,19 +151,26 @@ function GameContainer()
     }
 
     
-
+    //exponential (delta 30)
     /*function pointsAwarded(delta) {
       if (delta >= 30) return 0;
       
       let exp = delta - 30;
       return Math.round((1/9) * exp * exp);
     }*/
+    //single linear (delta 33, 3)
     function pointsAwarded(delta) {
-      if (delta >= 20) return 0;
+      if (delta >= 33) return 0;
       if (delta == 0 ) return 120;
-      return Math.round(100 - 5 * delta);
+      return Math.round(100 - 3 * delta);
     }
-
+    //double linear (delta 26, slope 2 [delta <= 10], slope 5 [delta > 10])
+    /*function pointsAwarded(delta) {
+      if (delta >= 26) return 0;
+      if (delta == 0 ) return 120;
+      if (delta <= 10) return Math.round(100 - 2 * delta)
+      return Math.round(130 - 5 * delta);
+    }*/
     // End of Code for Modal ***************************************************************************************************************************** 
     return(
     <div className='flex justify-center m-20 '>
