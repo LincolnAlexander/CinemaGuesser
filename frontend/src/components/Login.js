@@ -5,7 +5,7 @@ function Login() {
   var loginPassword;
 
   const [message, setMessage] = useState("");
-
+  const bp = require('./Path.js');
   const doLogin = async (event) => {
     event.preventDefault();
 
@@ -13,7 +13,7 @@ function Login() {
     var js = JSON.stringify(obj);
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(bp.buildPath("/api/login"), {
         method: "POST",
         body: js,
         headers: { "Content-Type": "application/json" },
