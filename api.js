@@ -29,18 +29,20 @@ exports.setApp = function ( app, client )
         fn = results[0].FirstName;
         ln = results[0].LastName;
         err = '';
+        /*
         try {
           const token = require('./createJWT.js');
           ret = token.createToken(fn, ln);
         }
         catch (e) {
           ret = {error: e.message };
-      }
+      }*/
       }
       else
       {
         ret = {error: "Login/Password incorrect"};
       }
+      ret = {fn: fn, ln: ln, err:''}
       res.status(200).json(ret);
     });
  
