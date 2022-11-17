@@ -5,13 +5,15 @@ import CinemaGuesserApp from './CinemaGuesserApp';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import GamePage from './pages/GamePage';
+import Nav from './components/Nav';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* <CinemaGuesserApp /> */}
-      <GamePage/>
+      {/* <GamePage/> */}
+      <Nav />
     </BrowserRouter>
   </React.StrictMode>
 );
