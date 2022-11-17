@@ -1,4 +1,4 @@
-require('mongodb');
+const { MongoClient } = require('mongodb');
 
 const request = require('supertest');
 var sha256 = require('js-sha256');
@@ -41,14 +41,13 @@ describe('POST /login', () => {
         const res = await request(baseURL).post('/login').send(badRequest);
 
         expect(res.statusCode).toBe(200);
-        expect(res._body.error).toBe('Login/Password incorrect');
+        expect(res.body.error).toBe('Login/Password incorrect');
     });
 });
 
 // Testing /register endpoint
 describe('POST /register', () => {
-    // Unused for time being
-    let client;
+    let client = require('../server');
     let db;
 
     const registerTest = {
@@ -60,38 +59,57 @@ describe('POST /register', () => {
         GamesPlayed: 0,
         WatchList: []
     };
-    
-    /* Should connect to mongodb but doesn't...
+    // Connect to db
     beforeAll(async () => {
-        const MongoClient = require('mongodb').MongoClient;
-        require('dotenv').config();
-
-        client = new MongoClient(process.env.MONGODB_URI);
+        //require('dotenv').config();
+        //client = new MongoClient(process.env.MONGODB_URI);
+        
         client.connect();
-
         db = client.db();
     });
-    */
-
-    // Remove user and verify it has been removed.
-    // Not working because can't connect to mongodb.
-    /*
+    
+    // Close connection with db
     afterAll(async () => {
+        await client.close();
         await request(baseURL).delete('/register');
-
-        db.collection('Users').deleteOne({Login:registerTest.Login});
-
-        test('Test user is removed from data base after test', async () => {
-            const res = await db.collection('Users').find({Login:registerTest.Login}).toArray();
-            expect(res).toEqual([]);
-        });
     });
-    */
 
-    // Registers dummy user, needs to be manually removed from db for now.
+    // Registers dummy user
     test('/register endpoint adding dummy user', async () => {
+        // Add via api
         const res = await request(baseURL).post('/register').send(registerTest);
 
         expect(res.statusCode).toBe(200);
+
+        const data = res.body;
+        expect(data.firstname).toBe(registerTest.FirstName);
+        expect(data.lastname).toBe(registerTest.LastName);
+        expect(data.login).toBe(registerTest.Login);
+        
+        
+        // Manual addition
+        let FirstName = registerTest.FirstName;
+        let LastName = registerTest.LastName;
+        let Login = registerTest.Login;
+        let Password = registerTest.Password;
+        let Score = 0; 
+        let GamesPlayed = 0; 
+        let WatchList = [];
+
+        const Users = db.collection('Users');
+        Users.insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList});
+    });
+
+    // Removes dummy user and verifies removal
+    test('Test user is removed from data base after test', async () => {
+        const Users = db.collection('Users');
+        const user = await Users.find({Login:registerTest.Login}).toArray();
+        console.log(user);
+
+        const result = await Users.deleteOne({Login:registerTest.Login});
+        // Checking for db acknowledgment
+        expect(result.acknowledged).toBeTruthy();
+        // Checking that record was deleted
+        expect(result.deletedCount).toBeGreaterThan(0);
     });
 }); 
