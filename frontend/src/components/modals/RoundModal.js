@@ -3,7 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ReactComponent as PlayAgainBtn } from '../../images/PlayAgainBtn.svg';
 import { useNavigate } from 'react-router-dom';
 
-export default function PlayAgainModal(props)
+export default function RoundModal(props)
 {
     
     const navigate = useNavigate();
@@ -35,11 +35,11 @@ export default function PlayAgainModal(props)
             <div className='grid grid-cols-1 gap-y-2'>
               <div className=' min-h-[50px]'>
                 <h2 className='text-pr-yellow text-center text-xl md:text-2xl lg:text-3xl'>
-                 Game Over
+                  Round {props.round}
                 </h2>
               </div>
               <div className='min-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Last Movie Rating:</span>
+                <span className='text-pr-yellow mr-2'>Movie Rating:</span>
                 <span className='text-pr-white pr-2'>{props.rating}%</span>
               </div>
               {/* <div className='min-h-[50px]'>
@@ -47,7 +47,7 @@ export default function PlayAgainModal(props)
                 <span className='text-pr-white pr-2'>{props.guess}</span>
               </div> */}
               <div className='rmin-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Total Score:</span>
+                <span className='text-pr-yellow mr-2'>You Scored:</span>
                 <span className='text-pr-white pr-2'>{props.score}pts</span>
               </div>
               <div className='justify-self-center min-h-[50px]'>

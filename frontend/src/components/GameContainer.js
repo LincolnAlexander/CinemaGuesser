@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
 import PlayAgainModal from './modals/PlayAgainModal'
+import RoundModal from './modals/RoundModal'
 
 function GameContainer()
 {   
@@ -15,6 +16,7 @@ function GameContainer()
     const [rating, setRating] = useState(0);
     let [prevRating, setPrevRating] = useState(0);
     const [score, setScore] = useState(0);
+    const [totalScore, setTotalScore] = useState(0);
     let res;
     useEffect(() =>
     {
@@ -70,12 +72,13 @@ function GameContainer()
     // Code for Modal *********************************************************************************************************************************** 
     const navigate = useNavigate();
     const [turnOn, setModal] = useState(false);
+    const [turnOny, setModaly] = useState(false);
     var [curGuess, setGuess] = useState(1);
     let [prevScore, setPrevScore] = useState(0);
     const [message, setMessage] = useState('');
-    
+    const [round, setRound] = useState(0);
     let guesses = useRef(null);
-    
+    let gg;
     const handleGuess = event =>{
       // console.log(guesses.current.value);
       
@@ -90,7 +93,7 @@ function GameContainer()
       //   guesses = event.target.value;
       //   showModal(event, guesses);
       // }
-      
+      gg = guesses.current.value;
       showModal(event, guesses.current.value);
     }
     function showModal(event, g)
@@ -99,28 +102,35 @@ function GameContainer()
       
       
       setGuess(curGuess + 1);
-
+      setRound(round + 1);
       
       // setPrevRating(prevRating);
       setScore(score + pointsAwarded(Math.abs(g - rating)));
+      setTotalScore(totalScore + (score + pointsAwarded(Math.abs(g - rating))));
       
       // setPrevScore(score);
       console.log("Score: "+score);
       console.log("Rating: "+rating);
       console.log("Guess: "+g);
+      console.log("Guess: "+totalScore);
       
       if(curGuess === 5)
       {
         setGuess(1);
+
         console.log(score);
         // setScore(0);
         console.log("Showing PlayAgainModal");
         console.log("Users guesses" + g);
-        setModal(true);
+        setModaly(true);
         
       }
       else
-        loadMovieInfo();
+      {
+        setModal(true);
+        // loadMovieInfo();
+      }
+        
       // console.log(curGuess);
     }
     
@@ -130,11 +140,20 @@ function GameContainer()
       setScore(0);
     }
 
+    function closePlayAgainModal()
+    {
+      setModaly(false);
+      loadMovieInfo();
+      setTotalScore(0);
+      setScore(0);
+      setRound(0);
+    }
+
     function pointsAwarded(delta) {
-      if (delta >= 20) return 0;
+      if (delta >= 30) return 0;
       
-      let exp = delta - 20;
-      return 0.25 * exp * exp;
+      let exp = delta - 30;
+      return Math.round((1/9) * exp * exp);
     }
 
     // End of Code for Modal ***************************************************************************************************************************** 
@@ -146,7 +165,7 @@ function GameContainer()
         </div>
         <div className='min-h-[50px] text-center mt-5'>
           <span className='text-pr-yellow mr-2'>Score:</span>
-          <span className='text-pr-red pr-2 '>{score}pts</span>
+          <span className='text-pr-red pr-2 '>{totalScore}pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
           <img className='w-32 sm:w-60 sm:h-84 rounded-lg ' src={poster} alt = 'MoviePoster'></img>
@@ -180,7 +199,8 @@ function GameContainer()
           
         </div>
       </div>
-      <PlayAgainModal value = {turnOn} closeModal={closeModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} />
+      <RoundModal value = {turnOn} closeModal={closeModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} guess = {gg} round = {round}/>
+      <PlayAgainModal value = {turnOny} closeModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {totalScore} guess = {gg} round = {round}/>
     </div>
     
     )
