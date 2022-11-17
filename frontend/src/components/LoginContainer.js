@@ -32,8 +32,8 @@ const LoginContainer = () => {
       // });
 
       // const res = JSON.parse(await response.text());
-      if (ret.error) {
-        setMessage(ret.error);
+      if (res.error) {
+        setMessage(res.error);
       } else {
         const user = {
           firstName: res.firstName,
