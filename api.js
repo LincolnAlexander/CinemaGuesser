@@ -11,11 +11,11 @@ exports.setApp = function ( app, client )
     app.post('/api/login', async (req, res, next) =>             //login
     {
       // incoming: login, password
-      // outgoing: fn, ln, accessToken
+      // outgoing: firstName, lastName, error
      var error = '';
     
       const { login, password } = req.body;
-      const Password = sha256.hmac('key', req.body.password);
+      const Password = sha256.hmac('key', req.body.Password);
       const Login = req.body.login;
       const db = client.db();
       const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
@@ -29,20 +29,19 @@ exports.setApp = function ( app, client )
         fn = results[0].FirstName;
         ln = results[0].LastName;
         err = '';
-        /*
         try {
           const token = require('./createJWT.js');
           ret = token.createToken(fn, ln);
         }
         catch (e) {
           ret = {error: e.message };
-      }*/
+      }
       }
       else
       {
         ret = {error: "Login/Password incorrect"};
       }
-      ret = {fn: fn, ln: ln, err:''}
+    
       res.status(200).json(ret);
     });
  

@@ -32,12 +32,13 @@ const LoginContainer = () => {
       // });
 
       // const res = JSON.parse(await response.text());
-      if (res.error != '') {
-        setMessage('Invalid Username/Password');
+
+      if (res.error !== '') {
+        setMessage('Incorrect User/Password!');
       } else {
         const user = {
-          firstName: res.fn,
-          lastName: res.ln,
+          firstName: res.firstName,
+          lastName: res.lastName,
         };
         localStorage.setItem('user_data', JSON.stringify(user));
 
