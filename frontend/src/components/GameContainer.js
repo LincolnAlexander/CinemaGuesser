@@ -152,11 +152,16 @@ function GameContainer()
 
     
 
-    function pointsAwarded(delta) {
+    /*function pointsAwarded(delta) {
       if (delta >= 30) return 0;
       
       let exp = delta - 30;
       return Math.round((1/9) * exp * exp);
+    }*/
+    function pointsAwarded(delta) {
+      if (delta >= 20) return 0;
+      if (delta == 0 ) return 120;
+      return Math.round(100 - 5 * delta);
     }
 
     // End of Code for Modal ***************************************************************************************************************************** 
