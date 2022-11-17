@@ -17,10 +17,8 @@ export default function PlayAgainModal(props)
     const toggleModal = () =>
     {
         // props.value = !props.value;
-
         setModal(false);
         props.closeModal();
-        
     }
     return(
         <>

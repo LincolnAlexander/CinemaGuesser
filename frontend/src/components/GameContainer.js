@@ -80,7 +80,7 @@ function GameContainer()
     let guesses = useRef(null);
     let gg;
     const handleGuess = event =>{
-      // console.log(guesses.current.value);
+      console.log(guesses.current.value);
       
       // if( event.target.value === undefined)
       // {
@@ -137,7 +137,6 @@ function GameContainer()
     function closeModal() {
       setModal(false);
       loadMovieInfo();
-      setScore(0);
     }
 
     function closePlayAgainModal()
@@ -148,6 +147,8 @@ function GameContainer()
       setScore(0);
       setRound(0);
     }
+
+    
 
     function pointsAwarded(delta) {
       if (delta >= 30) return 0;
