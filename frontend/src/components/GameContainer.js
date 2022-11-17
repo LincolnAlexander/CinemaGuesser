@@ -32,7 +32,7 @@ function GameContainer()
       try 
       {
         let bp = require('./Paths.js');
-        const response = await fetch(bp.buildPath("api/movies_saved"), {
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -100,7 +100,7 @@ function GameContainer()
     function showModal(event, g)
     {
       event.preventDefault();
-      
+      guesses.current.value = '';
       
       setGuess(curGuess + 1);
       setRound(round + 1);
@@ -161,7 +161,7 @@ function GameContainer()
 
     // End of Code for Modal ***************************************************************************************************************************** 
     return(
-    <div className='flex justify-center mt-20 '>
+    <div className='flex justify-center m-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
           <p className='text-pr-yellow text-xl'>{title}</p>
