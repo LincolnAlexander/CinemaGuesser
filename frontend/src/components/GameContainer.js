@@ -43,7 +43,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
         // bp.buildPath('api/movies_saved')
-        const response = await fetch(bp.buildPath('api/movies_saved'), {
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -212,13 +212,13 @@ function GameContainer()
           body: js,
           headers: { 'Content-Type': 'application/json' },
         });
-        // console.log(res);
+        // console.log(res.value);
         res = JSON.parse(await response.text());
         
-        //console.log("Results:" + res.error);
+        console.log("Total Points:" + res.value);
         //store refreshed token (has accessToken field)
         storage.storeToken(res.jwtToken);
-
+        
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {
