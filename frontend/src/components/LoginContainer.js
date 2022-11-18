@@ -19,6 +19,8 @@ const LoginContainer = () => {
 
     try {
       var bp = require('./Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/login'
+      // bp.buildPath('api/login')
       const response = await fetch(bp.buildPath('api/login'), {
         method: 'POST',
         body: js,
@@ -33,15 +35,16 @@ const LoginContainer = () => {
 
       // const res = JSON.parse(await response.text());
 
-      if (res.error && res.error != '') {
+      if (res.error && res.error !== '') {
         setMessage('Incorrect User/Password!');
       } else {
         const user = {
           firstName: res.firstName,
           lastName: res.lastName,
+          login: loginName,
         };
         localStorage.setItem('user_data', JSON.stringify(user));
-
+        
         setMessage('');
         navigate('/home');
       }

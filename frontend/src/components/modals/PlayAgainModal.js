@@ -40,13 +40,13 @@ export default function PlayAgainModal(props)
                 <span className='text-pr-yellow mr-2'>Last Movie Rating:</span>
                 <span className='text-pr-red pr-2'>{props.rating}%</span>
               </div>
-              {/* <div className='min-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Your Guess:</span>
-                <span className='text-pr-white pr-2'>{props.guess}</span>
-              </div> */}
-              <div className='rmin-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Total Score:</span>
+              <div className='min-h-[50px]'>
+                <span className='text-pr-yellow mr-2'>You Scored:</span>
                 <span className='text-pr-red pr-2'>{props.score}pts</span>
+              </div>
+              <div className='min-h-[50px]'>
+                <span className='text-pr-yellow mr-2'>Total Score:</span>
+                <span className='text-pr-red pr-2'>{props.totalScore}pts</span>
               </div>
               <div className='justify-self-center min-h-[50px]'>
                 <button onClick={()=> {props.closePlayAgainModal(); navigate('/game'); }}>

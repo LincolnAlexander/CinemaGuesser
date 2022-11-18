@@ -6,6 +6,15 @@ import RoundModal from './modals/RoundModal'
 
 function GameContainer()
 {   
+  var _ud = localStorage.getItem('user_data');
+  var ud = JSON.parse(_ud);
+  var firstName = ud.firstName;
+  var lastName = ud.lastName;
+  var loginName = ud.login;
+  // console.log("FirstName: "+ firstName +"\nLastName: "+ lastName +"\nLogin: "+ loginName);
+
+
+
   // Code for Movie Info ***************************************************************************************************************
     const [desc, setDesc] = useState(false);
     const [poster, setPoster] = useState(null);
@@ -14,7 +23,6 @@ function GameContainer()
     const [genre, setGenre] = useState(false);
     const [actors, setActors] = useState(false);
     const [rating, setRating] = useState(0);
-    let [prevRating, setPrevRating] = useState(0);
     const [score, setScore] = useState(0);
     const [totalScore, setTotalScore] = useState(0);
     let res;
@@ -32,12 +40,14 @@ function GameContainer()
       try 
       {
         let bp = require('./Paths.js');
-        const response = await fetch(bp.buildPath('api/movies_saved'), {
+        // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
+        // bp.buildPath('api/movies_saved')
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
         });
-        console.log(res);
+        // console.log(res);
         res = JSON.parse(await response.text());
         
         setDesc(res.omdb.Plot);
@@ -47,18 +57,18 @@ function GameContainer()
         setPoster(res.omdb.Poster);
         setRating(parseInt(res.omdb.Ratings));
         setTitle(res.omdb.Title);
-        // setPrevRating(rating);
+        
 
         
-        console.log("Results:");
+        // console.log("Results:");
         console.log(res.omdb);
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {
           
-          // localStorage.setItem('user_data', JSON.stringify(user));
+         
           // setMessage('');
-          // navigate('/register-success');
+          
         }
       } 
       catch (e) 
@@ -75,13 +85,11 @@ function GameContainer()
     const [turnOn, setRoundModal] = useState(false);
     const [turnOny, setPlayAgainModal] = useState(false);
     var [curGuess, setGuess] = useState(1);
-    let [prevScore, setPrevScore] = useState(0);
-    const [message, setMessage] = useState('');
     const [round, setRound] = useState(0);
     let guesses = useRef(null);
     let gg;
     const handleGuess = event =>{
-      console.log(guesses.current.value);
+      // console.log(guesses.current.value);
       
       // if( event.target.value === undefined)
       // {
@@ -110,19 +118,19 @@ function GameContainer()
       setTotalScore(totalScore + (score + pointsAwarded(Math.abs(g - rating))));
       
       // setPrevScore(score);
-      console.log("Score: "+score);
+      // console.log("Score: "+score);
       console.log("Rating: "+rating);
       console.log("Guess: "+g);
-      console.log("Guess: "+totalScore);
+      // console.log("Total Score: "+totalScore);
       
       if(curGuess === 5)
       {
         setGuess(1);
 
-        console.log(score);
+        // console.log(score);
         // setScore(0);
-        console.log("Showing PlayAgainModal");
-        console.log("Users guesses" + g);
+        // console.log("Showing PlayAgainModal");
+        // console.log("Users guesses" + g);
         setPlayAgainModal(true);
         
       }
@@ -144,6 +152,7 @@ function GameContainer()
 
     function closePlayAgainModal()
     {
+      calcScore();
       setPlayAgainModal(false);
       loadMovieInfo();
       setTotalScore(0);
@@ -163,7 +172,7 @@ function GameContainer()
     //single linear (delta 33, 3)
     function pointsAwarded(delta) {
       if (delta >= 33) return 0;
-      if (delta == 0 ) return 120;
+      if (delta === 0 ) return 120;
       return Math.round(100 - 3 * delta);
     }
     //double linear (delta 26, slope 2 [delta <= 10], slope 5 [delta > 10])
@@ -174,6 +183,56 @@ function GameContainer()
       return Math.round(130 - 5 * delta);
     }*/
     // End of Code for Modal ***************************************************************************************************************************** 
+
+
+    const calcScore = async(event) => 
+    {
+      // event.preventDefault();
+      //console.log(event);
+
+      let obj = {
+        login: loginName,
+        value: 10, 
+        mode: 0, 
+        field: 'Score',
+      };
+      let js = JSON.stringify(obj);
+      try 
+      {
+        let bp = require('./Paths.js');
+        // 'https://cinema-guesser.herokuapp.com/api/op_stats'
+        // bp.buildPath('api/op_stats')
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/op_stats', {
+          method: 'POST',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
+        });
+        // console.log(res);
+        res = JSON.parse(await response.text());
+        
+        
+        
+        console.log("Results:" + res.error);
+        
+        if (res.error !== '') {
+          // setMessage('Username is taken, please try a different one.');
+        } else {
+          
+          
+          // setMessage('');
+          
+        }
+      } 
+      catch (e) 
+      {
+        console.log(e);
+        return;
+      }
+
+    }
+
+
+
     return(
     <div className='flex justify-center m-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
@@ -185,7 +244,7 @@ function GameContainer()
           <span className='text-pr-red pr-2 '>{totalScore}pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg ' src={poster} alt = 'MoviePoster'></img>
+          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={poster} alt = 'MoviePoster'></img>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
           <p className='text-pr-yellow'>Description:</p>
@@ -217,7 +276,7 @@ function GameContainer()
         </div>
       </div>
       <RoundModal value = {turnOn} closeRoundModal={closeRoundModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} guess = {gg} round = {round}/>
-      <PlayAgainModal value = {turnOny} closePlayAgainModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {totalScore} guess = {gg} round = {round}/>
+      <PlayAgainModal value = {turnOny} closePlayAgainModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} totalScore = {totalScore} score = {score}guess = {gg} round = {round}/>
     </div>
     
     )

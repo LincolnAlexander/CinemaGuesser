@@ -43,16 +43,12 @@ export default function RoundModal(props)
                 <span className='text-pr-yellow mr-2'>Movie Rating:</span>
                 <span className='text-pr-red pr-2'>{props.rating}%</span>
               </div>
-              {/* <div className='min-h-[50px]'>
-                <span className='text-pr-yellow mr-2'>Your Guess:</span>
-                <span className='text-pr-white pr-2'>{props.guess}</span>
-              </div> */}
-              <div className='rmin-h-[50px]'>
+              <div className='min-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>You Scored:</span>
                 <span className='text-pr-red pr-2'>{props.score}pts</span>
               </div>
               
-              <div className='justify-self-center '>
+              <div className='justify-self-center min-h-[50px]'>
                 <button onClick={()=> {props.closeRoundModal(); navigate('/game'); }}>
                   <NextRoundBtn className='w-20 sm:w-auto'/>
                 </button>
