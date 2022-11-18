@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ReactComponent as PlayAgainBtn } from '../../images/PlayAgainBtn.svg';
+import { ReactComponent as NextRoundBtn } from '../../images/NextRoundBtn.svg';
 import { useNavigate } from 'react-router-dom';
+
 
 export default function RoundModal(props)
 {
@@ -40,7 +41,7 @@ export default function RoundModal(props)
               </div>
               <div className='min-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>Movie Rating:</span>
-                <span className='text-pr-white pr-2'>{props.rating}%</span>
+                <span className='text-pr-red pr-2'>{props.rating}%</span>
               </div>
               {/* <div className='min-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>Your Guess:</span>
@@ -48,11 +49,12 @@ export default function RoundModal(props)
               </div> */}
               <div className='rmin-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>You Scored:</span>
-                <span className='text-pr-white pr-2'>{props.score}pts</span>
+                <span className='text-pr-red pr-2'>{props.score}pts</span>
               </div>
-              <div className='justify-self-center min-h-[50px]'>
+              
+              <div className='justify-self-center '>
                 <button onClick={()=> {props.closeRoundModal(); navigate('/game'); }}>
-                  <PlayAgainBtn/>
+                  <NextRoundBtn className='w-20 sm:w-auto'/>
                 </button>
               </div>
               {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
