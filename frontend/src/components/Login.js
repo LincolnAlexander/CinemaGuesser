@@ -6,6 +6,7 @@ function Login() {
 
   const [message, setMessage] = useState("");
   const bp = require('./Path.js');
+  const storage = require('../tokenStorage.js');
   const doLogin = async (event) => {
     event.preventDefault();
 
@@ -24,12 +25,15 @@ function Login() {
       if (res.id <= 0) {
         setMessage("User/Password combination incorrect");
       } else {
+        //store token here
+        storage.storeToken(res);
         var user = {
           firstName: res.firstName,
           lastName: res.lastName,
           id: res.id,
         };
         localStorage.setItem("user_data", JSON.stringify(user));
+        
 
         setMessage("");
         window.location.href = "/COP4331C-LARGEPROJECT";

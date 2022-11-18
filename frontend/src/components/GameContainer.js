@@ -5,7 +5,8 @@ import PlayAgainModal from './modals/PlayAgainModal'
 import RoundModal from './modals/RoundModal'
 
 function GameContainer()
-{   
+{  
+  const storage = require('../tokenStorage.js');
   var _ud = localStorage.getItem('user_data');
   var ud = JSON.parse(_ud);
   var firstName = ud.firstName;
@@ -42,7 +43,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
         // bp.buildPath('api/movies_saved')
-        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
+        const response = await fetch(bp.buildPath('api/movies_saved'), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -189,12 +190,15 @@ function GameContainer()
     {
       // event.preventDefault();
       //console.log(event);
-
+      //var storage = require('../tokenStorage.js');   
+      //retrieve token here 
+      var tok = storage.retrieveToken();
       let obj = {
         login: loginName,
         value: 10, 
         mode: 0, 
         field: 'Score',
+        jwtToken: tok
       };
       let js = JSON.stringify(obj);
       try 
@@ -202,7 +206,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/op_stats'
         // bp.buildPath('api/op_stats')
-        const response = await fetch('https://cinema-guesser.herokuapp.com/api/op_stats', {
+        const response = await fetch(bp.buildPath('api/op_stats'), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -210,10 +214,10 @@ function GameContainer()
         // console.log(res);
         res = JSON.parse(await response.text());
         
-        
-        
-        console.log("Results:" + res.error);
-        
+        //console.log("Results:" + res.error);
+        //store refreshed token (has accessToken field)
+        storage.storeToken(res.jwtToken);
+
         if (res.error !== '') {
           // setMessage('Username is taken, please try a different one.');
         } else {

@@ -15,8 +15,6 @@ exports.setApp = function ( app, client )
 
     
       const { login, password } = req.body;
-      console.log("here " + password + " a");
-
       var Password = '';
       if(password){
         Password = sha256.hmac('key', password);
@@ -187,7 +185,7 @@ exports.setApp = function ( app, client )
      //perform operations on scores (ADJUST FOR JWT TOKEN)
      app.post('/api/op_stats', async (req, res, next) =>                  //op_stats
      {
-       //REQ: login, value, mode, field
+       //REQ: login, value, mode, field, jwToken
        //MODE OPs
        /*
        0: set
@@ -201,9 +199,9 @@ exports.setApp = function ( app, client )
       var mode;
       var err = '';
       
-
       let token = require('./createJWT.js');
-      const{login, jwtToken} = req.body;
+      const login = req.body.login;
+      const jwtToken = req.body.jwtToken;
 
       try
       {
@@ -219,8 +217,6 @@ exports.setApp = function ( app, client )
         console.log(e.message);
       }
 
-
-
       const db = client.db();
       const results = await db.collection('Users').find({Login:login}).toArray();
       //check if record exists
@@ -228,11 +224,11 @@ exports.setApp = function ( app, client )
         err = 'invalid field specified';
       }
       else if(results.length == 0)
-       {
+      {
         err = 'no record found';
-       }
-       else
-       {
+      }
+      else
+      {
         mode = req.body.mode;
         field = req.body.field;
         value = results[0][field];
@@ -336,7 +332,7 @@ exports.setApp = function ( app, client )
       if(!omdb_ret)
       {
         //make request to OMDB with that random movie title
-        console.log("Making OMDB request");
+        console.log("\x1b[36mMaking OMDB request\x1b[0m");
         var result = await makeGetRequest(title_search);
 
         //if bad movie
@@ -388,7 +384,7 @@ exports.setApp = function ( app, client )
         ret[fields[i]] = json[fields[i]];
         //if field is undefined
         if(!json[fields[i]]){
-          console.log("FAILED ON " + fields[i]);
+          console.log("\x1b[31mFAILED ON " + fields[i], '\x1b[0m');
           return false
         }
       }

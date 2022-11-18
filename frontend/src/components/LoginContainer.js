@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const LoginContainer = () => {
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
+  const storage = require('../tokenStorage.js');
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ const LoginContainer = () => {
           login: loginName,
         };
         localStorage.setItem('user_data', JSON.stringify(user));
+        //store JWT token here
+        storage.storeToken(res);
         
         setMessage('');
         navigate('/home');
