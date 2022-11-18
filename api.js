@@ -8,7 +8,7 @@ exports.setApp = function ( app, client )
 {
 //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
 // JWT Added by Casey
-    app.post('/api/login', async (req, res, next) =>             //login
+    app.post('/api/login', async (req, res, next) =>                      //login
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
@@ -52,7 +52,7 @@ exports.setApp = function ( app, client )
     });
  
     //Written by Casey
-    app.post('/api/register', async (req, res, next) =>          //register
+    app.post('/api/register', async (req, res, next) =>                   //register
     {
       var error = '';
       const { FirstName, LastName, Login, Pass } = req.body;
@@ -89,7 +89,7 @@ exports.setApp = function ( app, client )
 
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
     //leaderboard endpoint that sorts by gamesplayed or score
-    app.post('/api/leaderboard', async (req, res, next) =>         //leaderboard
+    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard
     {
       //REQ: page, per_page(default=10), sortby
       var per_page = req.body.per_page;
@@ -125,7 +125,7 @@ exports.setApp = function ( app, client )
 //-----------------------------------STATS ENDPOINTS-----------------------------------
     //get scores (ADJUST FOR JWT TOKEN)
     // Adjusted for JWT tokens ------
-    app.post('/api/get_stats', async (req, res, next) =>         //get_stats
+    app.post('/api/get_stats', async (req, res, next) =>                  //get_stats
     {
       //REQ: login
       
@@ -185,7 +185,7 @@ exports.setApp = function ( app, client )
     });
 
      //perform operations on scores (ADJUST FOR JWT TOKEN)
-     app.post('/api/op_stats', async (req, res, next) =>         //op_stats
+     app.post('/api/op_stats', async (req, res, next) =>                  //op_stats
      {
        //REQ: login, value, mode, field
        //MODE OPs
@@ -272,7 +272,7 @@ exports.setApp = function ( app, client )
      });
 //-----------------------------------MOVIE ENDPOINTS-----------------------------------
     //gets random movies (KEY)
-    app.post('/api/movies', async (req, res, next) =>             //movies
+    app.post('/api/movies', async (req, res, next) =>                     //movies
     {
       const db = client.db();
       var err = '';
@@ -301,8 +301,10 @@ exports.setApp = function ( app, client )
     //gets random movies from MoviesSaved database 
     //(unethical, but I wanted to develop this)
     //this also gives more limited information compared to api/movies
-    app.post('/api/movies_saved', async (req, res, next) =>       //movies_saved
+    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved
     {
+      const fields = ['Title', 'Genre', 'BoxOffice', 
+      'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
       const db = client.db();
       var err = '';
       var omdb_ret;
@@ -315,26 +317,27 @@ exports.setApp = function ( app, client )
         }
       ]).toArray();
       const title_search = results[0].Title;
-
+      //const title_search = "Iron Man 3";
+      var omdb_ret = {};
       //look in MoviesSaved
       const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
-
-      //if title is in MoviesSaved database
-      if(find_title.length != 0)
-      {
-        const Title = find_title[0].Title;
-        const Genre = find_title[0].Genre;
-        const BoxOffice = find_title[0].BoxOffice;
-        const Actors = find_title[0].Actors;
-        const Plot = find_title[0].Plot;
-        const Poster = find_title[0].Poster;
-        const Rating = find_title[0].Rating;
-        omdb_ret = {Title: Title, Genre: Genre, BoxOffice: BoxOffice, Actors: Actors, Plot: Plot, Poster: Poster, Rating: Rating};
+      //if movie isn't in MoviesSaved
+      if(find_title.length == 0){
+        omdb_ret = false;
+        //insert movie title to be updated
+        await db.collection('MoviesSaved').insertOne({Title:title_search})
       }
       else
+        omdb_ret = loadFields(fields, find_title[0]);
+      //loadFields will return false if there's an undefined value in JSON
+
+      //if omdb_ret is false (movie not in MoviesSaved or there's undefined field in JSON)
+
+      if(!omdb_ret)
       {
         //make request to OMDB with that random movie title
-        omdb_ret = await makeGetRequest(title_search);
+        console.log("Making OMDB request");
+        var result = await makeGetRequest(title_search);
 
         //if bad movie
         if(omdb_ret.Response == 'False'){
@@ -343,33 +346,55 @@ exports.setApp = function ( app, client )
         }
         else
         {
-          const Title = omdb_ret.Title;
-          const Genre = omdb_ret.Genre;
-          const BoxOffice = omdb_ret.BoxOffice;
-          const Actors = omdb_ret.Actors;
-          const Plot = omdb_ret.Plot;
-          const Poster = omdb_ret.Poster;
-
-          //get rating (might not be rotten tomatoes)
-          var get_rating = omdb_ret.Ratings[0].Value;
-          for (let i = 0; i < omdb_ret.Ratings.length; i++) {
-            if(omdb_ret.Ratings[i].Source == 'Rotten Tomatoes')
-              get_rating = omdb_ret.Ratings[i].Value;
+          omdb_ret = loadFields(fields, result);
+          //invalid field
+          if(!omdb_ret)
+          {
+            err = "invalid field";
           }
-
-          const Rating = get_rating;
-
-          //save movie data to MoviesSaved
-          db.collection('MoviesSaved').insertOne({Title, Genre, BoxOffice, Actors, Plot, Poster, Rating});
-          omdb_ret = {Title: Title, Genre: Genre, BoxOffice: BoxOffice, Actors: Actors, Plot: Plot, Poster: Poster, Rating: Rating};
+          else
+          {
+            //update movie data to MoviesSaved
+            var obj = {'$set': omdb_ret};
+            await db.collection('MoviesSaved').updateOne({Title:title_search}, obj);
+          }
         }
-
       }
 
       var ret = {omdb: omdb_ret, title: title_search, error: err};
       res.status(200).json(ret);
     });
-    
+
+    //generate dynamic JSON for movie given fields
+    //returns false if there's an invalid field
+    function loadFields(fields, json)
+    {
+      var ret = {};
+      for(let i = 0; i < fields.length; i++)
+      {
+        //for ratings directly from OMDB
+        if(fields[i] === 'Ratings' && typeof(json['Ratings']) == 'object')
+        {
+          //get rating (might not be rotten tomatoes)
+          ret[fields[i]] = json.Ratings[0].Value;
+          for (let j = 0; j < json.Ratings.length; j++) 
+          {
+            if(json.Ratings[j].Source === 'Rotten Tomatoes')
+            ret[fields[i]] = json.Ratings[j].Value;
+          }
+          continue;
+        }
+
+        ret[fields[i]] = json[fields[i]];
+        //if field is undefined
+        if(!json[fields[i]]){
+          console.log("FAILED ON " + fields[i]);
+          return false
+        }
+      }
+      return ret;
+    }
+
     //function that makes requests to OMDB using promises and axios
     function makeGetRequest(search) {                            //makeGetRequest function
       return new Promise(function (resolve, reject) {

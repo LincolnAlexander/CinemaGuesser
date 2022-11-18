@@ -32,7 +32,7 @@ function GameContainer()
       try 
       {
         let bp = require('./Paths.js');
-        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
+        const response = await fetch(bp.buildPath('api/movies_saved'), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ function GameContainer()
         setBoxOffice(res.omdb.BoxOffice);
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
-        setRating(parseInt(res.omdb.Rating));
+        setRating(parseInt(res.omdb.Ratings));
         setTitle(res.omdb.Title);
         // setPrevRating(rating);
 
