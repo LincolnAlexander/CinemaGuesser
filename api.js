@@ -202,7 +202,6 @@ exports.setApp = function ( app, client )
       let token = require('./createJWT.js');
       const login = req.body.login;
       const jwtToken = req.body.jwtToken;
-
       try
       {
         if(token.isExpired(jwtToken))
