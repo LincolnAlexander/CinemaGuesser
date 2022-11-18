@@ -25,7 +25,7 @@ function GameContainer()
     const [actors, setActors] = useState(false);
     const [rating, setRating] = useState(0);
     const [score, setScore] = useState(0);
-    const [totalScore, setTotalScore] = useState(0);
+    var [totalScore, setTotalScore] = useState(0);
     let res;
     useEffect(() =>
     {
@@ -193,10 +193,11 @@ function GameContainer()
       //var storage = require('../tokenStorage.js');   
       //retrieve token here 
       var tok = storage.retrieveToken();
+      //add to score
       let obj = {
         login: loginName,
-        value: 10, 
-        mode: 0, 
+        value: totalScore, 
+        mode: 1, 
         field: 'Score',
         jwtToken: tok
       };
