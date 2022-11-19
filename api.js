@@ -105,7 +105,9 @@ exports.setApp = function ( app, client )
           '$project': {
             'Login': 1, 
             'Score': 1, 
-            'GamesPlayed': 1
+            'GamesPlayed': 1,
+            'FirstName': 1,
+            'LastName': 1
           }
         }, {
           '$skip': (per_page * req.body.page)
@@ -311,8 +313,8 @@ exports.setApp = function ( app, client )
           }
         }
       ]).toArray();
-      const title_search = results[0].Title;
-      //const title_search = "Iron Man 3";
+      const title_search = capitalize(results[0].Title);
+      //const title_search = capitalize("Harry Potter and the Deathly Hallows: Part 2");
       var omdb_ret = {};
       //look in MoviesSaved
       const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
@@ -349,9 +351,12 @@ exports.setApp = function ( app, client )
           }
           else
           {
+            //change movie title to be consistant (capitalization)
+            omdb_ret["Title"] = capitalize(omdb_ret["Title"]);
             //update movie data to MoviesSaved
             var obj = {'$set': omdb_ret};
             await db.collection('MoviesSaved').updateOne({Title:title_search}, obj);
+            
           }
         }
       }
@@ -359,6 +364,11 @@ exports.setApp = function ( app, client )
       var ret = {omdb: omdb_ret, title: title_search, error: err};
       res.status(200).json(ret);
     });
+
+    //capitalize to keep movie strings consistant
+    const capitalize = (str, lower = false) =>
+      (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+    ;
 
     //generate dynamic JSON for movie given fields
     //returns false if there's an invalid field

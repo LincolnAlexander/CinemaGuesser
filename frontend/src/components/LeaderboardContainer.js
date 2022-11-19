@@ -20,7 +20,7 @@ function LeaderboardContainer()
       let obj = {
         page: 0,
         per_page: 10,
-        sortby: 'Score',
+        sortby: 'Score'
         
       };
       let js = JSON.stringify(obj);
