@@ -43,7 +43,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
         // bp.buildPath('api/movies_saved')
-        const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
+        const response = await fetch(bp.buildPath('api/movies_saved'), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -132,6 +132,7 @@ function GameContainer()
         // setScore(0);
         // console.log("Showing PlayAgainModal");
         // console.log("Users guesses" + g);
+        calcScore();
         setPlayAgainModal(true);
         
       }
@@ -153,7 +154,7 @@ function GameContainer()
 
     function closePlayAgainModal()
     {
-      calcScore();
+      // calcScore();
       setPlayAgainModal(false);
       loadMovieInfo();
       setTotalScore(0);
@@ -185,7 +186,7 @@ function GameContainer()
     }*/
     // End of Code for Modal ***************************************************************************************************************************** 
 
-
+    const [overallPoints, setOverall] = useState(0);
     const calcScore = async(event) => 
     {
       // event.preventDefault();
@@ -207,7 +208,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/op_stats'
         // bp.buildPath('api/op_stats')
-        const response = await fetch(bp.buildPath('api/op_stats'), {
+        const response = await fetch('https://cinema-guesser.herokuapp.com/api/op_stats', {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
@@ -216,6 +217,7 @@ function GameContainer()
         res = JSON.parse(await response.text());
         
         console.log("Total Points:" + res.value);
+        setOverall(res.value);
         //store refreshed token (has accessToken field)
         storage.storeToken(res.jwtToken);
         
@@ -281,7 +283,7 @@ function GameContainer()
         </div>
       </div>
       <RoundModal value = {turnOn} closeRoundModal={closeRoundModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} guess = {gg} round = {round}/>
-      <PlayAgainModal value = {turnOny} closePlayAgainModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} totalScore = {totalScore} score = {score}guess = {gg} round = {round}/>
+      <PlayAgainModal value = {turnOny} closePlayAgainModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} totalScore = {totalScore} score = {score}guess = {gg} overallPoints = {overallPoints}/>
     </div>
     
     )

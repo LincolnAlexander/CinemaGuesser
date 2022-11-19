@@ -18,7 +18,7 @@ export default function PlayAgainModal(props)
     {
         // props.value = !props.value;
         setModal(false);
-        props.closeModal();
+        props.closePlayAgainModal();
     }
     return(
         <>
@@ -47,6 +47,10 @@ export default function PlayAgainModal(props)
               <div className='min-h-[50px]'>
                 <span className='text-pr-yellow mr-2'>Total Score:</span>
                 <span className='text-pr-red pr-2'>{props.totalScore}pts</span>
+              </div>
+              <div className='min-h-[50px]'>
+                <span className='text-pr-yellow mr-2'>Overall Points:</span>
+                <span className='text-pr-red pr-2'>{props.overallPoints}pts</span>
               </div>
               <div className='justify-self-center min-h-[50px]'>
                 <button onClick={()=> {props.closePlayAgainModal(); navigate('/game'); }}>
