@@ -6,6 +6,8 @@ import NotFoundPage from './pages/NotFoundPage';
 import RegisterPage from './pages/RegisterPage';
 import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import WatchlistPage from './pages/WatchlistPage';
 import PrivateComponent from './components/PrivateComponent';
 import RegistrationSuccess from './components/RegistrationSuccess';
 
@@ -18,12 +20,14 @@ function CinemaGuesserApp() {
         <Route element={<PrivateComponent />}>
           <Route path='/game' element={<GamePage />} />
           <Route path='/home' element={<HomePage />} />
+          <Route path='/watchlist' element={<WatchlistPage/>} />
         </Route>
 
         {/* Public paths */}
         <Route path='/' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/register-success' element={<RegistrationSuccess />} />
+        <Route path='/leaderboard' element={<LeaderboardPage />} />
 
         {/* For unknown path*/}
         <Route path='*' element={<NotFoundPage />} />

@@ -208,7 +208,7 @@ function GameContainer()
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/op_stats'
         // bp.buildPath('api/op_stats')
-        const response = await fetch('https://cinema-guesser.herokuapp.com/api/op_stats', {
+        const response = await fetch(bp.buildPath('api/op_stats'), {
           method: 'POST',
           body: js,
           headers: { 'Content-Type': 'application/json' },
