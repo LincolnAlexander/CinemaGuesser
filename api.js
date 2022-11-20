@@ -26,7 +26,7 @@ exports.setApp = function ( app, client )
       var lastName = '';
       var err;
       var ret;
-    
+      
       if( results.length > 0 )
       {
         firstName = results[0].FirstName;
@@ -38,7 +38,7 @@ exports.setApp = function ( app, client )
         }
         catch (e) {
           ret = {error: e.message };
-      }
+        }
       }
       else
       {

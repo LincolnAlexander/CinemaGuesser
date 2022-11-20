@@ -51,11 +51,6 @@ function Nav() {
                   </div>
                   <div className='hidden md:block'>
                     <div className='ml-10 flex items-baseline space-x-4'>
-                      <RulesModal
-                        classes={
-                          'text-pr-yellow hover:bg-pr-gray hover:text-pr-white focus:bg-pr-black focus:text-pr-white px-3 py-2 rounded-md text-sm font-medium'
-                        }
-                      />
                       {auth
                         ? navigation.map((item) => (
                             <Link
@@ -73,6 +68,11 @@ function Nav() {
                             </Link>
                           ))
                         : undefined}
+                      <RulesModal
+                        classes={
+                          'text-pr-yellow hover:bg-pr-gray hover:text-pr-white focus:bg-pr-black focus:text-pr-white px-3 py-2 rounded-md text-sm font-medium'
+                        }
+                      />
                     </div>
                   </div>
                 </div>
@@ -170,6 +170,11 @@ function Nav() {
                       </Disclosure.Button>
                     ))
                   : undefined}
+                <RulesModal
+                  classes={
+                    'block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                  }
+                />
               </div>
               <div className='border-t border-gray-700 pt-4 pb-3'>
                 <div className='flex items-center px-5'>
@@ -186,11 +191,6 @@ function Nav() {
                   </div>
                 </div>
                 <div className='mt-3 space-y-1 px-2'>
-                  <RulesModal
-                    classes={
-                      'block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
-                    }
-                  />
                   {auth ? (
                     userNavigation.map((item) => (
                       <Disclosure.Button
