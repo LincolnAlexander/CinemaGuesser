@@ -9,6 +9,8 @@ function LeaderboardContainer()
       {
       loadLeaderboard();
         },[]);
+
+    const [page,setPage] = useState(0);
     const loadLeaderboard = async(event) => 
     {
       // event.preventDefault();
@@ -18,7 +20,7 @@ function LeaderboardContainer()
     //   var tok = storage.retrieveToken();
       //add to score
       let obj = {
-        page: 0,
+        page: page,
         per_page: 10,
         sortby: 'Score'
         
