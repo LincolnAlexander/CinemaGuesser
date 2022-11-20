@@ -15,7 +15,10 @@ function classNames(...classes) {
 
 function Nav() {
   const pathname = useLocation().pathname;
-  const navigation = [{ name: 'Home', href: '/home', current: false }];
+  const navigation = [
+    { name: 'Home', href: '/home', current: false },
+    { name: 'Leaderboard', href: '/leaderboard', current: false },
+  ];
   const auth = localStorage.getItem('user_data');
   const userData = JSON.parse(auth);
 

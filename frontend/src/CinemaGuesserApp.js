@@ -20,14 +20,14 @@ function CinemaGuesserApp() {
         <Route element={<PrivateComponent />}>
           <Route path='/game' element={<GamePage />} />
           <Route path='/home' element={<HomePage />} />
-          <Route path='/watchlist' element={<WatchlistPage/>} />
+          <Route path='/leaderboard' element={<LeaderboardPage />} />
+          <Route path='/watchlist' element={<WatchlistPage />} />
         </Route>
 
         {/* Public paths */}
         <Route path='/' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/register-success' element={<RegistrationSuccess />} />
-        <Route path='/leaderboard' element={<LeaderboardPage />} />
 
         {/* For unknown path*/}
         <Route path='*' element={<NotFoundPage />} />
