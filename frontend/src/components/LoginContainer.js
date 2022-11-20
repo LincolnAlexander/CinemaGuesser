@@ -15,11 +15,11 @@ const LoginContainer = () => {
     const loginName = loginNameRef.current.value;
     const loginPassword = loginPasswordRef.current.value;
 
-    var obj = { login: loginName, password: loginPassword };
-    var js = JSON.stringify(obj);
+    let obj = { login: loginName, password: loginPassword };
+    let js = JSON.stringify(obj);
 
     try {
-      var bp = require('./Paths.js');
+      let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/login'
       // bp.buildPath('api/login')
       const response = await fetch(bp.buildPath('api/login'), {
@@ -27,7 +27,7 @@ const LoginContainer = () => {
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
-      var res = JSON.parse(await response.text());
+      let res = JSON.parse(await response.text());
       // const response = await fetch('api/login', {
       //   method: 'POST',
       //   body: js,
@@ -47,7 +47,7 @@ const LoginContainer = () => {
         localStorage.setItem('user_data', JSON.stringify(user));
         //store JWT token here
         storage.storeToken(res);
-        
+
         setMessage('');
         navigate('/home');
       }

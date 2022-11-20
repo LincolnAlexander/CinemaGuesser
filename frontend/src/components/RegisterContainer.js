@@ -13,8 +13,6 @@ function RegisterContainer() {
   const doRegister = async (event) => {
     event.preventDefault();
 
-    console.log(event);
-
     const loginName = loginNameRef.current.value;
     const loginPassword = loginPasswordRef.current.value;
     const firstName = firstNameRef.current.value;
