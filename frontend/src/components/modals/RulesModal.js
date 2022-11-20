@@ -7,7 +7,9 @@ export default function RulesModal(props) {
   const toggleModal = () => {
     setRulesModal(!rulesModal);
   };
-
+  var _ud = localStorage.getItem('user_data');
+  var ud = JSON.parse(_ud);
+  var lastName = ud.lastName;
   return (
     <>
       <button className={props.classes} onClick={toggleModal}>
@@ -25,7 +27,7 @@ export default function RulesModal(props) {
               Rules
             </h2> */}
             <p className='text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-yellow font-bold'>
-              Welcome Agent!
+              Welcome Agent {lastName}!
             </p>
             <p className='text-center text-base text-pr-white font-medium mt-5'>
               Use your specialized skill set to guess the movie rating out of
