@@ -12,8 +12,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <CinemaGuesserApp />
-      {/* <LeaderboardPage/> */}
+      {/* <CinemaGuesserApp /> */}
+      <LeaderboardPage/>
       {/* <GamePage/> */}
       {/* <Nav /> */}
     </BrowserRouter>

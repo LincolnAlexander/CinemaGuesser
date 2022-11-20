@@ -11,14 +11,10 @@ function LeaderboardContainer()
         },[]);
 
     const [page,setPage] = useState(0);
+    const colNames = ['Rank', 'Name', 'Score'];
     const loadLeaderboard = async(event) => 
     {
-      // event.preventDefault();
-      //console.log(event);
-      //var storage = require('../tokenStorage.js');   
-      //retrieve token here 
-    //   var tok = storage.retrieveToken();
-      //add to score
+      
       let obj = {
         page: page,
         per_page: 10,
@@ -69,28 +65,37 @@ function LeaderboardContainer()
                     <table className='table-fixed w-1/2 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
                         <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm' >
                             <tr className='text-pr-yellow text-lg'>
-                                <th className='p-4'>Name</th>
-                                <th>Score</th>
-                                <th>?</th>
+                                {colNames.map((headerItem, index) =>(
+                                  <th key = {index}>
+                                    {headerItem}
+                                  </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody className='text-left text-pr-white'>
                             <tr>
-                                <th className='pl-4'>a</th>
+                                <th className=''>a</th>
                                 <th>b</th>
                                 <th>c</th>
                             </tr>
                             <tr>
-                                <th className='pl-4'>a</th>
+                                <th className=''>a</th>
                                 <th>a</th>
                                 <th>s</th>
                             </tr>
                             <tr>
-                                <th className='pl-4'>f</th>
+                                <th className=''>f</th>
                                 <th>g</th>
                                 <th>b</th>
 
                             </tr>
+                            {/* {Object.values(list).map((obj,index) =>(
+                              <tr key = {index}>
+                                {Object.values(list).map((value,index2) =>(
+                                  <th key = {index2}>{value}</th>
+                                ))}
+                              </tr>
+                            ))} */}
                         </tbody>
                     </table>
                 </div>
