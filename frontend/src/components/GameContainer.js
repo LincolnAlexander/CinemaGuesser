@@ -1,246 +1,214 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as SubmitBtn } from '../images/SubmitBtn.svg';
-import PlayAgainModal from './modals/PlayAgainModal'
-import RoundModal from './modals/RoundModal'
+import PlayAgainModal from './modals/PlayAgainModal';
+import RoundModal from './modals/RoundModal';
 
-function GameContainer()
-{  
+function GameContainer() {
   const storage = require('../tokenStorage.js');
-  var _ud = localStorage.getItem('user_data');
-  var ud = JSON.parse(_ud);
+  let _ud = localStorage.getItem('user_data');
+  let ud = JSON.parse(_ud);
   // var firstName = ud.firstName;
   // var lastName = ud.lastName;
-  var loginName = ud.login;
+  let loginName = ud.login;
   // console.log("FirstName: "+ firstName +"\nLastName: "+ lastName +"\nLogin: "+ loginName);
 
-
-
   // Code for Movie Info ***************************************************************************************************************
-    const [desc, setDesc] = useState(false);
-    const [poster, setPoster] = useState(null);
-    const [title, setTitle] = useState(false);
-    const [boxOffice, setBoxOffice] = useState(false);
-    const [genre, setGenre] = useState(false);
-    const [actors, setActors] = useState(false);
-    const [rating, setRating] = useState(0);
-    const [score, setScore] = useState(0);
-    var [totalScore, setTotalScore] = useState(0);
-    let res;
-    useEffect(() =>
-    {
-      loadMovieInfo();
-    },[]);
-    const loadMovieInfo = async(event) => 
-    {
-      // event.preventDefault();
-      //console.log(event);
+  const [desc, setDesc] = useState(false);
+  const [poster, setPoster] = useState(null);
+  const [title, setTitle] = useState(false);
+  const [boxOffice, setBoxOffice] = useState(false);
+  const [genre, setGenre] = useState(false);
+  const [actors, setActors] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [score, setScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+  let res;
+  useEffect(() => {
+    loadMovieInfo();
+  }, []);
+  const loadMovieInfo = async (event) => {
+    // event.preventDefault();
+    //console.log(event);
 
-      let obj = {};
-      let js = JSON.stringify(obj);
-      try 
-      {
-        let bp = require('./Paths.js');
-        // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
-        // bp.buildPath('api/movies_saved')
-        const response = await fetch(bp.buildPath('api/movies_saved'), {
-          method: 'POST',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
-        });
-        // console.log(res);
-        res = JSON.parse(await response.text());
-        
-        setDesc(res.omdb.Plot);
-        setActors(res.omdb.Actors);
-        setBoxOffice(res.omdb.BoxOffice);
-        setGenre(res.omdb.Genre);
-        setPoster(res.omdb.Poster);
-        setRating(parseInt(res.omdb.Ratings));
-        setTitle(res.omdb.Title);
-        
+    let obj = {};
+    let js = JSON.stringify(obj);
+    try {
+      let bp = require('./Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
+      // bp.buildPath('api/movies_saved')
+      const response = await fetch(bp.buildPath('api/movies_saved'), {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      // console.log(res);
+      res = JSON.parse(await response.text());
 
-        
-        // console.log("Results:");
-        console.log(res.omdb);
-        if (res.error !== '') {
-          // setMessage('Username is taken, please try a different one.');
-        } else {
-          
-         
-          // setMessage('');
-          
-        }
-      } 
-      catch (e) 
-      {
-        console.log(e);
-        return;
+      setDesc(res.omdb.Plot);
+      setActors(res.omdb.Actors);
+      setBoxOffice(res.omdb.BoxOffice);
+      setGenre(res.omdb.Genre);
+      setPoster(res.omdb.Poster);
+      setRating(parseInt(res.omdb.Ratings));
+      setTitle(res.omdb.Title);
+
+      // console.log("Results:");
+      console.log(res.omdb);
+      if (res.error !== '') {
+        // setMessage('Username is taken, please try a different one.');
+      } else {
+        // setMessage('');
       }
-
+    } catch (e) {
+      console.log(e);
+      return;
     }
-    // End of Code for Movie Info ***********************************************************************************************************************
+  };
+  // End of Code for Movie Info ***********************************************************************************************************************
 
-    // Code for Modal *********************************************************************************************************************************** 
-    const navigate = useNavigate();
-    const [turnOn, setRoundModal] = useState(false);
-    const [turnOny, setPlayAgainModal] = useState(false);
-    var [curGuess, setGuess] = useState(1);
-    const [round, setRound] = useState(0);
-    let guesses = useRef(null);
-    let gg;
-    const handleGuess = event =>{
-      // console.log(guesses.current.value);
-      
-      // if( event.target.value === undefined)
-      // {
-      //   console.log(true);
-      //   guesses = 0;
-      //   showModal(event, guesses);
-      // }
-      // else
-      // {
-      //   guesses = event.target.value;
-      //   showModal(event, guesses);
-      // }
-      gg = guesses.current.value;
-      showModal(event, guesses.current.value);
-    }
-    function showModal(event, g)
-    {
-      event.preventDefault();
-      
-      
-      setGuess(curGuess + 1);
-      setRound(round + 1);
-      
-      // setPrevRating(prevRating);
-      setScore(score + pointsAwarded(Math.abs(g - rating)));
-      setTotalScore(totalScore + (score + pointsAwarded(Math.abs(g - rating))));
-      
-      // setPrevScore(score);
-      // console.log("Score: "+score);
-      console.log("Rating: "+rating);
-      console.log("Guess: "+g);
-      // console.log("Total Score: "+totalScore);
-      
-      if(curGuess === 5)
-      {
-        setGuess(1);
+  // Code for Modal ***********************************************************************************************************************************
+  const navigate = useNavigate();
+  const [turnOn, setRoundModal] = useState(false);
+  const [turnOny, setPlayAgainModal] = useState(false);
+  const [curGuess, setGuess] = useState(1);
+  const [round, setRound] = useState(0);
+  let guesses = useRef(null);
+  let gg;
+  const handleGuess = (event) => {
+    // console.log(guesses.current.value);
 
-        // console.log(score);
-        // setScore(0);
-        // console.log("Showing PlayAgainModal");
-        // console.log("Users guesses" + g);
-        calcScore();
-        setPlayAgainModal(true);
-        
-      }
-      else
-      {
-        setRoundModal(true);
-        // loadMovieInfo();
-      }
-        
-      // console.log(curGuess);
-    }
-    
-    function closeRoundModal() {
-      setRoundModal(false);
-      loadMovieInfo();
-      setScore(0);
-      guesses.current.value = '';
+    // if( event.target.value === undefined)
+    // {
+    //   console.log(true);
+    //   guesses = 0;
+    //   showModal(event, guesses);
+    // }
+    // else
+    // {
+    //   guesses = event.target.value;
+    //   showModal(event, guesses);
+    // }
+    gg = guesses.current.value;
+    showModal(event, guesses.current.value);
+  };
+  function showModal(event, g) {
+    event.preventDefault();
+
+    setGuess(curGuess + 1);
+    setRound(round + 1);
+
+    // setPrevRating(prevRating);
+    setScore(score + pointsAwarded(Math.abs(g - rating)));
+    setTotalScore(totalScore + (score + pointsAwarded(Math.abs(g - rating))));
+
+    // setPrevScore(score);
+    // console.log("Score: "+score);
+    console.log('Rating: ' + rating);
+    console.log('Guess: ' + g);
+    // console.log("Total Score: "+totalScore);
+
+    if (curGuess === 5) {
+      setGuess(1);
+
+      // console.log(score);
+      // setScore(0);
+      // console.log("Showing PlayAgainModal");
+      // console.log("Users guesses" + g);
+      calcScore();
+      setPlayAgainModal(true);
+    } else {
+      setRoundModal(true);
+      // loadMovieInfo();
     }
 
-    function closePlayAgainModal()
-    {
-      // calcScore();
-      setPlayAgainModal(false);
-      loadMovieInfo();
-      setTotalScore(0);
-      setScore(0);
-      setRound(0);
-      guesses.current.value = '';
-    }
+    // console.log(curGuess);
+  }
 
-    
-    //exponential (delta 30)
-    /*function pointsAwarded(delta) {
+  function closeRoundModal() {
+    setRoundModal(false);
+    loadMovieInfo();
+    setScore(0);
+    guesses.current.value = '';
+  }
+
+  function closePlayAgainModal() {
+    // calcScore();
+    setPlayAgainModal(false);
+    loadMovieInfo();
+    setTotalScore(0);
+    setScore(0);
+    setRound(0);
+    guesses.current.value = '';
+  }
+
+  //exponential (delta 30)
+  /*function pointsAwarded(delta) {
       if (delta >= 30) return 0;
       
       let exp = delta - 30;
       return Math.round((1/9) * exp * exp);
     }*/
-    //single linear (delta 33, 3)
-    function pointsAwarded(delta) {
-      if (delta >= 33) return 0;
-      if (delta === 0 ) return 120;
-      return Math.round(100 - 3 * delta);
-    }
-    //double linear (delta 26, slope 2 [delta <= 10], slope 5 [delta > 10])
-    /*function pointsAwarded(delta) {
+  //single linear (delta 33, 3)
+  function pointsAwarded(delta) {
+    if (delta >= 33) return 0;
+    if (delta === 0) return 120;
+    return Math.round(100 - 3 * delta);
+  }
+  //double linear (delta 26, slope 2 [delta <= 10], slope 5 [delta > 10])
+  /*function pointsAwarded(delta) {
       if (delta >= 26) return 0;
       if (delta == 0 ) return 120;
       if (delta <= 10) return Math.round(100 - 2 * delta)
       return Math.round(130 - 5 * delta);
     }*/
-    // End of Code for Modal ***************************************************************************************************************************** 
+  // End of Code for Modal *****************************************************************************************************************************
 
-    const [overallPoints, setOverall] = useState(0);
-    const calcScore = async(event) => 
-    {
-      // event.preventDefault();
-      //console.log(event);
-      //var storage = require('../tokenStorage.js');   
-      //retrieve token here 
-      var tok = storage.retrieveToken();
-      //add to score
-      let obj = {
-        login: loginName,
-        value: totalScore, 
-        mode: 1, 
-        field: 'Score',
-        jwtToken: tok
-      };
-      let js = JSON.stringify(obj);
-      try 
-      {
-        let bp = require('./Paths.js');
-        // 'https://cinema-guesser.herokuapp.com/api/op_stats'
-        // bp.buildPath('api/op_stats')
-        const response = await fetch(bp.buildPath('api/op_stats'), {
-          method: 'POST',
-          body: js,
-          headers: { 'Content-Type': 'application/json' },
-        });
-        // console.log(res.value);
-        res = JSON.parse(await response.text());
-        
-        console.log("Total Points:" + res.value);
-        setOverall(res.value);
-        //store refreshed token (has accessToken field)
-        storage.storeToken(res.jwtToken);
-        
-        if (res.error !== '') {
-          // setMessage('Username is taken, please try a different one.');
-        } else {
-          
-          
-          // setMessage('');
-          
-        }
-      } 
-      catch (e) 
-      {
-        console.log(e);
-        return;
+  const [overallPoints, setOverall] = useState(0);
+  const calcScore = async (event) => {
+    // event.preventDefault();
+    //console.log(event);
+    //var storage = require('../tokenStorage.js');
+    //retrieve token here
+    let tok = storage.retrieveToken();
+    //add to score
+    let obj = {
+      login: loginName,
+      value: totalScore,
+      mode: 1,
+      field: 'Score',
+      jwtToken: tok,
+    };
+    let js = JSON.stringify(obj);
+    try {
+      let bp = require('./Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/op_stats'
+      // bp.buildPath('api/op_stats')
+      const response = await fetch(bp.buildPath('api/op_stats'), {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      // console.log(res.value);
+      res = JSON.parse(await response.text());
+
+      console.log('Total Points:' + res.value);
+      setOverall(res.value);
+      //store refreshed token (has accessToken field)
+      storage.storeToken(res.jwtToken);
+
+      if (res.error !== '') {
+        // setMessage('Username is taken, please try a different one.');
+      } else {
+        // setMessage('');
       }
-
+    } catch (e) {
+      console.log(e);
+      return;
     }
+  };
 
-
-
-    return(
+  return (
     <div className='flex justify-center m-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
@@ -251,7 +219,11 @@ function GameContainer()
           <span className='text-pr-red pr-2 '>{totalScore}pts</span>
         </div>
         <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
-          <img className='w-32 sm:w-60 sm:h-84 rounded-lg' src={poster} alt = 'MoviePoster'></img>
+          <img
+            className='w-32 sm:w-60 sm:h-84 rounded-lg'
+            src={poster}
+            alt='MoviePoster'
+          ></img>
         </div>
         <div className='min-h-[50px] text-center sm:text-left'>
           <p className='text-pr-yellow'>Description:</p>
@@ -261,7 +233,7 @@ function GameContainer()
           <span className='text-pr-yellow mr-2'>Genre:</span>
           <span className='text-pr-white pr-2'>{genre}</span>
         </div>
-        <div className='min-h-[50px] text-center sm:text-left' >
+        <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2'>Box Office:</span>
           <span className='text-pr-white pr-2'>{boxOffice}</span>
         </div>
@@ -271,21 +243,42 @@ function GameContainer()
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
-          <form 
-           className = 'sm:flex justify-center'>
-          <input className='peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center' ref = {guesses} placeholder='Guess Rating' id='guess' type='number' min='1' max= '100' ></input>
-            <button className='mx-5' onClick={handleGuess} >
-              <SubmitBtn className = 'w-20 sm: w-24 self-center'/>
+          <form className='sm:flex justify-center'>
+            <input
+              className='peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center'
+              ref={guesses}
+              placeholder='Guess Rating'
+              id='guess'
+              type='number'
+              min='1'
+              max='100'
+            ></input>
+            <button className='mx-5' onClick={handleGuess}>
+              <SubmitBtn className='w-20 sm: w-24 self-center' />
             </button>
           </form>
-          
-          
         </div>
       </div>
-      <RoundModal value = {turnOn} closeRoundModal={closeRoundModal} loadMovieInfo = {loadMovieInfo} rating = {rating} score = {score} guess = {gg} round = {round}/>
-      <PlayAgainModal value = {turnOny} closePlayAgainModal={closePlayAgainModal} loadMovieInfo = {loadMovieInfo} rating = {rating} totalScore = {totalScore} score = {score}guess = {gg} overallPoints = {overallPoints}/>
+      <RoundModal
+        value={turnOn}
+        closeRoundModal={closeRoundModal}
+        loadMovieInfo={loadMovieInfo}
+        rating={rating}
+        score={score}
+        guess={gg}
+        round={round}
+      />
+      <PlayAgainModal
+        value={turnOny}
+        closePlayAgainModal={closePlayAgainModal}
+        loadMovieInfo={loadMovieInfo}
+        rating={rating}
+        totalScore={totalScore}
+        score={score}
+        guess={gg}
+        overallPoints={overallPoints}
+      />
     </div>
-    
-    )
+  );
 }
 export default GameContainer;
