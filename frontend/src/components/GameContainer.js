@@ -299,7 +299,7 @@ function GameContainer() {
               <span className='m-auto text-2xl font-light'>+</span>
             </button>
             <button className='mx-6' onClick={handleGuess}>
-              <SubmitBtn className='mx-6 w-20 sm:w-24 self-center' />
+              <SubmitBtn className='mx-6 w-20 sm:w-24 self-center hover:scale-105' />
             </button>
           </form>
         </div>
