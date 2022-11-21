@@ -242,7 +242,7 @@ function GameContainer() {
 
   return (
     <>
-      <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-3 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
           <p className='text-pr-yellow text-xl'>{title}</p>
         </div>
