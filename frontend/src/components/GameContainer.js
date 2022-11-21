@@ -23,10 +23,11 @@ function GameContainer() {
   const [rating, setRating] = useState(0);
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
-  let res;
+
   useEffect(() => {
     loadMovieInfo();
   }, []);
+
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
     //console.log(event);
@@ -43,7 +44,7 @@ function GameContainer() {
         headers: { 'Content-Type': 'application/json' },
       });
       // console.log(res);
-      res = JSON.parse(await response.text());
+      let res = JSON.parse(await response.text());
 
       setDesc(res.omdb.Plot);
       setActors(res.omdb.Actors);
@@ -75,6 +76,7 @@ function GameContainer() {
   const [round, setRound] = useState(0);
   let guesses = useRef(null);
   let gg;
+
   const handleGuess = (event) => {
     event.preventDefault();
     // console.log(guesses.current.value);
@@ -191,7 +193,7 @@ function GameContainer() {
         headers: { 'Content-Type': 'application/json' },
       });
       // console.log(res.value);
-      res = JSON.parse(await response.text());
+      let res = JSON.parse(await response.text());
 
       console.log('Total Points:' + res.value);
       setOverall(res.value);
