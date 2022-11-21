@@ -1,8 +1,16 @@
-require('express');
+
 require('mongodb');
+const express = require('express');
 const axios = require("axios");
 var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
+const router = express.Router();
+const emailValidator = require('deep-email-validator');
+
+async function isEmailValid(email) {
+  return emailValidator.validate(email)
+}
+
 
 //Gaming
 exports.setApp = function ( app, client )
@@ -51,17 +59,20 @@ exports.setApp = function ( app, client )
     });
  
     //Written by Casey
+
+
+
+
     app.post('/api/register', async (req, res, next) =>                   //register
     {
       var error = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
-      const Password = sha256.hmac('key', req.body.Password);
+      const Password = sha256.hmac('key', req.body.Pass);
       //stats and list(s) for user
       const Score = 0;
       const GamesPlayed = 0;
       const WatchList = [];
       const db = client.db();
-      
 
       var err = 'Username Taken';
       var fn = '';
@@ -79,8 +90,20 @@ exports.setApp = function ( app, client )
         lgn = Login;
         err = '';
       }
+      const {valid, reason, validators} = await isEmailValid(Email);
+      var ret;
 
-      var ret = {firstname: fn, lastname: ln, login: lgn, error: err}
+      if(valid)
+      {
+        ret = {firstname: fn, lastname: ln, login: lgn, error: err}
+      }
+
+      else
+      {
+        err = 'Invalid email address';
+        ret = {error: err};
+      }
+      
       res.status(200).json(ret);
     });
 
