@@ -236,7 +236,8 @@ import Loader from "../components/Loader";
 const RegisterPage = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({
     email: "",
-    fullname: "",
+    firstname: "",
+    lastname: "",
     phone: "",
     password: "",
   });
@@ -292,14 +293,76 @@ const RegisterPage = ({ navigation }) => {
   const handleError = (error, input) => {
     setErrors((prevState) => ({ ...prevState, [input]: error }));
   };
+
+  const doRegister = async (event) => {
+    event.preventDefault();
+
+    // const loginName = loginNameRef.current.value;
+    // const loginPassword = loginPasswordRef.current.value;
+    // const firstName = firstNameRef.current.value;
+    // const lastName = lastNameRef.current.value;
+    // const email = emailRef.current.value;
+
+    let obj = {
+      FirstName: inputs.firstname,
+      LastName: inputs.lastName,
+      Login: inputs.email,
+      Password: inputs.password,
+    };
+    let js = JSON.stringify(obj);
+
+    try {
+      
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/register', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      let res = JSON.parse(await response.text());
+
+      if (res.error !== '') {
+        Alert.alert("Error", "Something went wrong");
+        
+      } else {
+        
+        
+        navigation.navigate("LoginPage");
+      }
+    } catch (e) {
+      ;
+      Alert.alert(alert(e.toString()));
+      return;
+    }
+  };
+  
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
-      <ScrollView
-        contentContainerStyle={{ paddingTop: 100, paddingHorizontal: 1 }}
-      >
+      {/* <ScrollView
+        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 1 }}
+      > */}
         <View style={styles.container}>
-          <View style={{ paddingTop: 35, paddingHorizontal: 10 }}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <View style={{ marginTop: "15%", paddingHorizontal: 10, flex: 1, }}>
+          <Input
+              onChangeText={(text) => handleOnchange(text, "firstname")}
+              onFocus={() => handleError(null, "firstname")}
+              iconName="account-outline"
+              label="FirstName"
+              placeholder="Enter Firstame"
+              error={errors.fullname}
+            />
+            <Input
+              onChangeText={(text) => handleOnchange(text, "lastname")}
+              onFocus={() => handleError(null, "lastname")}
+              iconName="account-outline"
+              label="LastName"
+              placeholder="Enter Lastname"
+              error={errors.fullname}
+            />
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
               onFocus={() => handleError(null, "email")}
@@ -309,14 +372,7 @@ const RegisterPage = ({ navigation }) => {
               error={errors.email}
             />
 
-            <Input
-              onChangeText={(text) => handleOnchange(text, "fullname")}
-              onFocus={() => handleError(null, "fullname")}
-              iconName="account-outline"
-              label="Full Name"
-              placeholder="Enter full name"
-              error={errors.fullname}
-            />
+            
             <Input
               onChangeText={(text) => handleOnchange(text, "password")}
               onFocus={() => handleError(null, "password")}
@@ -328,7 +384,7 @@ const RegisterPage = ({ navigation }) => {
             />
 
             <View style={styles.touchables}>
-              {<Button title="Register" onPress={validate} />}
+              {<Button title="Register" onPress={doRegister} />}
               <Text
                 onPress={() => navigation.navigate("LoginPage")}
                 style={{
@@ -342,10 +398,10 @@ const RegisterPage = ({ navigation }) => {
               </Text>
             </View>
           </View>
-          {/* </ImageBackground>  */}
+          </ImageBackground> 
         </View>
         {/* </ImageBackground>  */}
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

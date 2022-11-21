@@ -38,7 +38,7 @@ const HomePage = ({ navigation }) => {
 
   function GamePage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A", }}>
         <Text>Click now to play</Text>
       </View>
     );
@@ -70,7 +70,7 @@ const HomePage = ({ navigation }) => {
 
   function SettingsPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Settings!</Text>
         <Button title="Logout" onPress={logout} />
       </View>
@@ -79,7 +79,7 @@ const HomePage = ({ navigation }) => {
 
   function WatchListPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Watch List!</Text>
         <Text>
           Implement a plus symbol on the home page that will allow the user to
@@ -92,7 +92,7 @@ const HomePage = ({ navigation }) => {
 
   function RulesPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Rules Page!</Text>
       </View>
     );
@@ -102,7 +102,10 @@ const HomePage = ({ navigation }) => {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+    
+    
+      screenOptions=
+      {({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -121,6 +124,7 @@ const HomePage = ({ navigation }) => {
         },
         tabBarActiveTintColor: "#e8b923",
         tabBarInactiveTintColor: "gray",
+        tabBarStyle : {backgroundColor:"#0A0A0A"}
       })}
     >
       <Tab.Screen name="Play" component={GamePage} />

@@ -271,30 +271,30 @@ const LoginPage = ({ navigation }) => {
     }
   };
 
-  const login = () => {
-    setLoading(true);
-    setTimeout(async () => {
-      setLoading(false);
-      let userData = await AsyncStorage.getItem("userData");
-      if (userData) {
-        userData = JSON.parse(userData);
-        if (
-          inputs.email == userData.email &&
-          inputs.password == userData.password
-        ) {
-          navigation.navigate("HomePage");
-          AsyncStorage.setItem(
-            "userData",
-            JSON.stringify({ ...userData, loggedIn: true })
-          );
-        } else {
-          Alert.alert("Error", "Invalid Details");
-        }
-      } else {
-        Alert.alert("Error", "User does not exist");
-      }
-    }, 3000);
-  };
+  // const login = () => {
+  //   setLoading(true);
+  //   setTimeout(async () => {
+  //     setLoading(false);
+  //     let userData = await AsyncStorage.getItem("userData");
+  //     if (userData) {
+  //       userData = JSON.parse(userData);
+  //       if (
+  //         inputs.email == userData.email &&
+  //         inputs.password == userData.password
+  //       ) {
+  //         navigation.navigate("HomePage");
+  //         AsyncStorage.setItem(
+  //           "userData",
+  //           JSON.stringify({ ...userData, loggedIn: true })
+  //         );
+  //       } else {
+  //         Alert.alert("Error", "Invalid Details");
+  //       }
+  //     } else {
+  //       Alert.alert("Error", "User does not exist");
+  //     }
+  //   }, 3000);
+  // };
 
   const handleOnchange = (text, input) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));
@@ -302,6 +302,41 @@ const LoginPage = ({ navigation }) => {
 
   const handleError = (error, input) => {
     setErrors((prevState) => ({ ...prevState, [input]: error }));
+  };
+
+  const doLogin = async (event) => {
+    event.preventDefault();
+
+    // const loginName = loginNameRef.current.value;
+    // const loginPassword = loginPasswordRef.current.value;
+
+    let obj = { login: inputs.email, password: inputs.password };
+    let js = JSON.stringify(obj);
+
+    try {
+      
+      // 'https://cinema-guesser.herokuapp.com/api/login'
+      
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/login', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      let res = JSON.parse(await response.text());
+     
+
+      if (res.error && res.error !== '') {
+        Alert.alert("Error", "User does not exist");
+      }else 
+      {
+       
+        navigation.navigate("HomePage");
+      }
+    } catch (e) {
+      alert(e.toString());
+      Alert.alert(e.toString());
+      return;
+    }
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
@@ -336,7 +371,7 @@ const LoginPage = ({ navigation }) => {
                 error={errors.password}
                 password
               />
-              <Button title="Log In" onPress={validate} />
+              <Button title="Log In" onPress={doLogin} />
               <Text
                 onPress={() => navigation.navigate("RegisterPage")}
                 style={{
