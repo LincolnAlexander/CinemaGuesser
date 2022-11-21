@@ -26,7 +26,7 @@ function GameContainer() {
   let res;
   useEffect(() => {
     loadMovieInfo();
-  });
+  }, []);
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
     //console.log(event);
@@ -76,6 +76,7 @@ function GameContainer() {
   let guesses = useRef(null);
   let gg;
   const handleGuess = (event) => {
+    event.preventDefault();
     // console.log(guesses.current.value);
 
     // if( event.target.value === undefined)
@@ -208,6 +209,35 @@ function GameContainer() {
     }
   };
 
+  // Decrement/increment guess value for user input
+  function decrement(e) {
+    e.preventDefault();
+
+    const btn = e.target.parentNode.parentElement.querySelector(
+      'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    value--;
+    if (value < 1) value = 1;
+    if (value > 100) value = 100;
+    target.value = value;
+  }
+
+  function increment(e) {
+    e.preventDefault();
+
+    const btn = e.target.parentNode.parentElement.querySelector(
+      'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    value++;
+    if (value < 1) value = 1;
+    if (value > 100) value = 100;
+    target.value = value;
+  }
+
   return (
     <div className='flex justify-center m-20 '>
       <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
@@ -244,15 +274,28 @@ function GameContainer() {
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
           <form className='sm:flex justify-center'>
+            {/* <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
+            <button
+              data-action='decrement'
+              className='my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              onClick={decrement}
+            >
+              <span className='m-auto text-2xl font-light'>−</span>
+            </button>
             <input
               className='peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center'
               ref={guesses}
               placeholder='Guess Rating'
               id='guess'
               type='number'
-              min='1'
-              max='100'
             ></input>
+            <button
+              data-action='increment'
+              className='my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              onClick={increment}
+            >
+              <span className='m-auto text-2xl font-light'>+</span>
+            </button>
             <button className='mx-5' onClick={handleGuess}>
               <SubmitBtn className='w-20 sm: w-24 self-center' />
             </button>
