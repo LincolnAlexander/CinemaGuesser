@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <CinemaGuesserApp /> */}
-      <LeaderboardPage />
-      {/* <GamePage/> */}
+      <CinemaGuesserApp />
+      {/*<LeaderboardPage />*/}
+      {/*<GamePage/>*/}
       {/* <Nav /> */}
     </BrowserRouter>
   </React.StrictMode>

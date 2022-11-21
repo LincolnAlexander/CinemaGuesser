@@ -26,7 +26,7 @@ function GameContainer() {
   let res;
   useEffect(() => {
     loadMovieInfo();
-  });
+  }, []);
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
     //console.log(event);

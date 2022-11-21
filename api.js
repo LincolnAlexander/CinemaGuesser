@@ -2,6 +2,7 @@ require('express');
 require('mongodb');
 const axios = require("axios");
 var sha256 = require('js-sha256');
+const { ConnectionClosedEvent } = require('mongodb');
 
 //Gaming
 exports.setApp = function ( app, client )
@@ -313,93 +314,65 @@ exports.setApp = function ( app, client )
           }
         }
       ]).toArray();
-      const title_search = capitalize(results[0].Title);
-      //const title_search = capitalize("Harry Potter and the Deathly Hallows: Part 2");
+      const title_search = results[0].Title.toUpperCase();
+      //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toUpperCase();
       var omdb_ret = {};
       //look in MoviesSaved
       const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
-      //if movie isn't in MoviesSaved
-      if(find_title.length == 0){
-        omdb_ret = false;
-        //insert movie title to be updated
-        await db.collection('MoviesSaved').insertOne({Title:title_search})
+      
+      //if movie isn't in MoviesSaved -> OMDB -> Movies saved
+      //if movie is in MoviesSaved -> get
+      if(find_title.length == 0)
+      {
+        console.log("\x1b[36mMaking OMDB request\x1b[0m");
+        /*var result = await makeGetRequest(title_search);
+        omdb_ret = parseFields(fields, result);
+        //uppercase title to make consistant
+        omdb_ret["Title"] = omdb_ret["Title"].toUpperCase();
+        db.collection('MoviesSaved').insertOne(omdb_ret);*/
+        console.log("get request");
       }
       else
-        omdb_ret = loadFields(fields, find_title[0]);
-      //loadFields will return false if there's an undefined value in JSON
-
-      //if omdb_ret is false (movie not in MoviesSaved or there's undefined field in JSON)
-
-      if(!omdb_ret)
       {
-        //make request to OMDB with that random movie title
-        console.log("\x1b[36mMaking OMDB request\x1b[0m");
-        var result = await makeGetRequest(title_search);
-
-        //if bad movie
-        if(omdb_ret.Response == 'False'){
-          err = 'Invalid Movie: remove ' + title_search;
-          //Add auto removal of invalid movie here
-        }
-        else
-        {
-          omdb_ret = loadFields(fields, result);
-          //invalid field
-          if(!omdb_ret)
-          {
-            err = "invalid field";
-          }
-          else
-          {
-            //change movie title to be consistant (capitalization)
-            omdb_ret["Title"] = capitalize(omdb_ret["Title"]);
-            //update movie data to MoviesSaved
-            var obj = {'$set': omdb_ret};
-            await db.collection('MoviesSaved').updateOne({Title:title_search}, obj);
-            
-          }
-        }
+        omdb_ret = find_title[0];
       }
+      //******
 
       var ret = {omdb: omdb_ret, title: title_search, error: err};
       res.status(200).json(ret);
     });
 
-    //capitalize to keep movie strings consistant
-    const capitalize = (str, lower = false) =>
-      (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
-    ;
-
-    //generate dynamic JSON for movie given fields
-    //returns false if there's an invalid field
-    function loadFields(fields, json)
+    //parses json to get certain fields in 'fields'
+    function parseFields(fields, json)
     {
       var ret = {};
-      for(let i = 0; i < fields.length; i++)
-      {
-        //for ratings directly from OMDB
-        if(fields[i] === 'Ratings' && typeof(json['Ratings']) == 'object')
-        {
-          //get rating (might not be rotten tomatoes)
-          ret[fields[i]] = json.Ratings[0].Value;
-          for (let j = 0; j < json.Ratings.length; j++) 
-          {
-            if(json.Ratings[j].Source === 'Rotten Tomatoes')
-            ret[fields[i]] = json.Ratings[j].Value;
+      for (var key of Object.keys(json)) {
+        // -1 if not in array
+        if(fields.indexOf(key) >= 0){
+          ret[key] = json[key];
+          //specially parse ratings
+          if(key == 'Ratings'){
+            ret[key] = parseRatings(json[key]);
           }
-          continue;
-        }
-
-        ret[fields[i]] = json[fields[i]];
-        //if field is undefined
-        if(!json[fields[i]]){
-          console.log("\x1b[31mFAILED ON " + fields[i], '\x1b[0m');
-          return false
         }
       }
       return ret;
     }
-
+    //acccepts Array and parses 'Ratings' from OMDB for rotten tomatoes
+    function parseRatings(ratings){
+      //ret is string
+      var ret;
+      for(let i = 0; i < ratings.length; i++){
+        if(!ret){
+          ret = ratings[i]["Value"];
+        }
+        if(ratings[i]["Source"] === "Rotten Tomatoes"){
+          ret = ratings[i]["Value"];
+          break;
+        }
+      }
+      return ret;
+    }
     //function that makes requests to OMDB using promises and axios
     function makeGetRequest(search) {                            //makeGetRequest function
       return new Promise(function (resolve, reject) {
