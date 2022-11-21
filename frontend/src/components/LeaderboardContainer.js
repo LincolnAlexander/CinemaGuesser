@@ -12,6 +12,7 @@ function LeaderboardContainer()
 
     const [page,setPage] = useState(0);
     const colNames = ['Rank', 'Name', 'Score'];
+    let list = [];
     const loadLeaderboard = async(event) => 
     {
       
@@ -36,7 +37,22 @@ function LeaderboardContainer()
         res = JSON.parse(await response.text());
         
         console.log( res);
+        let name = res.list[0].FirstName + " "+res.list[0].LastName.substring(0, 1).toUpperCase();
         
+        
+        for(let i = 0; i < 10; i++)
+        {
+          let n = {
+          Rank: 1,
+          Name: 'Test',
+          Score: 1,
+          }
+          list.push(n);
+        }
+        console.log(name);
+        console.log(list);
+        
+
         //store refreshed token (has accessToken field)
         // storage.storeToken(res.jwtToken);
         
@@ -91,8 +107,8 @@ function LeaderboardContainer()
                             </tr>
                             {/* {Object.values(list).map((obj,index) =>(
                               <tr key = {index}>
-                                {Object.values(list).map((value,index2) =>(
-                                  <th key = {index2}>{value}</th>
+                                {Object.values(obj).map((value,index2) =>(
+                                  <td key = {index2}>{value}</td>
                                 ))}
                               </tr>
                             ))} */}
