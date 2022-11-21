@@ -54,7 +54,7 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>                   //register
     {
       var error = '';
-      const { FirstName, LastName, Login, Pass } = req.body;
+      const { FirstName, LastName, Login, Pass, Email } = req.body;
       const Password = sha256.hmac('key', req.body.Password);
       //stats and list(s) for user
       const Score = 0;
@@ -73,7 +73,7 @@ exports.setApp = function ( app, client )
 
       if(results.length == 0)
       {
-        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList});
+        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email});
         fn = FirstName;
         ln = LastName;
         lgn = Login;

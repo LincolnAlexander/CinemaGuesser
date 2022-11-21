@@ -24,6 +24,7 @@ function RegisterContainer() {
       LastName: lastName,
       Login: loginName,
       Password: loginPassword,
+      Email:email
     };
     let js = JSON.stringify(obj);
 
