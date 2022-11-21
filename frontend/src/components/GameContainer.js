@@ -241,8 +241,8 @@ function GameContainer() {
   }
 
   return (
-    <div className='flex justify-center m-20 '>
-      <div className='mt-20 grid grid-cols-1 sm:grid-cols-2 w-1/2 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
+    <>
+      <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-3 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
           <p className='text-pr-yellow text-xl'>{title}</p>
         </div>
@@ -275,11 +275,11 @@ function GameContainer() {
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
-          <form className='sm:flex justify-center'>
+          <form className='sm:flex justify-center sm:flex-wrap'>
             {/* <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
             <button
               data-action='decrement'
-              className='my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
               onClick={decrement}
             >
               <span className='m-auto text-2xl font-light'>−</span>
@@ -293,13 +293,13 @@ function GameContainer() {
             ></input>
             <button
               data-action='increment'
-              className='my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
               onClick={increment}
             >
               <span className='m-auto text-2xl font-light'>+</span>
             </button>
-            <button className='mx-5' onClick={handleGuess}>
-              <SubmitBtn className='w-20 sm: w-24 self-center' />
+            <button className='mx-6' onClick={handleGuess}>
+              <SubmitBtn className='mx-6 w-20 sm:w-24 self-center' />
             </button>
           </form>
         </div>
@@ -323,7 +323,7 @@ function GameContainer() {
         guess={gg}
         overallPoints={overallPoints}
       />
-    </div>
+    </>
   );
 }
 export default GameContainer;
