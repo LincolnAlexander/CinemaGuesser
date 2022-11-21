@@ -1,5 +1,5 @@
 import React from 'react';
-import WatchlistContainer from '../components/LeaderboardContainer';
+import WatchlistContainer from '../components/WatchlistContainer';
 
 
 

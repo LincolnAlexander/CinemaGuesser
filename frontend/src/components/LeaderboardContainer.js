@@ -105,6 +105,7 @@ function LeaderboardContainer()
                                 <th>b</th>
 
                             </tr>
+                            {/* First Try */}
                             {/* {Object.values(list).map((obj,index) =>(
                               <tr key = {index}>
                                 {Object.values(obj).map((value,index2) =>(
@@ -112,6 +113,12 @@ function LeaderboardContainer()
                                 ))}
                               </tr>
                             ))} */}
+
+                            {/* Second Try */}
+                             {/* {list.map((element, index)=> ( 
+                             <tr key={index}>
+                              <td >{element}</td>
+                            </tr>))} */}
                         </tbody>
                     </table>
                 </div>
