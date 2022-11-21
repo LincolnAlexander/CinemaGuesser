@@ -17,6 +17,7 @@ function Nav() {
   const pathname = useLocation().pathname;
   const navigation = [
     { name: 'Home', href: '/home', current: false },
+    { name: 'Watchlist', href: '/watchlist', current: false },
     { name: 'Leaderboard', href: '/leaderboard', current: false },
   ];
   const auth = localStorage.getItem('user_data');
@@ -164,8 +165,8 @@ function Nav() {
                         className={classNames(
                           item.current
                             ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'block px-3 py-2 rounded-md text-base font-medium'
+                            : 'text-gray-400 hover:bg-gray-700 hover:text-white',
+                          'block px-3 py-2 rounded-md text-base font-medium max-w-fit'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -175,7 +176,7 @@ function Nav() {
                   : undefined}
                 <RulesModal
                   classes={
-                    'block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
+                    'block rounded-md px-3 py-2 max-w-fit text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white'
                   }
                 />
               </div>
