@@ -13,8 +13,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <CinemaGuesserApp />
-      {/* <LeaderboardPage /> */}
-      {/* <GamePage/> */}
+      {/*<LeaderboardPage />*/}
+      {/*<GamePage/>*/}
       {/* <Nav /> */}
     </BrowserRouter>
   </React.StrictMode>
