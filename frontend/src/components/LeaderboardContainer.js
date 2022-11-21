@@ -12,7 +12,11 @@ function LeaderboardContainer()
 
     const [page,setPage] = useState(0);
     const colNames = ['Rank', 'Name', 'Score'];
-    let list = [];
+    let list = [{
+      "Rank":"1",
+      "Name":"Lufy",
+      "Score":"123"
+  },];
     const loadLeaderboard = async(event) => 
     {
       
@@ -42,12 +46,18 @@ function LeaderboardContainer()
         
         for(let i = 0; i < 10; i++)
         {
-          let n = {
-          Rank: 1,
-          Name: 'Test',
-          Score: 1,
-          }
-          list.push(n);
+          
+          list.push(
+            {"Rank":"1",
+            "Name":"Lufy",
+            "Score":"123"
+            });
+            list.map(
+              {"Rank":"1",
+              "Name":"Lufy",
+              "Score":"123"
+              });
+          
         }
         console.log(name);
         console.log(list);
@@ -77,8 +87,8 @@ function LeaderboardContainer()
     return(
         <>
             <div className='flex justify-center m-20 '>
-                <div className='flex justify-center '>
-                    <table className='table-fixed w-1/2 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
+                <div className='flex justify-center flex-col'>
+                    <table className='table-fixed w-1/2 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center'>
                         <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm' >
                             <tr className='text-pr-yellow text-lg'>
                                 {colNames.map((headerItem, index) =>(
@@ -106,21 +116,26 @@ function LeaderboardContainer()
 
                             </tr>
                             {/* First Try */}
-                            {/* {Object.values(list).map((obj,index) =>(
+                            {Object.values(list).map((obj,index) =>(
                               <tr key = {index}>
                                 {Object.values(obj).map((value,index2) =>(
                                   <td key = {index2}>{value}</td>
                                 ))}
                               </tr>
-                            ))} */}
+                            ))}
 
                             {/* Second Try */}
-                             {/* {list.map((element, index)=> ( 
+                             {list.map((element, index)=> ( 
                              <tr key={index}>
-                              <td >{element}</td>
-                            </tr>))} */}
+                              <td >{element.Rank}</td>
+                              <td >{element.Name}</td>
+                              <td >{element.Score}</td>
+                            </tr>))}
+                            
+                            
                         </tbody>
                     </table>
+                   
                 </div>
                 
             </div>
