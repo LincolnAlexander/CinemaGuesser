@@ -5,6 +5,14 @@ import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {
+  StyleSheet,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+} from "react-native";
 
 // <Button title="Logout" onPress={logout} />
 const HomePage = ({ navigation }) => {
@@ -28,10 +36,10 @@ const HomePage = ({ navigation }) => {
     navigation.navigate("LoginPage");
   };
 
-  function HomePage() {
+  function GamePage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Home! hey</Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A", }}>
+        <Text>Click now to play</Text>
       </View>
     );
   }
@@ -62,7 +70,7 @@ const HomePage = ({ navigation }) => {
 
   function SettingsPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Settings!</Text>
         <Button title="Logout" onPress={logout} />
       </View>
@@ -71,10 +79,12 @@ const HomePage = ({ navigation }) => {
 
   function WatchListPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Watch List!</Text>
-        <Text>Implement a plus symbol on the home page that will allow the user to add the movie 
-        to their watch list. The watch list will be a list of movies that the user can reference.
+        <Text>
+          Implement a plus symbol on the home page that will allow the user to
+          add the movie to their watch list. The watch list will be a list of
+          movies that the user can reference.
         </Text>
       </View>
     );
@@ -82,7 +92,7 @@ const HomePage = ({ navigation }) => {
 
   function RulesPage() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:"#0A0A0A" }}>
         <Text>Rules Page!</Text>
       </View>
     );
@@ -92,29 +102,32 @@ const HomePage = ({ navigation }) => {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+    
+    
+      screenOptions=
+      {({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
+          if (route.name === "Play") {
+            iconName = focused ? "play" : "play-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
           } else if (route.name === "Watch List") {
             iconName = focused ? "film" : "film-outline";
-          }
-          else if (route.name === "Rules") {
+          } else if (route.name === "Rules") {
             iconName = focused ? "newspaper" : "newspaper-outline";
           }
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "tomato",
+        tabBarActiveTintColor: "#e8b923",
         tabBarInactiveTintColor: "gray",
+        tabBarStyle : {backgroundColor:"#0A0A0A"}
       })}
     >
-      <Tab.Screen name="Home" component={HomePage} />
+      <Tab.Screen name="Play" component={GamePage} />
       <Tab.Screen name="Watch List" component={WatchListPage} />
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
