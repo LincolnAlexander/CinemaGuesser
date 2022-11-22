@@ -305,16 +305,40 @@ exports.setApp = function ( app, client )
     //gets random movies (KEY)
     app.post('/api/movies', async (req, res, next) =>                     //movies
     {
+
+      //REQ: filter (array)
+      //---------------------------MAKE PIPELINE FILTER---------------------------
+      //set defaults for filter by title
+      var filter = [];
+      if(req.body.filter)
+        filter = req.body.filter;
+
+      const fields = ['Title', 'Genre', 'BoxOffice', 
+      'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+
+      var filter_pipeline = [];
+      for(let i = 0; i < filter.length; i++)
+      {
+        var obj = {Title: {$not: {$eq: filter[i]}}};
+        filter_pipeline.push(obj);
+      }
+
+      var pipeline = []
+
+      if(filter_pipeline.length != 0){
+        pipeline.push({$match: {$and: filter_pipeline}})
+      }
+      pipeline.push({
+        '$sample': {
+          'size': 1
+        }
+      });
+      //--------------------------------------------------------------------------
+
       const db = client.db();
       var err = '';
       //get 1 random movie title from database
-      const results = await db.collection('Movies').aggregate([
-        {
-          '$sample': {
-            'size': 1
-          }
-        }
-      ]).toArray();
+      const results = await db.collection('Movies').aggregate(pipeline).toArray();
       const Title = results[0].Title;
 
       //make request to OMDB with that random movie title
@@ -334,20 +358,45 @@ exports.setApp = function ( app, client )
     //this also gives more limited information compared to api/movies
     app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved
     {
+      //REQ: filter (array)
+
+      //---------------------------MAKE PIPELINE FILTER---------------------------
+      //set defaults for filter by title
+      var filter = [];
+      if(req.body.filter)
+        filter = req.body.filter;
+
       const fields = ['Title', 'Genre', 'BoxOffice', 
       'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+
+      var filter_pipeline = [];
+      for(let i = 0; i < filter.length; i++)
+      {
+        var obj = {Title: {$not: {$eq: filter[i]}}};
+        filter_pipeline.push(obj);
+      }
+
+      var pipeline = []
+
+      if(filter_pipeline.length != 0){
+        pipeline.push({$match: {$and: filter_pipeline}})
+      }
+      pipeline.push({
+        '$sample': {
+          'size': 1
+        }
+      });
+      //--------------------------------------------------------------------------
+
       const db = client.db();
       var err = '';
       var omdb_ret;
-      //get 1 random movie title from database
-      const results = await db.collection('Movies').aggregate([
-        {
-          '$sample': {
-            'size': 1
-          }
-        }
-      ]).toArray();
+      
+      //get 1 random movie title from database (with filter)
+      const results = await db.collection('Movies').aggregate(pipeline).toArray();
+
       const title_search = results[0].Title.toUpperCase();
+
       //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toUpperCase();
       var omdb_ret = {};
       //look in MoviesSaved
@@ -363,7 +412,6 @@ exports.setApp = function ( app, client )
         //uppercase title to make consistant
         omdb_ret["Title"] = omdb_ret["Title"].toUpperCase();
         db.collection('MoviesSaved').insertOne(omdb_ret);
-        console.log("get request");
       }
       else
       {
