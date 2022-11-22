@@ -4,15 +4,15 @@ const express = require('express');
 const axios = require("axios");
 var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
-const router = express.Router();
+/*const router = express.Router();
 const emailValidator = require('deep-email-validator');
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');*/
 
 
 
-async function isEmailValid(email) {
+/*async function isEmailValid(email) {
   return emailValidator.validate(email)
-}
+}*/
 
 
 //Gaming
@@ -95,7 +95,7 @@ exports.setApp = function ( app, client )
       }
 
       
-      const {valid, reason, validators} = await isEmailValid(req.body.Email);
+      //const {valid, reason, validators} = await isEmailValid(req.body.Email);
       var ret = {firstname: fn, lastname: ln, login: lgn, error: err};
 
       
