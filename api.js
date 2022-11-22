@@ -157,11 +157,15 @@ exports.setApp = function ( app, client )
       ]
       //build the $sort
       pipeline[0]['$sort'][req.body.sortby] = -1;
-      //create number array to make it easier on the front end to make display
-      var ranking_nums = Array.from({length: per_page}, (_, i) => i + 1 + (per_page * req.body.page))
+      var results = await db.collection('Users').aggregate(pipeline).toArray();
 
-      const results = await db.collection('Users').aggregate(pipeline).toArray();
-      var ret = {list: results, rankings: ranking_nums};
+      //create number array to make it easier on the front end to make display
+      for(let i = 0; i < results.length; i++){
+        results[i]["Rank"] = i + 1 + (per_page * req.body.page)
+      }
+
+      
+      var ret = {list: results};
       res.status(200).json(ret);
     });
 //-----------------------------------STATS ENDPOINTS-----------------------------------
