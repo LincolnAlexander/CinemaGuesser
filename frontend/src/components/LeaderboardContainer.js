@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function LeaderboardContainer() {
   const [list, setList] = useState([]);
+  const [rankings, setRankings] = useState([]);
   useEffect(() => {
     loadLeaderboard();
   }, []);
@@ -37,15 +38,12 @@ function LeaderboardContainer() {
       let res = JSON.parse(await response.text());
 
       setList(res.list);
+      setRankings(res.rankings);
+      
+      console.log(res);
 
-      //
-       console.log( res);
-
-      for (let i = 0; i < 10; i++) {
-        list.push({ 'Rank': '1', 'Name': 'Lufy', 'Score': '123' });
-        list.map({ 'Rank': '1', 'Name': 'Lufy', 'Score': '123' });
-      }
-      // console.log(name);
+      
+      
       console.log(list);
 
       //store refreshed token (has accessToken field)
@@ -65,7 +63,7 @@ function LeaderboardContainer() {
   function combineNames(firstName, lastName) {
     if(lastName === null)
     {
-      console.log("NULLL");
+      
       return firstName;
     }
     else
@@ -98,12 +96,13 @@ function LeaderboardContainer() {
                   <td>{element.Score}</td>
                 </tr>
               ))} */}
-              {list.map((listItem) => (
+              {list.map((listItem,idx) => (
                 <tr
                   className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
                   key={listItem.Login}>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
-                    {listItem.FirstName}
+                    {rankings[idx]}
+                    
                   </td>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
                     
