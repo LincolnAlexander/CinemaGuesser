@@ -351,18 +351,17 @@ exports.setApp = function ( app, client )
       //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toUpperCase();
       var omdb_ret = {};
       //look in MoviesSaved
-      const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
-      
+
       //if movie isn't in MoviesSaved -> OMDB -> Movies saved
       //if movie is in MoviesSaved -> get
       if(find_title.length == 0)
       {
         console.log("\x1b[36mMaking OMDB request\x1b[0m");
-        /*var result = await makeGetRequest(title_search);
+        var result = await makeGetRequest(title_search);
         omdb_ret = parseFields(fields, result);
         //uppercase title to make consistant
         omdb_ret["Title"] = omdb_ret["Title"].toUpperCase();
-        db.collection('MoviesSaved').insertOne(omdb_ret);*/
+        db.collection('MoviesSaved').insertOne(omdb_ret);
         console.log("get request");
       }
       else
