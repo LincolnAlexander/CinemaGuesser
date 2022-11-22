@@ -77,27 +77,42 @@ exports.setApp = function ( app, client )
       const WatchList = [];
       const db = client.db();
 
-      var err = 'Username Taken';
-      var fn = '';
-      var ln = '';
-      var lgn = '';
+      var err = '';
+      var fn;
+      var ln;
+      var lgn;
+      var eml;
 
-      const results = await db.collection('Users').find({Login:Login}).toArray();
+      const resultsLogin = await db.collection('Users').find({Login:Login}).toArray();
+      const resultsEmail = await db.collection('Users').find({Email:Email}).toArray();
 
 
-      if(results.length == 0)
+      if(resultsLogin.length == 0 && resultsEmail.length == 0)
       {
         db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email});
         fn = FirstName;
         ln = LastName;
         lgn = Login;
-        err = '';
+        eml = Email;
+      }
+      else
+      {
+        //error message generation
+        if(resultsLogin.length != 0)
+        {
+          err += "Login "
+        }
+        if(resultsEmail.length != 0)
+        {
+          if(err != '')
+            err += "and "
+          err += "Email "
+        }
+        err += "already taken"
       }
 
-      
       //const {valid, reason, validators} = await isEmailValid(req.body.Email);
-      var ret = {firstname: fn, lastname: ln, login: lgn, error: err};
-
+      var ret = {firstname: fn, lastname: ln, login: lgn, email: eml, error: err};
       
       res.status(200).json(ret);
     });
