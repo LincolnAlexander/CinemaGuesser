@@ -6,6 +6,9 @@ var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
 const router = express.Router();
 const emailValidator = require('deep-email-validator');
+const nodemailer = require('nodemailer');
+
+
 
 async function isEmailValid(email) {
   return emailValidator.validate(email)
@@ -90,19 +93,11 @@ exports.setApp = function ( app, client )
         lgn = Login;
         err = '';
       }
-      const {valid, reason, validators} = await isEmailValid(Email);
-      var ret;
 
-      if(valid)
-      {
-        ret = {firstname: fn, lastname: ln, login: lgn, error: err}
-      }
+      
+      const {valid, reason, validators} = await isEmailValid(req.body.Email);
+      var ret = {firstname: fn, lastname: ln, login: lgn, error: err};
 
-      else
-      {
-        err = 'Invalid email address';
-        ret = {error: err};
-      }
       
       res.status(200).json(ret);
     });
