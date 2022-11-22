@@ -74,11 +74,12 @@ function GameContainer() {
   const [turnOny, setPlayAgainModal] = useState(false);
   const [curGuess, setGuess] = useState(1);
   const [round, setRound] = useState(0);
+  const [clicked, setClicked] = useState(false);
   let guesses = useRef(null);
   let gg;
 
   const handleGuess = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     // console.log(guesses.current.value);
 
     // if( event.target.value === undefined)
@@ -92,9 +93,11 @@ function GameContainer() {
     //   guesses = event.target.value;
     //   showModal(event, guesses);
     // }
+    setClicked(true);
     gg = guesses.current.value;
     showModal(event, guesses.current.value);
   };
+
   function showModal(event, g) {
     event.preventDefault();
 
@@ -132,6 +135,7 @@ function GameContainer() {
     setRoundModal(false);
     loadMovieInfo();
     setScore(0);
+    setClicked(false);
     guesses.current.value = '';
   }
 
@@ -142,6 +146,7 @@ function GameContainer() {
     setTotalScore(0);
     setScore(0);
     setRound(0);
+    setClicked(false);
     guesses.current.value = '';
   }
 
@@ -275,7 +280,10 @@ function GameContainer() {
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
-          <form className='sm:flex justify-center sm:flex-wrap'>
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className='sm:flex justify-center sm:flex-wrap'
+          >
             {/* <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
             <button
               data-action='decrement'
@@ -298,7 +306,7 @@ function GameContainer() {
             >
               <span className='m-auto text-2xl font-light'>+</span>
             </button>
-            <button className='mx-6' onClick={handleGuess}>
+            <button className='mx-6' onClick={!clicked ? handleGuess : null}>
               <SubmitBtn className='mx-6 w-20 sm:w-24 self-center hover:scale-105' />
             </button>
           </form>
