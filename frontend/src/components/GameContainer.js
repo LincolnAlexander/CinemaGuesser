@@ -6,6 +6,15 @@ import RoundModal from './modals/RoundModal';
 
 function GameContainer() {
   const storage = require('../tokenStorage.js');
+
+  //MOVIE_MEM TO HANDLE REPEAT MOVIES
+  //make movie mem if doesn't exist
+  if (sessionStorage.getItem("movie_mem") === null) 
+  {
+    sessionStorage.setItem('movie_mem', JSON.stringify({list: [], head: 0}));
+  }
+
+  //GET USER DATA
   let _ud = localStorage.getItem('user_data');
   let ud = JSON.parse(_ud);
   // var firstName = ud.firstName;
@@ -30,9 +39,10 @@ function GameContainer() {
 
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
-    //console.log(event);
-
-    let obj = {};
+    var movie_mem = JSON.parse(sessionStorage.getItem('movie_mem'));
+    let obj = {
+      "filter": movie_mem["list"]
+    };
     let js = JSON.stringify(obj);
     try {
       let bp = require('./Paths.js');
@@ -43,23 +53,35 @@ function GameContainer() {
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
-      // console.log(res);
       let res = JSON.parse(await response.text());
-
-      setDesc(res.omdb.Plot);
-      setActors(res.omdb.Actors);
-      setBoxOffice(res.omdb.BoxOffice);
-      setGenre(res.omdb.Genre);
-      setPoster(res.omdb.Poster);
-      setRating(parseInt(res.omdb.Ratings));
-      setTitle(res.omdb.Title);
-
-      // console.log("Results:");
-      console.log(res.omdb);
-      if (res.error !== '') {
+      
+      if (res.length == 0 || (res.error && res.error !== '')) {
         // setMessage('Username is taken, please try a different one.');
+        //either by default or after filter
+        console.log(res.err)
       } else {
-        // setMessage('');
+        setDesc(res.omdb.Plot);
+        setActors(res.omdb.Actors);
+        setBoxOffice(res.omdb.BoxOffice);
+        setGenre(res.omdb.Genre);
+        setPoster(res.omdb.Poster);
+        setRating(parseInt(res.omdb.Ratings));
+        setTitle(res.omdb.Title);
+        
+        //on reload don't run again
+        if(movie_mem.list[movie_mem.head] !== res.omdb.Title)
+        {
+          
+        movie_mem.list[movie_mem.head] = res.omdb.Title;
+        movie_mem.head += 1;
+        //this number '25' must be smaller than number of movies in 'Movies' DB
+        movie_mem.head %= 25
+        console.log("UPDATE: " + JSON.stringify(movie_mem));
+        //update movie_mem
+        sessionStorage.setItem('movie_mem', JSON.stringify(movie_mem));
+        }
+        
+        //console.log(res.omdb);
       }
     } catch (e) {
       console.log(e);

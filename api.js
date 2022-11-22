@@ -319,6 +319,7 @@ exports.setApp = function ( app, client )
     {
 
       //REQ: filter (array)
+
       //---------------------------MAKE PIPELINE FILTER---------------------------
       //set defaults for filter by title
       var filter = [];
@@ -328,14 +329,19 @@ exports.setApp = function ( app, client )
       const fields = ['Title', 'Genre', 'BoxOffice', 
       'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
 
+      //capitalize all movie titles in 'Movies'
       var filter_pipeline = [];
       for(let i = 0; i < filter.length; i++)
       {
         var obj = {Title: {$not: {$eq: filter[i]}}};
         filter_pipeline.push(obj);
       }
-
-      var pipeline = []
+      //MAKE ALL TITLES IN 'Movies' UPPERCASE INSTEAD?
+      var pipeline = [{
+        $project: {
+            "Title": { $toUpper: "$Title" }
+        }
+    }]
 
       if(filter_pipeline.length != 0){
         pipeline.push({$match: {$and: filter_pipeline}})
@@ -381,14 +387,19 @@ exports.setApp = function ( app, client )
       const fields = ['Title', 'Genre', 'BoxOffice', 
       'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
 
+      //capitalize all movie titles in 'Movies'
       var filter_pipeline = [];
       for(let i = 0; i < filter.length; i++)
       {
         var obj = {Title: {$not: {$eq: filter[i]}}};
         filter_pipeline.push(obj);
       }
-
-      var pipeline = []
+      //MAKE ALL TITLES IN 'Movies' UPPERCASE INSTEAD?
+      var pipeline = [{
+        $project: {
+            "Title": { $toUpper: "$Title" }
+        }
+    }]
 
       if(filter_pipeline.length != 0){
         pipeline.push({$match: {$and: filter_pipeline}})
