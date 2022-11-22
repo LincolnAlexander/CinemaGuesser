@@ -38,7 +38,8 @@ function LeaderboardContainer() {
 
       setList(res.list);
 
-      // console.log( res);
+      //
+       console.log( res);
 
       for (let i = 0; i < 10; i++) {
         list.push({ 'Rank': '1', 'Name': 'Lufy', 'Score': '123' });
@@ -62,7 +63,16 @@ function LeaderboardContainer() {
   };
 
   function combineNames(firstName, lastName) {
-    // let name = res.list[0].FirstName + " "+res.list[0].LastName.substring(0, 1).toUpperCase();
+    if(lastName === null)
+    {
+      console.log("NULLL");
+      return firstName;
+    }
+    else
+      return firstName + " "+lastName.substring(0, 1).toUpperCase();
+    // let name = firstName + " "+lastName.substring(0, 1).toUpperCase();
+    // console.log(name);
+    // return name;
   }
 
   return (
@@ -71,54 +81,36 @@ function LeaderboardContainer() {
         <div className='flex justify-center flex-col'>
           <table className='table-fixed w-1/2 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center'>
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
-              <tr className='text-pr-yellow text-lg'>
+              <tr className='text-pr-yellow text-lg '>
                 {colNames.map((headerItem, index) => (
-                  <th key={index}>{headerItem}</th>
+                  <th key={index} className = 'px-6 py-4 '>{headerItem}</th>
                 ))}
+                
               </tr>
             </thead>
             <tbody className='text-left text-pr-white'>
-              <tr>
-                <th className=''>a</th>
-                <th>b</th>
-                <th>c</th>
-              </tr>
-              <tr>
-                <th className=''>a</th>
-                <th>a</th>
-                <th>s</th>
-              </tr>
-              <tr>
-                <th className=''>f</th>
-                <th>g</th>
-                <th>b</th>
-              </tr>
-              {/* First Try */}
-              {Object.values(list).map((obj, index) => (
-                <tr key={index}>
-                  {Object.values(obj).map((value, index2) => (
-                    <td key={index2}>{value}</td>
-                  ))}
-                </tr>
-              ))}
+              
               {/* Second Try */}
-              {list.map((element, index) => (
+              {/* {list.map((element, index) => (
                 <tr key={index}>
-                  <td>{element.Rank}</td>
-                  <td>{element.Name}</td>
+                  <td>{element.Login}</td>
+                  <td>{element.FirstName}</td>
                   <td>{element.Score}</td>
                 </tr>
-              ))}
+              ))} */}
               {list.map((listItem) => (
                 <tr
-                  className='border-b bg-gray-800 border-gray-900'
-                  key={listItem.Login}
-                >
+                  className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
+                  key={listItem.Login}>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
                     {listItem.FirstName}
                   </td>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
-                    {listItem.LastName}
+                    
+                    {combineNames(listItem.FirstName, listItem.LastName)}
+                  </td>
+                  <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
+                    {listItem.Score}
                   </td>
                 </tr>
               ))}
