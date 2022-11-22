@@ -69,8 +69,11 @@ exports.setApp = function ( app, client )
     app.post('/api/register', async (req, res, next) =>                   //register
     {
       var error = '';
+      var password = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
-      const Password = sha256.hmac('key', req.body.Pass);
+      if(Pass)
+        password = Pass
+      const Password = sha256.hmac('key', password);
       //stats and list(s) for user
       const Score = 0;
       const GamesPlayed = 0;
@@ -86,8 +89,11 @@ exports.setApp = function ( app, client )
       const resultsLogin = await db.collection('Users').find({Login:Login}).toArray();
       const resultsEmail = await db.collection('Users').find({Email:Email}).toArray();
 
-
-      if(resultsLogin.length == 0 && resultsEmail.length == 0)
+      if(password == '')
+      {
+        err = "empty Pass field"
+      }
+      else if(resultsLogin.length == 0 && resultsEmail.length == 0)
       {
         db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email});
         fn = FirstName;
