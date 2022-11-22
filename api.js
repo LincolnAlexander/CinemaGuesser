@@ -351,7 +351,8 @@ exports.setApp = function ( app, client )
       //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toUpperCase();
       var omdb_ret = {};
       //look in MoviesSaved
-
+      const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
+      
       //if movie isn't in MoviesSaved -> OMDB -> Movies saved
       //if movie is in MoviesSaved -> get
       if(find_title.length == 0)
