@@ -150,10 +150,12 @@ exports.setApp = function ( app, client )
         }
       ]
       //build the $sort
-      pipeline[0]['$sort'][req.body.sortby] = 1;
+      pipeline[0]['$sort'][req.body.sortby] = -1;
+      //create number array to make it easier on the front end to make display
+      var ranking_nums = Array.from({length: per_page}, (_, i) => i + 1 + (per_page * req.body.page))
 
       const results = await db.collection('Users').aggregate(pipeline).toArray();
-      var ret = {list: results};
+      var ret = {list: results, rankings: ranking_nums};
       res.status(200).json(ret);
     });
 //-----------------------------------STATS ENDPOINTS-----------------------------------
@@ -310,7 +312,7 @@ exports.setApp = function ( app, client )
       //---------------------------MAKE PIPELINE FILTER---------------------------
       //set defaults for filter by title
       var filter = [];
-      if(req.body.filter)
+      if(Array.isArray(req.body.filter))
         filter = req.body.filter;
 
       const fields = ['Title', 'Genre', 'BoxOffice', 
@@ -363,7 +365,7 @@ exports.setApp = function ( app, client )
       //---------------------------MAKE PIPELINE FILTER---------------------------
       //set defaults for filter by title
       var filter = [];
-      if(req.body.filter)
+      if(Array.isArray(req.body.filter))
         filter = req.body.filter;
 
       const fields = ['Title', 'Genre', 'BoxOffice', 
