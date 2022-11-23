@@ -4,6 +4,9 @@ const express = require('express');
 const axios = require("axios");
 var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 /*const router = express.Router();
 const emailValidator = require('deep-email-validator');
 const nodemailer = require('nodemailer');*/
@@ -20,7 +23,7 @@ exports.setApp = function ( app, client )
 {
 //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
 // JWT Added by Casey
-    app.post('/api/login', async (req, res, next) =>                      //login
+    app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V1)
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
@@ -33,6 +36,7 @@ exports.setApp = function ( app, client )
       }
 
       const db = client.db();
+      //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
       const results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
       var firstName = '';
       var lastName = '';
@@ -55,7 +59,6 @@ exports.setApp = function ( app, client )
       else
       {
         ret = {error: "Login/Password incorrect"};
-        err = "Login/Password incorrect"
       }
       //ret = {firstName: firstName, lastName: lastName, error: err}
       res.status(200).json(ret);
@@ -112,6 +115,25 @@ exports.setApp = function ( app, client )
       }
 
       //const {valid, reason, validators} = await isEmailValid(req.body.Email);
+
+      const msg = {
+        to: 'cinemaguesser.devteam@gmail.com',
+        from: 'courtmac.ii@knights.ucf.edu',
+        subject: 'Tester Message',
+        text: 'This is me testing sendgrid',
+        html: '<strong>This is me testing sendgrid',
+      }
+
+      sgMail.send(msg)
+      .then(()=>
+      {
+        console.log('Email sent')
+      })
+      .catch((error) =>
+      {
+        console.log(error)
+      })
+
       var ret;
       if(err != '')
         ret = {error: err}
@@ -175,7 +197,7 @@ exports.setApp = function ( app, client )
 //-----------------------------------STATS ENDPOINTS-----------------------------------
     //get scores (ADJUST FOR JWT TOKEN)
     // Adjusted for JWT tokens ------
-    app.post('/api/get_stats', async (req, res, next) =>                  //get_stats
+    app.post('/api/get_stats', async (req, res, next) =>                  //get_stats (FORTIFIED JWT)
     {
       //REQ: login
       
@@ -235,7 +257,7 @@ exports.setApp = function ( app, client )
     });
 
      //perform operations on scores (ADJUST FOR JWT TOKEN)
-     app.post('/api/op_stats', async (req, res, next) =>                  //op_stats
+     app.post('/api/op_stats', async (req, res, next) =>                  //op_stats (FORTIFIED JWT)
      {
        //REQ: login, value, mode, field, jwToken
        //MODE OPs
@@ -319,7 +341,7 @@ exports.setApp = function ( app, client )
      });
 //-----------------------------------MOVIE ENDPOINTS-----------------------------------
     //gets random movies (KEY)
-    app.post('/api/movies', async (req, res, next) =>                     //movies
+    app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
     {
 
       //REQ: filter (array)
@@ -378,7 +400,7 @@ exports.setApp = function ( app, client )
     //gets random movies from MoviesSaved database 
     //(unethical, but I wanted to develop this)
     //this also gives more limited information compared to api/movies
-    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved
+    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V1)
     {
       //REQ: filter (array)
 
