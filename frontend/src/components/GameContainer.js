@@ -61,15 +61,15 @@ function GameContainer() {
         //either by default or after filter
         console.log(res.err)
       } else {
+
         setDesc(res.omdb.Plot);
         setActors(res.omdb.Actors);
         setBoxOffice(res.omdb.BoxOffice);
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
         setRating(parseInt(res.omdb.Ratings));
-        setTitle(res.omdb.Title);
+        setTitle(capitalize(res.omdb.Title.toLowerCase()));
         setYear(res.omdb.Year);
-        
         //on reload don't run again
         if(movie_mem.list[movie_mem.head] !== res.omdb.Title)
         {
@@ -268,6 +268,9 @@ function GameContainer() {
     if (value > 100) value = 100;
     target.value = value;
   }
+
+  const capitalize = (str, lower = false) =>
+  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 
   return (
     <>
