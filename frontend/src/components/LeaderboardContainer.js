@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import leftArrow from '../images/icons8-thick-long-left-arrow-32.png'
+import rightArrow from '../images/icons8-thick-long-right-arrow-32.png'
 function LeaderboardContainer() {
   const [list, setList] = useState([]);
-  const [rankings, setRankings] = useState([]);
+  
   useEffect(() => {
     loadLeaderboard();
   }, []);
 
-  const [page, setPage] = useState(0);
+  let [page, setPage] = useState(0);
   const colNames = ['Rank', 'Name', 'Score'];
   //   let list = [{
   //     "Rank":"1",
@@ -38,7 +39,7 @@ function LeaderboardContainer() {
       let res = JSON.parse(await response.text());
 
       setList(res.list);
-      setRankings(res.rankings);
+      
       
       console.log(res);
 
@@ -66,11 +67,37 @@ function LeaderboardContainer() {
       
       return firstName;
     }
+    else if(firstName === null)
+      return lastName;
     else
       return firstName + " "+lastName.substring(0, 1).toUpperCase();
     // let name = firstName + " "+lastName.substring(0, 1).toUpperCase();
     // console.log(name);
     // return name;
+  }
+
+  function prevPage(e)
+  {
+    if(page === 0)
+    {
+      alert("Can't go back any further.")
+    }
+    e.preventDefault();
+    setPage(page = page - 1);
+    loadLeaderboard();
+    console.log('lol');
+  }
+
+  function nextPage(e)
+  {
+    // if(page === 0)
+    // {
+    //   alert("Can't go back any further.")
+    // }
+    e.preventDefault();
+    setPage(page = page + 1);
+    loadLeaderboard();
+
   }
 
   return (
@@ -101,7 +128,7 @@ function LeaderboardContainer() {
                   className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
                   key={listItem.Login}>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
-                    {rankings[idx]}
+                    {listItem.Rank}
                     
                   </td>
                   <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
@@ -115,6 +142,11 @@ function LeaderboardContainer() {
               ))}
             </tbody>
           </table>
+          <div className='self-center mt-5'>
+            <button className = 'mr-5'onClick={prevPage}> <img src = {leftArrow}></img> </button>
+            <button onClick={nextPage  }> <img src = {rightArrow}></img> </button>
+          </div>
+          
         </div>
       </div>
     </>
