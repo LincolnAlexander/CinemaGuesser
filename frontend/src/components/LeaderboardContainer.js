@@ -78,14 +78,20 @@ function LeaderboardContainer() {
 
   function prevPage(e)
   {
+    e.preventDefault();
     if(page === 0)
     {
       alert("Can't go back any further.")
+      return;
     }
-    e.preventDefault();
-    setPage(page = page - 1);
-    loadLeaderboard();
-    console.log('lol');
+    else
+    {
+      setPage(page = page - 1);
+      loadLeaderboard();
+      console.log('lol');
+    }
+    
+    
   }
 
   function nextPage(e)
