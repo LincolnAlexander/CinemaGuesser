@@ -150,9 +150,9 @@ function LeaderboardContainer() {
               ))}
             </tbody>
           </table>
-          <div className='self-center mt-5'>
-            <button className = 'mr-5'onClick={prevPage}> <img src = {leftArrow}></img> </button>
-            <button onClick={nextPage  }> <img src = {rightArrow}></img> </button>
+          <div className='self-center m-5'>
+            <button className = 'mr-5'onClick={prevPage}> <img src = {leftArrow} alt = 'left-arrow'></img> </button>
+            <button  onClick={nextPage  }> <img src = {rightArrow} alt = 'right-arrow'></img> </button>
           </div>
           
         </div>
