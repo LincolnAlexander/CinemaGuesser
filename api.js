@@ -190,7 +190,7 @@ exports.setApp = function ( app, client )
         results[i]["Rank"] = i + 1 + (per_page * page)
       }
 
-      var user_count = await db.collection('Users').count();
+      var user_count = await db.collection('Users').countDocuments();
       var ret = {list: results, count: user_count};
       res.status(200).json(ret);
     });
