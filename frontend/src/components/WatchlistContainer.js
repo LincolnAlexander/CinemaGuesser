@@ -6,8 +6,8 @@ function WatchlistContainer()
 {
     return(
         <>
-            <div>
-                Watchlist
+            <div className='flex m-20 justify-center'>
+                <p>working...</p>
             </div>
         </>
     )

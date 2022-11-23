@@ -4,9 +4,9 @@ import leftArrow from '../images/icons8-thick-long-left-arrow-32.png'
 import rightArrow from '../images/icons8-thick-long-right-arrow-32.png'
 function LeaderboardContainer() {
   const [list, setList] = useState([]);
-  
+  let [maxPage, setMaxPage] = useState();
   useEffect(() => {
-    loadLeaderboard();
+    loadLeaderboard();  
   }, []);
 
   let [page, setPage] = useState(0);
@@ -33,14 +33,16 @@ function LeaderboardContainer() {
       // console.log(res.value);
       let res = JSON.parse(await response.text());
 
+      setMaxPage(Math.ceil(res.count / 10));
       setList(res.list);
+      
       
       
       console.log(res);
 
       
       
-      console.log(list);
+      // console.log(list);
 
       //store refreshed token (has accessToken field)
       // storage.storeToken(res.jwtToken);
@@ -76,14 +78,14 @@ function LeaderboardContainer() {
     e.preventDefault();
     if(page === 0)
     {
-      alert("Can't go back any further.")
+      //alert("Can't go back any further.")
       return;
     }
     else
     {
       setPage(page = page - 1);
       loadLeaderboard();
-      console.log('lol');
+      //console.log('lol');
     }
     
     
@@ -91,13 +93,19 @@ function LeaderboardContainer() {
 
   function nextPage(e)
   {
-    // if(page === 0)
-    // {
-    //   alert("Can't go back any further.")
-    // }
     e.preventDefault();
-    setPage(page = page + 1);
-    loadLeaderboard();
+    if(page === maxPage - 1) 
+    {
+      //alert("End of List.")
+      return;
+    }
+    else
+    {
+      setPage(page = page + 1);
+      loadLeaderboard();
+    }
+    
+    
 
   }
 
