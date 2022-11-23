@@ -4,6 +4,9 @@ const express = require('express');
 const axios = require("axios");
 var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 /*const router = express.Router();
 const emailValidator = require('deep-email-validator');
 const nodemailer = require('nodemailer');*/
@@ -112,6 +115,25 @@ exports.setApp = function ( app, client )
       }
 
       //const {valid, reason, validators} = await isEmailValid(req.body.Email);
+
+      const msg = {
+        to: 'cinemaguesser.devteam@gmail.com',
+        from: 'courtmac.ii@knights.ucf.edu',
+        subject: 'Tester Message',
+        text: 'This is me testing sendgrid',
+        html: '<strong>This is me testing sendgrid',
+      }
+
+      sgMail.send(msg)
+      .then(()=>
+      {
+        console.log('Email sent')
+      })
+      .catch((error) =>
+      {
+        console.log(error)
+      })
+
       var ret;
       if(err != '')
         ret = {error: err}
