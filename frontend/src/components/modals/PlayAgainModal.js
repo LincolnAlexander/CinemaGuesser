@@ -25,7 +25,7 @@ export default function PlayAgainModal(props) {
             // onClick={toggleModal}
             className='w-screen h-screen fixed top-0 right-0 bottom-0 left-0 bg-pr-black/70'
           ></div>
-          <div className='absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-gray-900 px-4 sm:px-16 py-8 rounded-md w-5/6 max-w-4xl text-pr-white text-sm md:text-lg lg:text-xl'>
+          <div className='absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-zinc-800 px-4 sm:px-16 py-8 rounded-md w-5/6 max-w-4xl text-pr-white text-sm md:text-lg lg:text-xl'>
             <div className='grid grid-cols-1 gap-y-2'>
               <div className=' min-h-[50px]'>
                 <h2 className='text-pr-yellow text-center text-xl md:text-2xl lg:text-3xl'>

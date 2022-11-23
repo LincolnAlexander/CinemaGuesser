@@ -10,12 +10,7 @@ function LeaderboardContainer() {
   }, []);
 
   let [page, setPage] = useState(0);
-  const colNames = ['Rank', 'Name', 'Score'];
-  //   let list = [{
-  //     "Rank":"1",
-  //     "Name":"Lufy",
-  //     "Score":"123"
-  // },];
+  
   const loadLeaderboard = async (event) => {
     let obj = {
       page: page,
@@ -110,13 +105,12 @@ function LeaderboardContainer() {
     <>
       <div className='flex justify-center m-20 '>
         <div className='flex justify-center flex-col'>
-          <table className='table-fixed w-1/2 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center'>
+          <table className='table-fixed w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center'>
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
-              <tr className='text-pr-yellow text-lg '>
-                {colNames.map((headerItem, index) => (
-                  <th key={index} className = 'px-6 py-4 '>{headerItem}</th>
-                ))}
-                
+              <tr className='text-pr-yellow text-xl '>
+                <th className='w-10 sm:w-20 px-4 py-4'>Rank</th>
+                <th className='w-20 sm:w-40 px-4 py-4'>Name</th>
+                <th className='w-20 sm:w-48 px-4 py-4'>Score</th>
               </tr>
             </thead>
             <tbody className='text-left text-pr-white'>
@@ -133,15 +127,15 @@ function LeaderboardContainer() {
                 <tr
                   className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
                   key={listItem.Login}>
-                  <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
+                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
                     {listItem.Rank}
                     
                   </td>
-                  <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
+                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
                     
                     {combineNames(listItem.FirstName, listItem.LastName)}
                   </td>
-                  <td className='text-sm text-white font-medium px-6 py-4 whitespace-nowrap'>
+                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
                     {listItem.Score}
                   </td>
                 </tr>
