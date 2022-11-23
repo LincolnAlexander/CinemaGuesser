@@ -28,12 +28,12 @@ exports.setApp = function ( app, client )
     
       const { login, password } = req.body;
       var Password = '';
-      if(password){
+      if(String(password)){
         Password = sha256.hmac('key', password);
       }
-      const Login = req.body.login;
+
       const db = client.db();
-      const results = await db.collection('Users').find({Login:Login,Password:Password}).toArray();
+      const results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
       var firstName = '';
       var lastName = '';
       var err;
@@ -62,29 +62,24 @@ exports.setApp = function ( app, client )
     });
  
     //Written by Casey
-
-
-
-
-    app.post('/api/register', async (req, res, next) =>                   //register
+    app.post('/api/register', async (req, res, next) =>                   //register (FORTIFY V1)
     {
-      var error = '';
+
+      //password (and hashing) for user
       var password = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
       if(Pass)
         password = Pass
       const Password = sha256.hmac('key', password);
+
       //stats and list(s) for user
       const Score = 0;
       const GamesPlayed = 0;
       const WatchList = [];
+
       const db = client.db();
 
       var err = '';
-      var fn;
-      var ln;
-      var lgn;
-      var eml;
 
       const resultsLogin = await db.collection('Users').find({Login:Login}).toArray();
       const resultsEmail = await db.collection('Users').find({Email:Email}).toArray();
@@ -93,13 +88,12 @@ exports.setApp = function ( app, client )
       {
         err = "empty Pass field"
       }
+      else if(!String(FirstName) || !String(LastName) || !String(Login) || !String(Email)){
+        err = "empty non-Pass field"
+      }
       else if(resultsLogin.length == 0 && resultsEmail.length == 0)
       {
         db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email});
-        fn = FirstName;
-        ln = LastName;
-        lgn = Login;
-        eml = Email;
       }
       else
       {
@@ -118,19 +112,29 @@ exports.setApp = function ( app, client )
       }
 
       //const {valid, reason, validators} = await isEmailValid(req.body.Email);
-      var ret = {firstname: fn, lastname: ln, login: lgn, email: eml, error: err};
+      var ret;
+      if(err != '')
+        ret = {error: err}
+      else
+        ret = {firstname: FirstName, lastname: LastName, login: Login, email: Email, error: err};
       
       res.status(200).json(ret);
     });
 
-
-
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
-    //leaderboard endpoint that sorts by gamesplayed or score
-    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard
+    //leaderboard endpoint that sorts by gamesplayed or score 
+    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
     {
       //REQ: page, per_page(default=10), sortby
-      var per_page = req.body.per_page;
+      
+      //prevent negative values
+      var page = req.body.page > 0 ? req.body.page : 0;
+      var per_page = req.body.per_page >= 0 ? req.body.per_page : 1;
+      //prevent invalid sortby
+      var sortby = req.body.sortby;
+      if(sortby != "Score" && sortby != "GamesPlayed")
+        sortby = "Score"
+
       if(!req.body.per_page){
         per_page = 10
       }
@@ -150,22 +154,22 @@ exports.setApp = function ( app, client )
             'LastName': 1
           }
         }, {
-          '$skip': (per_page * req.body.page)
+          '$skip': (per_page * page)
         }, {
           '$limit': per_page
         }
       ]
       //build the $sort
-      pipeline[0]['$sort'][req.body.sortby] = -1;
+      pipeline[0]['$sort'][sortby] = -1;
       var results = await db.collection('Users').aggregate(pipeline).toArray();
 
       //create number array to make it easier on the front end to make display
       for(let i = 0; i < results.length; i++){
-        results[i]["Rank"] = i + 1 + (per_page * req.body.page)
+        results[i]["Rank"] = i + 1 + (per_page * page)
       }
 
-      
-      var ret = {list: results};
+      var user_count = await db.collection('Users').count();
+      var ret = {list: results, count: user_count};
       res.status(200).json(ret);
     });
 //-----------------------------------STATS ENDPOINTS-----------------------------------
