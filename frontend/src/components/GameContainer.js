@@ -29,6 +29,7 @@ function GameContainer() {
   const [boxOffice, setBoxOffice] = useState(false);
   const [genre, setGenre] = useState(false);
   const [actors, setActors] = useState(false);
+  const [year, setYear] = useState(false);
   const [rating, setRating] = useState(0);
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
@@ -67,6 +68,7 @@ function GameContainer() {
         setPoster(res.omdb.Poster);
         setRating(parseInt(res.omdb.Ratings));
         setTitle(res.omdb.Title);
+        setYear(res.omdb.Year);
         
         //on reload don't run again
         if(movie_mem.list[movie_mem.head] !== res.omdb.Title)
@@ -271,7 +273,7 @@ function GameContainer() {
     <>
       <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
         <div className='text-center mt-5'>
-          <p className='text-pr-yellow text-xl'>{title}</p>
+          <p className='text-pr-yellow text-xl'>{title} &#40;{year}&#41;</p>
         </div>
         <div className='min-h-[50px] text-center mt-5'>
           <span className='text-pr-yellow mr-2'>Score:</span>
