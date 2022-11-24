@@ -68,7 +68,7 @@ function GameContainer() {
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
         setRating(parseInt(res.omdb.Ratings));
-        setTitle(capitalize(res.omdb.Title.toLowerCase()));
+        setTitle(capitalize(res.omdb.Title));
         setYear(res.omdb.Year);
         //on reload don't run again
         if(movie_mem.list[movie_mem.head] !== res.omdb.Title)

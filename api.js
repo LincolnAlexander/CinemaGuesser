@@ -444,9 +444,9 @@ exports.setApp = function ( app, client )
       //get 1 random movie title from database (with filter)
       const results = await db.collection('Movies').aggregate(pipeline).toArray();
 
-      const title_search = results[0].Title.toUpperCase();
+      const title_search = results[0].Title.toLowerCase();
 
-      //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toUpperCase();
+      //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toLowerCase();
       var omdb_ret = {};
       //look in MoviesSaved
       const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
@@ -455,12 +455,20 @@ exports.setApp = function ( app, client )
       //if movie is in MoviesSaved -> get
       if(find_title.length == 0)
       {
-        console.log("\x1b[36mMaking OMDB request\x1b[0m");
+        console.log("\x1b[36mMaking OMDB request on " + title_search + "\x1b[0m");
         var result = await makeGetRequest(title_search);
-        omdb_ret = parseFields(fields, result);
-        //uppercase title to make consistant
-        omdb_ret["Title"] = omdb_ret["Title"].toUpperCase();
-        db.collection('MoviesSaved').insertOne(omdb_ret);
+        if(result.Response !== "False")
+        {
+          omdb_ret = parseFields(fields, result);
+          //uppercase title to make consistant
+
+          omdb_ret["Title"] = omdb_ret["Title"].toLowerCase();
+          db.collection('MoviesSaved').insertOne(omdb_ret);
+        }
+        else
+        {
+          err = "Movie not recognized by OMDB"
+        }
       }
       else
       {
