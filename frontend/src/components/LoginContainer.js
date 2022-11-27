@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import PasswordModal from '../components/modals/PasswordModal';
 const LoginContainer = () => {
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
   const storage = require('../tokenStorage.js');
 
   const [message, setMessage] = useState('');
+  const [turnOn, setPasswordModal] = useState(false);
   const navigate = useNavigate();
 
   const doLogin = async (event) => {
@@ -56,6 +57,15 @@ const LoginContainer = () => {
       return;
     }
   };
+  function turnOnModal(e)
+  {
+    e.preventDefault();
+    setPasswordModal(true);
+  }
+  function closePasswordModal()
+  {
+    setPasswordModal(false);
+  }
 
   return (
     <>
@@ -112,16 +122,17 @@ const LoginContainer = () => {
               >
                 Register
               </button>
-              <a
+              <button
                 className='block text-pr-yellow text-center text-sm font-medium py-2 hover:font-extrabold hover:underline'
-                href='/'
+               onClick={turnOnModal}
               >
                 Forgot Password?
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <PasswordModal value = {turnOn} closePasswordModal = {closePasswordModal}/>
     </>
   );
 };
