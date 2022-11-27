@@ -41,6 +41,7 @@ function GameContainer() {
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
     var movie_mem = JSON.parse(sessionStorage.getItem('movie_mem'));
+    console.log(movie_mem);
     let obj = {
       "filter": movie_mem["list"]
     };
@@ -49,7 +50,7 @@ function GameContainer() {
       let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
       // bp.buildPath('api/movies_saved')
-      const response = await fetch(bp.buildPath('api/movies_saved'), {
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
@@ -274,7 +275,7 @@ function GameContainer() {
 
   return (
     <>
-      <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md mt-40 sm:mt-0'>
         <div className='text-center mt-5'>
           <p className='text-pr-yellow text-xl'>{title} &#40;{year}&#41;</p>
         </div>

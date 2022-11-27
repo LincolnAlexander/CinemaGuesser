@@ -112,8 +112,8 @@ function LeaderboardContainer() {
   return (
     <>
       <div className='flex justify-center m-20 '>
-        <div className='flex justify-center flex-col'>
-          <table className='table-fixed w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center'>
+        <div className='flex justify-center flex-col '>
+          <table className='table-fixed w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center mb-4'>
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
               <tr className='text-pr-yellow text-xl '>
                 <th className='w-10 sm:w-20 px-4 py-4'>Rank</th>
@@ -150,9 +150,9 @@ function LeaderboardContainer() {
               ))}
             </tbody>
           </table>
-          <div className='self-center m-5'>
-            <button className = 'mr-5'onClick={prevPage}> <img src = {leftArrow} alt = 'left-arrow'></img> </button>
-            <button  onClick={nextPage  }> <img src = {rightArrow} alt = 'right-arrow'></img> </button>
+          <div className='self-center '>
+            <button className = 'mr-5'onClick={prevPage}> <img className = '' src = {leftArrow} alt = 'left-arrow'></img> </button>
+            <button  onClick={nextPage  }> <img className = '' src = {rightArrow} alt = 'right-arrow'></img> </button>
           </div>
           
         </div>
