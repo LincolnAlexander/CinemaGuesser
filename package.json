@@ -4,7 +4,8 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
+        "start": "nodemon server.js",
+        "start-server": "node server.js",
         "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
         "test": "jest --verbose"
     },
@@ -21,6 +22,7 @@
         "js-sha256": "^0.9.0",
         "jsonwebtoken": "^8.5.1",
         "mongodb": "^4.11.0",
+        "nodemon": "^2.0.20",
         "sha256": "^0.2.0"
     },
     "devDependencies": {

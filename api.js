@@ -31,7 +31,7 @@ exports.setApp = function ( app, client )
     
       const { login, password } = req.body;
       var Password = '';
-      if(String(password)){
+      if(password){
         Password = sha256.hmac('key', password);
       }
 
@@ -91,7 +91,7 @@ exports.setApp = function ( app, client )
       {
         err = "empty Pass field"
       }
-      else if(!String(FirstName) || !String(LastName) || !String(Login) || !String(Email)){
+      else if(!FirstName || !LastName || !Login || !Email){
         err = "empty non-Pass field"
       }
       else if(resultsLogin.length == 0 && resultsEmail.length == 0)
