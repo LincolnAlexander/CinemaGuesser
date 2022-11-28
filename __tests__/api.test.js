@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 const request = require('supertest');
 var sha256 = require('js-sha256');
 
-const baseURL = 'http://www.cinemaguesser.xyz/api';
+const baseURL = 'http://localhost:5000/api';
 
 // Testing /login endopint
 describe('POST /login', () => {
@@ -19,10 +19,6 @@ describe('POST /login', () => {
         error : ''
     };
 
-    afterAll(async () => {
-        await request(baseURL).delete('/login');
-    });
-
     test('/login endpoint verifying test user request', async () => {
         const res = await request(baseURL).post('/login').send(testUserRequest);
 
@@ -32,17 +28,42 @@ describe('POST /login', () => {
     });
 
     // Tests with invalid user and password
-    const badRequest = {
+    const badRequest0 = {
         login: 'UnitTestUser',
         password: 'notthepassword'
     }
 
     test('/login endpoint with bad request', async () => {
-        const res = await request(baseURL).post('/login').send(badRequest);
+        const res = await request(baseURL).post('/login').send(badRequest0);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.error).toBe('Login/Password incorrect');
     });
+
+    // Tests with empty user and password
+    const badRequest1 = {
+        login: '',
+        password: ''
+    }
+
+    test('/login endpoint with empty request', async () => {
+        const res = await request(baseURL).post('/login').send(badRequest1);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.error).toBe('ERROR: Empty field(s)');
+    });
+
+    // Tests with null user and password
+    //const nullRequest = {
+    //    login: null,
+    //    password: null
+    //}
+
+    //test('/login endpoint with null request', async () => {
+    //    const res = await request(baseURL).post('/login').send(nullRequest);
+    //
+    //    expect(res.statusCode).toBe(200);
+    //});
 });
 
 // Testing /register endpoint
@@ -71,7 +92,6 @@ describe('POST /register', () => {
     // Close connection with db
     afterAll(async () => {
         await client.close();
-        await request(baseURL).delete('/register');
     });
 
     // Registers dummy user
@@ -112,4 +132,4 @@ describe('POST /register', () => {
         // Checking that record was deleted
         expect(result.deletedCount).toBeGreaterThan(0);
     });
-}); 
+});
