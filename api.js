@@ -23,13 +23,17 @@ exports.setApp = function ( app, client )
 {
 //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
 // JWT Added by Casey
-    app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V1)
+    app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V2)
     {
       // incoming: login, password
       // outgoing: firstName, lastName, error
 
-    
       const { login, password } = req.body;
+      if(!password || !login){
+        var ret = {error: "ERROR: Empty field(s)"} 
+        res.status(200).json(ret);
+        return
+      }
       var Password = '';
       if(password){
         Password = sha256.hmac('key', password);
@@ -71,6 +75,12 @@ exports.setApp = function ( app, client )
       //password (and hashing) for user
       var password = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
+      if(!FirstName || !LastName || !Login || !Pass || !Email){
+        var ret = {error: "ERROR: Empty field(s)"} 
+        res.status(200).json(ret);
+        return
+      }
+      
       if(Pass)
         password = Pass
       const Password = sha256.hmac('key', password);
