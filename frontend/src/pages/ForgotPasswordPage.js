@@ -22,7 +22,7 @@ const ForgotPasswordPage = () => {
                   className='peer h-10  border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent'
                   id='email'
                   ref={emailRef}
-                  type='email'
+                  type='text'
                   placeholder='a'
                 ></input>
                 <label
