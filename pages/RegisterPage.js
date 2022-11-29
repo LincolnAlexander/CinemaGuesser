@@ -307,7 +307,8 @@ const RegisterPage = ({ navigation }) => {
       FirstName: inputs.firstname,
       LastName: inputs.lastName,
       Login: inputs.email,
-      Password: inputs.password,
+      Pass: inputs.password,
+      Email: inputs.email,
     };
     let js = JSON.stringify(obj);
 

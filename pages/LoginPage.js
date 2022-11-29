@@ -311,6 +311,7 @@ const LoginPage = ({ navigation }) => {
     // const loginPassword = loginPasswordRef.current.value;
 
     let obj = { login: inputs.email, password: inputs.password };
+    
     let js = JSON.stringify(obj);
 
     try {
@@ -326,14 +327,14 @@ const LoginPage = ({ navigation }) => {
      
 
       if (res.error && res.error !== '') {
-        Alert.alert("Error", "User does not exist");
+        Alert.alert(res.error);
       }else 
       {
        
         navigation.navigate("HomePage");
       }
     } catch (e) {
-      alert(e.toString());
+      
       Alert.alert(e.toString());
       return;
     }
@@ -355,11 +356,11 @@ const LoginPage = ({ navigation }) => {
             <View style={{ marginVertical: 1 }}>
               <View style={{ paddingTop: 10, paddingHorizontal: 20 }}></View>
               <Input
-                onChangeText={(text) => handleOnchange(text, "username")}
+                onChangeText={(text) => handleOnchange(text, "email")}
                 onFocus={() => handleError(null, "username")}
                 iconName="email-outline"
                 label="Login"
-                placeholder="Enter username or email"
+                placeholder="Enter email"
                 error={errors.email}
               />
               <Input
