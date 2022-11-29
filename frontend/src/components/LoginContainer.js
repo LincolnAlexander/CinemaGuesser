@@ -38,7 +38,7 @@ const LoginContainer = () => {
       // const res = JSON.parse(await response.text());
 
       if (res.error && res.error !== '') {
-        setMessage('Incorrect User/Password!');
+        setMessage(res.error);
       } else {
         const user = {
           firstName: res.firstName,

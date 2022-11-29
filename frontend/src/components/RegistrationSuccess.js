@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 export default function RegistrationSuccess() {
   const navigate = useNavigate();
@@ -32,17 +32,15 @@ export default function RegistrationSuccess() {
 
       let res = JSON.parse(await response.text());
       console.log(res)
-      console.log("1 " + sessionStorage.getItem('verified'));
 
       if (res.length == 0 || (res.error && res.error !== '')) {
         //console.log(res.error);
-        if(sessionStorage.getItem('verified') === null){
-          sessionStorage.setItem('verified', false)
-        }
+
+    
       } 
       else 
       {
-        sessionStorage.setItem('verified', true)
+
       }
     } 
     catch (e) 
@@ -51,22 +49,11 @@ export default function RegistrationSuccess() {
       return;
     }
   }
-  if(JSON.parse(sessionStorage.getItem('verified')) === true)
-  {
-    return (
-      <h1 className='mt-52 mx-1 text-pr-yellow font-bold text-center text-xl'>
-          <div>Registration Successful!<br/>Please login.</div>
-      </h1>
-    );
-  }
-  else
-  {
-    return (
-      <h1 className='mt-52 mx-1 text-pr-yellow font-bold text-center text-xl'>
-          <div>Invalid key.<br/>Click here to return to login page.</div>
-      </h1>
-    );
-  }
+  return (
+    <h1 className='mt-52 mx-1 text-pr-yellow font-bold text-center text-xl'>
+        <div>Registration Successful!<br/>Please login.</div>
+    </h1>
+  );
   
 
 }

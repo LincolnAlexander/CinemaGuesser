@@ -41,19 +41,28 @@ exports.setApp = function ( app, client )
 
       const db = client.db();
       //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
-      const results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
+      var results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
       var firstName = '';
       var lastName = '';
       var verify = '';
       var err;
       var ret;
-      
+
       if( results.length > 0 )
       {
         firstName = results[0].FirstName;
         lastName = results[0].LastName;
         verify = results[0].Verify;
         err = '';
+
+        //check email verification
+        console.log(results)
+        if(results[0].Verify !== null && results[0].Verify === false)
+        {
+          ret = {error: "Email isn't verified"};
+          res.status(200).json(ret);
+          return;
+        }
 
         try 
         {
@@ -69,10 +78,6 @@ exports.setApp = function ( app, client )
         ret = {error: "Login/Password incorrect"};
       }
 
-      if(verify == "false")
-      {
-        ret = {error: "Email is not verified"};
-      }
       //ret = {firstName: firstName, lastName: lastName, error: err}
       res.status(200).json(ret);
     });

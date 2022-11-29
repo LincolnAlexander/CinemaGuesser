@@ -47,7 +47,7 @@ function RegisterContainer() {
         // };
         // localStorage.setItem('user_data', JSON.stringify(user));
         setMessage('');
-        navigate('/register-success');
+        navigate('/email-check');
       }
     } catch (e) {
       alert(e.toString());
