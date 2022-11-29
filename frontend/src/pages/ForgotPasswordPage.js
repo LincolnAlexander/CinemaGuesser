@@ -27,7 +27,7 @@ const ForgotPasswordPage = () => {
                 ></input>
                 <label
                   className='absolute left-0 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
-                  htmlFor='username'
+                  htmlFor='email'
                 >
                   Type your email
                 </label>
