@@ -100,7 +100,7 @@ function LeaderboardContainer() {
   return (
     <>
       <div className='flex flex-col justify-between m-8 md:m-20 min-h-[46rem]'>
-        <table className='w-screen sm:w-1/3 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-b-lg self-center mb-4'>
+        <table className='w-screen sm:w-1/3 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4'>
           <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
             <tr className='text-pr-yellow text-xl'>
               <th className='w-10 sm:w-20 px-4 py-4 rounded-tl-lg'>Rank</th>
