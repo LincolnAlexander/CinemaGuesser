@@ -111,51 +111,61 @@ function LeaderboardContainer() {
 
   return (
     <>
-      <div className='flex justify-center m-20 '>
-        <div className='flex justify-center flex-col '>
-          <table className='table-fixed w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md self-center mb-4'>
-            <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
-              <tr className='text-pr-yellow text-xl '>
-                <th className='w-10 sm:w-20 px-4 py-4'>Rank</th>
-                <th className='w-20 sm:w-40 px-4 py-4'>Name</th>
-                <th className='w-20 sm:w-48 px-4 py-4'>Score</th>
+      <div className='flex flex-col justify-between m-8 md:m-20 min-h-[70%]'>
+        <table className='w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-xl self-center mb-4'>
+          <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
+            <tr className='text-pr-yellow text-xl '>
+              <th className='w-10 sm:w-20 px-4 py-4'>Rank</th>
+              <th className='w-20 sm:w-40 px-4 py-4'>Name</th>
+              <th className='w-20 sm:w-48 px-4 py-4'>Score</th>
+            </tr>
+          </thead>
+          <tbody className='text-left text-pr-white'>
+            
+            {/* Second Try */}
+            {/* {list.map((element, index) => (
+              <tr key={index}>
+                <td>{element.Login}</td>
+                <td>{element.FirstName}</td>
+                <td>{element.Score}</td>
               </tr>
-            </thead>
-            <tbody className='text-left text-pr-white'>
-              
-              {/* Second Try */}
-              {/* {list.map((element, index) => (
-                <tr key={index}>
-                  <td>{element.Login}</td>
-                  <td>{element.FirstName}</td>
-                  <td>{element.Score}</td>
-                </tr>
-              ))} */}
-              {list.map((listItem,idx) => (
-                <tr
-                  className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
-                  key={listItem.Login}>
-                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
-                    {listItem.Rank}
-                    
-                  </td>
-                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
-                    
-                    {combineNames(listItem.FirstName, listItem.LastName)}
-                  </td>
-                  <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
-                    {listItem.Score}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className='self-center '>
-            <button className = 'mr-5'onClick={prevPage}> <img className = '' src = {leftArrow} alt = 'left-arrow'></img> </button>
-            <button  onClick={nextPage  }> <img className = '' src = {rightArrow} alt = 'right-arrow'></img> </button>
-          </div>
-          
+            ))} */}
+            {list.map((listItem,idx) => (
+              <tr
+                className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
+                key={listItem.Login}>
+                <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
+                  {listItem.Rank}
+                  
+                </td>
+                <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
+                  
+                  {combineNames(listItem.FirstName, listItem.LastName)}
+                </td>
+                <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
+                  {listItem.Score}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className='self-center '>
+          {/* <button className = 'mr-5'onClick={prevPage}><img className = '' src = {leftArrow} alt = 'left-arrow'></img></button> */}
+          <button
+            className='m-4 bg-pr-yellow text-pr-black hover:bg-pr-yellow hover:text-pr-white w-12 h-12 rounded-3xl cursor-pointer outline-none'
+            onClick={prevPage}
+          >
+            <span className='leading-none text-2xl font-normal'>←</span>
+          </button>
+          {/* <button  onClick={nextPage  }> <img className = '' src = {rightArrow} alt = 'right-arrow'></img> </button> */}
+          <button
+            className='m-4 bg-pr-yellow text-pr-black hover:bg-pr-yellow hover:text-pr-white w-12 h-12 rounded-3xl cursor-pointer outline-none'
+            onClick={nextPage}
+          >
+            <span className='leading-none text-2xl font-normal'>→</span>
+          </button>
         </div>
+        
       </div>
     </>
   );
