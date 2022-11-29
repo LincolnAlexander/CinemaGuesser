@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import GamePage from './pages/GamePage';
 import Nav from './components/Nav';
 import LeaderboardPage from './pages/LeaderboardPage';
-
+import UpdatePasswordPage from './pages/UpdatePasswordPage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -16,6 +16,7 @@ root.render(
       {/* <LeaderboardPage /> */}
       {/* <GamePage/> */}
       {/* <Nav /> */}
+      {/* <UpdatePasswordPage></UpdatePasswordPage> */}
     </BrowserRouter>
   </React.StrictMode>
 );
