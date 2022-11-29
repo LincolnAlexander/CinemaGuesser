@@ -29,7 +29,7 @@ exports.setApp = function ( app, client )
       // outgoing: firstName, lastName, error
 
       const { login, password } = req.body;
-      if(!password || !login){
+      if(!password || !login || password == null || login == null){
         var ret = {error: "ERROR: Empty field(s)"} 
         res.status(200).json(ret);
         return
