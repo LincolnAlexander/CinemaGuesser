@@ -134,32 +134,39 @@ exports.setApp = function ( app, client )
         }
         err += "already taken"
       }
+
       try 
       {
+
         const token = require('./createJWT.js');
-        ret = token.createToken(firstName, lastName);
+        var ret = token.createToken(FirstName, LastName);
+
+        let link = 'https://cinema-guesser.herokuapp.com/' + ret.accessToken;
+
+        const msg = {
+          to: Email,
+          from: 'cinemaguesser.devteam@gmail.com',
+          subject: 'Email Verification Needed',
+          text: 'Please click this link to confirm your email',
+          html: link,
+        }
+
+        sgMail.send(msg)
+        .then(()=>
+        {
+          console.log('Email sent')
+        })
+        .catch((error) =>
+        {
+          console.log(error)
+        })
       }
       catch (e) 
       {
         ret = {error: e.message };
       }
-      const msg = {
-        to: Email,
-        from: 'cinemaguesser.devteam@gmail.com',
-        subject: 'Email Verification Needed',
-        text: 'Please click this link to confirm your email',
-        html: '<strong>This is me testing sendgrid',
-      }
 
-      sgMail.send(msg)
-      .then(()=>
-      {
-        console.log('Email sent')
-      })
-      .catch((error) =>
-      {
-        console.log(error)
-      })
+
 
       var ret;
       if(err != '')
