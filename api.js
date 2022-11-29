@@ -141,7 +141,7 @@ exports.setApp = function ( app, client )
         const token = require('./createJWT.js');
         var ret = token.createToken(FirstName, LastName);
 
-        let link = 'https://cinema-guesser.herokuapp.com/' + ret.accessToken;
+        let link = 'https://cinema-guesser.herokuapp.com/register-success?key=' + ret.accessToken;
 
         const msg = {
           to: Email,
@@ -566,4 +566,18 @@ exports.setApp = function ( app, client )
   }//end of function
 
 
+  app.post('/api/get_key/:hello_world', async (req, res, next) => 
+  {
+    /*
+    if(!req.query.key)
+    {
+      res.status(200).json({});
+      return;
+    }
+    */
+    //console.log(req.query.key);
+    console.log(params.hello_world);
+  }
+
+  );
 }
