@@ -135,13 +135,12 @@ exports.setApp = function ( app, client )
         err += "already taken"
       }
 
-      //const {valid, reason, validators} = await isEmailValid(req.body.Email);
-
+      // This sends to the users Email
       const msg = {
-        to: 'cinemaguesser.devteam@gmail.com',
-        from: 'courtmac.ii@knights.ucf.edu',
-        subject: 'Tester Message',
-        text: 'This is me testing sendgrid',
+        to: Email,
+        from: 'cinemaguesser.devteam@gmail.com',
+        subject: 'Email Verification Needed',
+        text: 'Please click this link to confirm your email',
         html: '<strong>This is me testing sendgrid',
       }
 
@@ -166,7 +165,7 @@ exports.setApp = function ( app, client )
 
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
     //leaderboard endpoint that sorts by gamesplayed or score 
-    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
+    api.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
     {
       //REQ: page, per_page(default=10), sortby
       
