@@ -53,18 +53,21 @@ const HomePage = ({ navigation }) => {
 
   const GamePage = () => {
     return (
-      <View style={[styles.flexContainer, {
-        // Try setting `flexDirection` to `"row"`.
-        flexDirection: "column"
-      }]}>
-        <View style={{ flex: 1, backgroundColor: "red" }} />
+      <View
+        style={[
+          styles.flexContainer,
+          {
+            // Try setting `flexDirection` to `"row"`.
+            flexDirection: "column",
+          },
+        ]}
+      >
+        <View style={{ flex: 5, backgroundColor: "red" }} />
         <View style={{ flex: 2, backgroundColor: "darkorange" }} />
-        <View style={{ flex: 3, backgroundColor: "green" }} />
-        <View style={{ flex: 4, backgroundColor: "blue" }} />
+        <View style={{ flex: 1, backgroundColor: "blue" }} />
       </View>
     );
   };
-  
 
   //     <FlipCard
   //       style={styles.card}
@@ -90,7 +93,7 @@ const HomePage = ({ navigation }) => {
   //   );
   // }
 
-  function SettingsPage() {
+  function ProfilePage() {
     return (
       <View
         style={{
@@ -136,13 +139,11 @@ const HomePage = ({ navigation }) => {
           backgroundColor: "#0A0A0A",
         }}
       >
-        <Text style = {styles.baseText}>Use your specialized skill set to guess the movie rating out of 100.
-
-        Your file will include the movie poster, plot, actors, cast, and how much money it earned in the box office.
-
-        he closer you are to the movie rating, the more points you score.
-
-        Good Luck Agent!
+        <Text style={styles.baseText}>
+          Use your movie knowledge to guess the movie rating out of 100. Your
+          will be given the movie poster, plot, actors, cast, and box office
+          earnings. The closer you are to the movie rating, the more points you
+          score. Good Luck Agent!
         </Text>
       </View>
     );
@@ -158,10 +159,10 @@ const HomePage = ({ navigation }) => {
 
           if (route.name === "Play") {
             iconName = focused ? "play" : "play-outline";
-          } else if (route.name === "Settings") {
-            iconName = focused ? "settings" : "settings-outline";
-          // } else if (route.name === "Watch List") {
-          //   iconName = focused ? "film" : "film-outline";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "person" : "person-circle-outline";
+            // } else if (route.name === "Watch List") {
+            //   iconName = focused ? "film" : "film-outline";
           } else if (route.name === "Rules") {
             iconName = focused ? "newspaper" : "newspaper-outline";
           }
@@ -177,7 +178,7 @@ const HomePage = ({ navigation }) => {
       <Tab.Screen name="Play" component={GamePage} />
       {/* <Tab.Screen name="Watch List" component={WatchListPage} /> */}
       <Tab.Screen name="Rules" component={RulesPage} />
-      <Tab.Screen name="Settings" component={SettingsPage} />
+      <Tab.Screen name="Profile" component={ProfilePage} />
     </Tab.Navigator>
   );
 };

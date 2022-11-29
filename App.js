@@ -111,7 +111,6 @@ const App = () => {
           >
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="RegisterPage" component={RegisterPage} />
-            
             <Stack.Screen name="HomePage" component={HomePage} />
           </Stack.Navigator>
         </>
