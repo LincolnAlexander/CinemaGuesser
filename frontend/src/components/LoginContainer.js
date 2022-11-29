@@ -124,7 +124,8 @@ const LoginContainer = () => {
               </button>
               <button
                 className='block text-pr-yellow text-center text-sm font-medium py-2 hover:font-extrabold hover:underline'
-               onClick={turnOnModal}
+              //  onClick={turnOnModal}
+              onClick={() => navigate('/forgot-password')}
               >
                 Forgot Password?
               </button>
