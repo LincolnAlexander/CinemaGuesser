@@ -10,6 +10,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import WatchlistPage from './pages/WatchlistPage';
 import PrivateComponent from './components/PrivateComponent';
 import RegistrationSuccess from './components/RegistrationSuccess';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 function CinemaGuesserApp() {
   return (
@@ -28,6 +29,7 @@ function CinemaGuesserApp() {
         <Route path='/' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/register-success' element={<RegistrationSuccess />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
 
         {/* For unknown path*/}
         <Route path='*' element={<NotFoundPage />} />
