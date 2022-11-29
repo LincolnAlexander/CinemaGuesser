@@ -7,6 +7,8 @@ const { ConnectionClosedEvent } = require('mongodb');
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+const buildPath = require('./frontend/src/components/Paths');
 /*const router = express.Router();
 const emailValidator = require('deep-email-validator');
 const nodemailer = require('nodemailer');*/
@@ -148,16 +150,17 @@ exports.setApp = function ( app, client )
             text: 'Please click this link to confirm your email',
             html: link,
           }
-
-          sgMail.send(msg)
-          .then(()=>
-          {
-            console.log('Email sent')
-          })
-          .catch((error) =>
-          {
-            console.log(error)
-          })
+          if (buildPath() !== 'http://localhost:5000/') {
+            sgMail.send(msg)
+            .then(()=>
+            {
+              console.log('Email sent')
+            })
+            .catch((error) =>
+            {
+              console.log(error)
+            })
+          }
         }
         catch (e) 
         {
