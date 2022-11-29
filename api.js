@@ -82,7 +82,7 @@ exports.setApp = function ( app, client )
     {
 
       //password (and hashing) for user
-      var Verify = "false";
+      var Verify = false;
       var password = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
       if(!FirstName || !LastName || !Login || !Pass || !Email){
@@ -116,8 +116,51 @@ exports.setApp = function ( app, client )
       }
       else if(resultsLogin.length == 0 && resultsEmail.length == 0)
       {
+        try 
+        {
 
-        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email, Verify});
+          const token = require('./createJWT.js');
+          var ret = token.createToken(FirstName, LastName);
+          let bp = require('./frontend/src/components/Paths.js');
+          //'https://cinema-guesser.herokuapp.com/register-success?key='
+          var mes;
+          var route = 'register-success?key=';
+          if (process.env.NODE_ENV === 'production') 
+          {
+              mes = 'https://cinema-guesser.herokuapp.com/' + route;
+          }
+          else
+          {        
+              mes = 'http://localhost:3000/' + route;
+          }
+          let link = mes + ret.accessToken;
+          console.log(link);
+
+          const msg = {
+            to: Email,
+            from: 'cinemaguesser.devteam@gmail.com',
+            subject: 'Email Verification Needed',
+            text: 'Please click this link to confirm your email',
+            html: link,
+          }
+
+          sgMail.send(msg)
+          .then(()=>
+          {
+            console.log('Email sent')
+          })
+          .catch((error) =>
+          {
+            console.log(error)
+          })
+        }
+        catch (e) 
+        {
+          ret = {error: e.message };
+        }
+        const Key = ret.accessToken 
+        const createdAt = new Date();
+        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email, Verify, Key, createdAt});
       }
       else
       {
@@ -134,39 +177,6 @@ exports.setApp = function ( app, client )
         }
         err += "already taken"
       }
-
-      try 
-      {
-
-        const token = require('./createJWT.js');
-        var ret = token.createToken(FirstName, LastName);
-
-        let link = 'https://cinema-guesser.herokuapp.com/register-success?key=' + ret.accessToken;
-
-        const msg = {
-          to: Email,
-          from: 'cinemaguesser.devteam@gmail.com',
-          subject: 'Email Verification Needed',
-          text: 'Please click this link to confirm your email',
-          html: link,
-        }
-
-        sgMail.send(msg)
-        .then(()=>
-        {
-          console.log('Email sent')
-        })
-        .catch((error) =>
-        {
-          console.log(error)
-        })
-      }
-      catch (e) 
-      {
-        ret = {error: e.message };
-      }
-
-
 
       var ret;
       if(err != '')
@@ -565,22 +575,64 @@ exports.setApp = function ( app, client )
       });
   }//end of function
 
-
-  app.post('/api/get_key/:hello_world', async (req, res, next) => 
+//-----------------------------------EMAIL VERFICATION ENDPOINTS-----------------------------------
+  app.post('/api/email_verify', async (req, res, next) => 
   {
-    /*
-    if(!req.query.key)
+    db = client.db();
+    const token = require('./createJWT.js');
+   //db.collection('Users').createIndex( { "createdAttwo": 1 }, { expireAfterSeconds: 10 } )
+
+   //get key and search in database
+    var key = req.query.key;
+    const results = await db.collection('Users').find({Verify: false, Key: key}).toArray()
+    //verify data from database
+    if(results.length == 0)
     {
-      res.status(200).json({});
+      var r = {error: 'ERROR: invalid key provided'};
+      res.status(200).json(r);
       return;
     }
-    */
-    //console.log(req.query.key);
-    let verified = "email is now verifiied";
+
+    //check if token is good
+    var jwtToken = key;
+    try
+      {
+        if(token.isExpired(jwtToken))
+        {
+          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+          res.status(200).json(r);
+          return;
+        }
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+    //accept user
+    //only affect user with key, get rid of createdAt and Key, Verify to true
+    var pipeline = [
+      {'$match': {'Key': key}}, 
+      {'$unset': ['createdAt', 'Key']}, 
+      {'$set': {'Verify': true}}
+    ]
+    var user_ret;
+    try
+    {
+      //user_ret = await db.collection("Users").aggregate(pipeline).toArray();
+      await db.collection("Users").updateOne({Key: key}, {$unset:{createdAt: "", Key: ""}, $set :{Verify: true}});
+    }
+    catch(e)
+    {
+      var r = {error: 'ERROR: ' + e};
+      res.status(200).json(r);
+      return;
+    }
+    
+    let verified = "email is now verified";
     var ret = {message: verified};
-    console.log(req.params.hello_world);
     res.status(200).json(ret);
   }
 
   );
+
 }
