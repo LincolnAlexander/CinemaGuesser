@@ -36,20 +36,35 @@ const HomePage = ({ navigation }) => {
     navigation.navigate("LoginPage");
   };
 
-  function GamePage() {
+  // function GamePage() {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         backgroundColor: "#0A0A0A",
+  //       }}
+  //     >
+  //       <Text>Click now to play</Text>
+  //     </View>
+  //   );
+  // }
+
+  const GamePage = () => {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#0A0A0A",
-        }}
-      >
-        <Text>Click now to play</Text>
+      <View style={[styles.flexContainer, {
+        // Try setting `flexDirection` to `"row"`.
+        flexDirection: "column"
+      }]}>
+        <View style={{ flex: 1, backgroundColor: "red" }} />
+        <View style={{ flex: 2, backgroundColor: "darkorange" }} />
+        <View style={{ flex: 3, backgroundColor: "green" }} />
+        <View style={{ flex: 4, backgroundColor: "blue" }} />
       </View>
     );
-  }
+  };
+  
 
   //     <FlipCard
   //       style={styles.card}
@@ -91,25 +106,25 @@ const HomePage = ({ navigation }) => {
     );
   }
 
-  function WatchListPage() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#0A0A0A",
-        }}
-      >
-        <Text>Watch List!</Text>
-        <Text>
-          Implement a plus symbol on the home page that will allow the user to
-          add the movie to their watch list. The watch list will be a list of
-          movies that the user can reference.
-        </Text>
-      </View>
-    );
-  }
+  // function WatchListPage() {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         backgroundColor: "#0A0A0A",
+  //       }}
+  //     >
+  //       <Text>Watch List!</Text>
+  //       <Text>
+  //         Implement a plus symbol on the home page that will allow the user to
+  //         add the movie to their watch list. The watch list will be a list of
+  //         movies that the user can reference.
+  //       </Text>
+  //     </View>
+  //   );
+  // }
 
   function RulesPage() {
     return (
@@ -138,8 +153,8 @@ const HomePage = ({ navigation }) => {
             iconName = focused ? "play" : "play-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
-          } else if (route.name === "Watch List") {
-            iconName = focused ? "film" : "film-outline";
+          // } else if (route.name === "Watch List") {
+          //   iconName = focused ? "film" : "film-outline";
           } else if (route.name === "Rules") {
             iconName = focused ? "newspaper" : "newspaper-outline";
           }
@@ -153,7 +168,7 @@ const HomePage = ({ navigation }) => {
       })}
     >
       <Tab.Screen name="Play" component={GamePage} />
-      <Tab.Screen name="Watch List" component={WatchListPage} />
+      {/* <Tab.Screen name="Watch List" component={WatchListPage} /> */}
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Settings" component={SettingsPage} />
     </Tab.Navigator>
@@ -188,6 +203,10 @@ const styles = StyleSheet.create({
   },
   card2: {
     backgroundColor: "#FEB12C",
+  },
+  flexContainer: {
+    flex: 1,
+    padding: 20,
   },
   label: {
     lineHeight: 470,

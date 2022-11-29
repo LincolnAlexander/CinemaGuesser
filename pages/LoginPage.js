@@ -355,11 +355,11 @@ const LoginPage = ({ navigation }) => {
             <View style={{ marginVertical: 1 }}>
               <View style={{ paddingTop: 10, paddingHorizontal: 20 }}></View>
               <Input
-                onChangeText={(text) => handleOnchange(text, "email")}
-                onFocus={() => handleError(null, "email")}
+                onChangeText={(text) => handleOnchange(text, "username")}
+                onFocus={() => handleError(null, "username")}
                 iconName="email-outline"
-                label="Email"
-                placeholder="Enter email address"
+                label="Login"
+                placeholder="Enter username or email"
                 error={errors.email}
               />
               <Input
@@ -367,7 +367,7 @@ const LoginPage = ({ navigation }) => {
                 onFocus={() => handleError(null, "password")}
                 iconName="lock-outline"
                 label="Password"
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 error={errors.password}
                 password
               />
