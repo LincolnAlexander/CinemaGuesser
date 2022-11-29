@@ -59,6 +59,7 @@ const HomePage = ({ navigation }) => {
           {
             // Try setting `flexDirection` to `"row"`.
             flexDirection: "column",
+            backgroundColor: "#000",
           },
         ]}
       >
