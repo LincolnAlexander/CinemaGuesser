@@ -165,7 +165,7 @@ exports.setApp = function ( app, client )
 
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
     //leaderboard endpoint that sorts by gamesplayed or score 
-    api.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
+    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
     {
       //REQ: page, per_page(default=10), sortby
       
