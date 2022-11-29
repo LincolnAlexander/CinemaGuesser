@@ -576,7 +576,10 @@ exports.setApp = function ( app, client )
     }
     */
     //console.log(req.query.key);
-    console.log(params.hello_world);
+    let verified = "email is now verifiied";
+    var ret = {message: verified};
+    console.log(req.params.hello_world);
+    res.status(200).json(ret);
   }
 
   );
