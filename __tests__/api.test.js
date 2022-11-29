@@ -54,16 +54,16 @@ describe('POST /login', () => {
     });
 
     // Tests with null user and password
-    // const nullRequest = {
+    //const nullRequest = {
     //    login: null,
     //    password: null
-    // }
+    //}
 
-    // test('/login endpoint with null request', async () => {
+    //test('/login endpoint with null request', async () => {
     //    const res = await request(baseURL).post('/login').send(nullRequest);
-    
+    //
     //    expect(res.statusCode).toBe(200);
-    // });
+    //});
 });
 
 // Testing /register endpoint
