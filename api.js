@@ -134,8 +134,15 @@ exports.setApp = function ( app, client )
         }
         err += "already taken"
       }
-
-      // This sends to the users Email
+      try 
+      {
+        const token = require('./createJWT.js');
+        ret = token.createToken(firstName, lastName);
+      }
+      catch (e) 
+      {
+        ret = {error: e.message };
+      }
       const msg = {
         to: Email,
         from: 'cinemaguesser.devteam@gmail.com',
