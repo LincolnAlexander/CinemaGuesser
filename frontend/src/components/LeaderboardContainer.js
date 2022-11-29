@@ -1,15 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import leftArrow from '../images/icons8-thick-long-left-arrow-32.png'
-import rightArrow from '../images/icons8-thick-long-right-arrow-32.png'
+import React, { useState, useEffect } from 'react';
+
 function LeaderboardContainer() {
   const [list, setList] = useState([]);
   let [maxPage, setMaxPage] = useState();
+  let [page, setPage] = useState(0);
+
   useEffect(() => {
     loadLeaderboard();  
   }, []);
-
-  let [page, setPage] = useState(0);
   
   const loadLeaderboard = async (event) => {
     let obj = {
@@ -19,7 +17,7 @@ function LeaderboardContainer() {
     };
     let js = JSON.stringify(obj);
     try {
-      let bp = require('./Paths.js');
+      // let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/leaderboard'
       // bp.buildPath('api/leaderboard')
       const response = await fetch(
@@ -30,17 +28,11 @@ function LeaderboardContainer() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      // console.log(res.value);
+    
       let res = JSON.parse(await response.text());
 
       setMaxPage(Math.ceil(res.count / 10));
       setList(res.list);
-      
-      
-      
-      console.log(res);
-
-      
       
       // console.log(list);
 
@@ -76,6 +68,7 @@ function LeaderboardContainer() {
   function prevPage(e)
   {
     e.preventDefault();
+
     if(page === 0)
     {
       //alert("Can't go back any further.")
@@ -87,8 +80,6 @@ function LeaderboardContainer() {
       loadLeaderboard();
       //console.log('lol');
     }
-    
-    
   }
 
   function nextPage(e)
@@ -104,35 +95,23 @@ function LeaderboardContainer() {
       setPage(page = page + 1);
       loadLeaderboard();
     }
-    
-    
-
   }
 
   return (
     <>
-      <div className='flex flex-col justify-between m-8 md:m-20 min-h-[70%]'>
-        <table className='w-screen sm:w-1/3 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-xl self-center mb-4'>
+      <div className='flex flex-col justify-between m-8 md:m-20 min-h-[46rem]'>
+        <table className='w-screen sm:w-1/3 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-b-lg self-center mb-4'>
           <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
-            <tr className='text-pr-yellow text-xl '>
-              <th className='w-10 sm:w-20 px-4 py-4'>Rank</th>
+            <tr className='text-pr-yellow text-xl'>
+              <th className='w-10 sm:w-20 px-4 py-4 rounded-tl-lg'>Rank</th>
               <th className='w-20 sm:w-40 px-4 py-4'>Name</th>
               <th className='w-20 sm:w-48 px-4 py-4'>Score</th>
             </tr>
           </thead>
           <tbody className='text-left text-pr-white'>
-            
-            {/* Second Try */}
-            {/* {list.map((element, index) => (
-              <tr key={index}>
-                <td>{element.Login}</td>
-                <td>{element.FirstName}</td>
-                <td>{element.Score}</td>
-              </tr>
-            ))} */}
             {list.map((listItem,idx) => (
               <tr
-                className='hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
+                className='last:rounded-b-lg last:border-b-0 hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
                 key={listItem.Login}>
                 <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
                   {listItem.Rank}
@@ -155,17 +134,16 @@ function LeaderboardContainer() {
             className='m-4 bg-pr-yellow text-pr-black hover:bg-pr-yellow hover:text-pr-white w-12 h-12 rounded-3xl cursor-pointer outline-none'
             onClick={prevPage}
           >
-            <span className='leading-none text-2xl font-normal'>←</span>
+            <span className='leading-[1.2rem] text-3xl font-normal'>←</span>
           </button>
           {/* <button  onClick={nextPage  }> <img className = '' src = {rightArrow} alt = 'right-arrow'></img> </button> */}
           <button
             className='m-4 bg-pr-yellow text-pr-black hover:bg-pr-yellow hover:text-pr-white w-12 h-12 rounded-3xl cursor-pointer outline-none'
             onClick={nextPage}
           >
-            <span className='leading-none text-2xl font-normal'>→</span>
+            <span className='leading-[1.2rem] text-3xl font-normal'>→</span>
           </button>
         </div>
-        
       </div>
     </>
   );
