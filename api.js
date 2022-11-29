@@ -44,6 +44,7 @@ exports.setApp = function ( app, client )
       const results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
       var firstName = '';
       var lastName = '';
+      var verify = '';
       var err;
       var ret;
       
@@ -51,8 +52,11 @@ exports.setApp = function ( app, client )
       {
         firstName = results[0].FirstName;
         lastName = results[0].LastName;
+        verify = results[0].Verify;
         err = '';
-        try {
+
+        try 
+        {
           const token = require('./createJWT.js');
           ret = token.createToken(firstName, lastName);
         }
@@ -64,6 +68,11 @@ exports.setApp = function ( app, client )
       {
         ret = {error: "Login/Password incorrect"};
       }
+
+      if(verify == "false")
+      {
+        ret = {error: "Email is not verified"};
+      }
       //ret = {firstName: firstName, lastName: lastName, error: err}
       res.status(200).json(ret);
     });
@@ -73,6 +82,7 @@ exports.setApp = function ( app, client )
     {
 
       //password (and hashing) for user
+      var Verify = "false";
       var password = '';
       const { FirstName, LastName, Login, Pass, Email } = req.body;
       if(!FirstName || !LastName || !Login || !Pass || !Email){
@@ -106,7 +116,8 @@ exports.setApp = function ( app, client )
       }
       else if(resultsLogin.length == 0 && resultsEmail.length == 0)
       {
-        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email});
+
+        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email, Verify});
       }
       else
       {
@@ -148,7 +159,7 @@ exports.setApp = function ( app, client )
       if(err != '')
         ret = {error: err}
       else
-        ret = {firstname: FirstName, lastname: LastName, login: Login, email: Email, error: err};
+        ret = {firstname: FirstName, lastname: LastName, login: Login, verify: Verify,email: Email, error: err};
       
       res.status(200).json(ret);
     });
