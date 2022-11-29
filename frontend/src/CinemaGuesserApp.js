@@ -13,6 +13,7 @@ import RegistrationSuccess from './components/RegistrationSuccess';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import RedirectPage from './pages/RedirectPage';
 import UpdatePasswordPage from './pages/UpdatePasswordPage';
+import EmailCheck from './pages/EmailCheck';
 
 function CinemaGuesserApp() {
   return (
@@ -34,6 +35,7 @@ function CinemaGuesserApp() {
         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
         <Route path='/redirect-page' element={<RedirectPage />} />
         <Route path='/update-password' element={<UpdatePasswordPage />} />
+        <Route path ='/email-check' element={<EmailCheck />} />
         {/* For unknown path*/}
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
