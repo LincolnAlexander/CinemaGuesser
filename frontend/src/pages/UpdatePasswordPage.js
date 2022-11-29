@@ -20,8 +20,8 @@ function UpdatePasswordPage() {
     let js = JSON.stringify(obj);
 
     try {
-      let bp = require('./Paths.js');
-      const response = await fetch(bp.buildPath('api/register'), {
+    //   let bp = require('./Paths.js');
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
