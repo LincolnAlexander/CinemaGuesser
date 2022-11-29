@@ -136,7 +136,14 @@ const HomePage = ({ navigation }) => {
           backgroundColor: "#0A0A0A",
         }}
       >
-        <Text>Rules Page!</Text>
+        <Text style = {styles.baseText}>Use your specialized skill set to guess the movie rating out of 100.
+
+        Your file will include the movie poster, plot, actors, cast, and how much money it earned in the box office.
+
+        he closer you are to the movie rating, the more points you score.
+
+        Good Luck Agent!
+        </Text>
       </View>
     );
   }
@@ -181,6 +188,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
+  },
+  baseText: {
+    fontSize: 20,
+    textAlign: "center",
+    fontStyle: "italic",
+    fontWeight: "bold",
+    color: "white",
   },
   cardContainer: {
     width: 320,
