@@ -19,7 +19,7 @@ export default function EmailCheck() {
       className='cursor-pointer mt-52 mx-1 text-pr-yellow font-bold text-center text-xl'
     >
       <p>A registration link has been sent to your email!</p>
-      <p>Please confirm your email.</p>
+      <p className='bold'>Please confirm your email.</p>
     </div>
   );
 }

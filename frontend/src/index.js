@@ -9,6 +9,7 @@ import Nav from './components/Nav';
 import LeaderboardPage from './pages/LeaderboardPage';
 import UpdatePasswordPage from './pages/UpdatePasswordPage';
 import EmailCheck from './pages/EmailCheck';
+import RegistrationSuccess from './components/RegistrationSuccess';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -19,6 +20,7 @@ root.render(
       {/* <Nav /> */}
       {/* <UpdatePasswordPage></UpdatePasswordPage> */}
       {/* <EmailCheck/> */}
+      {/* <RegistrationSuccess/> */}
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -55,7 +55,8 @@ export default function RegistrationSuccess() {
   }
   return (
     <h1 className='mt-52 mx-1 text-pr-yellow font-bold text-center text-xl'>
-        <div>Registration Successful!<br/>Please login.</div>
+        <div>Registration Successful!<br/>
+        <button className='text-pr-red ' onClick={() => navigate('/')}>Click Here to Login</button></div>
     </h1>
   );
   
