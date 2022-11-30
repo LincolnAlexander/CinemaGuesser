@@ -10,11 +10,14 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import UpdatePasswordPage from './pages/UpdatePasswordPage';
 import EmailCheck from './pages/EmailCheck';
 import RegistrationSuccess from './components/RegistrationSuccess';
+import UserProfilePage from './pages/UserProfilePage';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <CinemaGuesserApp />
+      {/* <UserProfilePage /> */}
       {/* <LeaderboardPage /> */}
       {/* <GamePage/> */}
       {/* <Nav /> */}

@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import RulesModal from '../components/modals/RulesModal';
 
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
+  { name: 'Your Profile', href: '/user' },
   { name: 'Sign out', href: '/' },
 ];
 
