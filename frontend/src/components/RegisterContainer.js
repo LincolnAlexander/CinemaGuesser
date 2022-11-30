@@ -27,10 +27,10 @@ function RegisterContainer() {
       Email:email
     };
     let js = JSON.stringify(obj);
-
+   // 'https://cinema-guesser.herokuapp.com/api/register'
     try {
       let bp = require('./Paths.js');
-      const response = await fetch(bp.buildPath('api/register'), {
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/register', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },

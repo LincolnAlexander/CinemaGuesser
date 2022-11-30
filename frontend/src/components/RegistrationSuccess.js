@@ -8,7 +8,11 @@ export default function RegistrationSuccess() {
   /*setTimeout(() => {
     console.log("hi");
   }, 0);*/
- 
+  // setTimeout(() => {
+      
+  //   navigate('/');
+  // }, 10000);
+
   useEffect(() => {
     validate()
   }, []);

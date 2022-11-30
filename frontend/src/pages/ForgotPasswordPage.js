@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
     setTimeout(() => {
       
       navigate('/');
-    }, 3000);
+    }, 5000);
   }
   const handleFocus = (e) => {
     const input = e.target;
