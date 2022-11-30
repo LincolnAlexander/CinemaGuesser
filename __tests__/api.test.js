@@ -94,9 +94,24 @@ describe('API Tests:', () => {
             expect(data.login).toBe(registerTest.Login);
             expect(data.email).toBe(registerTest.Email);
 
+            // Remove dummy user from db manually and confirm deletion
             const deletionResponse = await db.collection('Users').deleteOne({Login:registerTest.Login});
             expect(deletionResponse.acknowledged).toBeTruthy();
             expect(deletionResponse.deletedCount).toBeGreaterThan(0);
+        });
+    });
+
+    describe('POST /movies', ()=> {
+        const req = {
+            filter: []
+        };
+
+        test('/movies testing that api requests and recieves movie data', async () => {
+            const res = await request(baseURL).post('/movies').send(req);
+
+            expect(res.statusCode).toBe(200);
+            expect(res.body.err).toBeFalsy();
+            console.log('Recieved movie: ' + res.body.title);
         });
     });
 });
