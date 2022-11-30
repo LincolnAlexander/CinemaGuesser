@@ -414,10 +414,10 @@ exports.setApp = function ( app, client )
         var obj = {Title: {$not: {$eq: filter[i]}}};
         filter_pipeline.push(obj);
       }
-      //MAKE ALL TITLES IN 'Movies' UPPERCASE INSTEAD?
+      
       var pipeline = [{
         $project: {
-            "Title": { $toUpper: "$Title" }
+            "Title": { $toLower: "$Title" }
         }
     }]
 
@@ -472,10 +472,10 @@ exports.setApp = function ( app, client )
         var obj = {Title: {$not: {$eq: filter[i]}}};
         filter_pipeline.push(obj);
       }
-      //MAKE ALL TITLES IN 'Movies' UPPERCASE INSTEAD?
+
       var pipeline = [{
         $project: {
-            "Title": { $toUpper: "$Title" }
+            "Title": { $toLower: "$Title" }
         }
     }]
 
