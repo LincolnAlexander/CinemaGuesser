@@ -194,7 +194,80 @@ exports.setApp = function ( app, client )
       
       res.status(200).json(ret);
     });
+//-----------------------------------EMAIL VERFICATION ENDPOINTS-----------------------------------
+    //jwt safe
+    app.post('/api/update_profile', async (req, res, next) =>
+    {
+      //IN - firstName, lastName, password, login
+      
+      var{firstName, lastName, password, login, jwtToken} = req.body;
 
+      //check jwt
+      let token = require('./createJWT.js');
+
+      try
+      {
+        if(token.isExpired(jwtToken))
+        {
+          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+          res.status(200).json(r);
+          return;
+        }
+      }
+      catch(e)
+      {
+        console.log(e.message);
+      }
+
+      let password_flag = true;
+
+      //hash password if it exists
+      if(password && typeof(password) === 'string'){
+        password = sha256.hmac('key', password);
+      }
+
+      //find user through login
+      const db = client.db();
+      //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
+      var results = await db.collection('Users').find({Login:login}).toArray();
+
+      //user was not found
+      if(results.length == 0)
+      {
+        var r = {error: 'No user found'};
+        res.status(200).json(r);
+        return;
+      }
+
+      //set firstName, lastName, password if empty
+      if(!firstName)
+        firstName = results[0].FirstName;
+      if(!lastName)
+        lastName = results[0].LastName;
+      if(!password || password === results[0].Password){
+        password = results[0].Password;
+        password_flag = false
+      }
+        
+
+      //update info
+      var obj = {'$set': {Password: password, FirstName: firstName, LastName: lastName}};
+      await db.collection('Users').updateOne({Login:login}, obj);
+
+      var refreshedToken = null;
+
+      try
+      {
+        refreshedToken = token.refresh(jwtToken);
+      }
+      catch
+      {
+        console.log(e)
+      }
+
+      ret = {login: login, changed_password: password_flag, firstName: firstName, lastName: lastName, jwtToken: refreshedToken.accessToken};
+      res.status(200).json(ret);
+    });
 //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
     //leaderboard endpoint that sorts by gamesplayed or score 
     app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
@@ -414,7 +487,7 @@ exports.setApp = function ( app, client )
         var obj = {Title: {$not: {$eq: filter[i]}}};
         filter_pipeline.push(obj);
       }
-      
+
       var pipeline = [{
         $project: {
             "Title": { $toLower: "$Title" }
