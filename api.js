@@ -718,6 +718,13 @@ exports.setApp = function ( app, client )
     //IN - email
     const db = client.db()
     const results = await db.collection('Users').find({Email: req.body.email}).toArray()
+    //if email not in database or user not validated
+    if(results.length == 0 || !results[0].Verify){
+      var r = {error: 'ERROR: invalid email provided'};
+      res.status(200).json(r);
+      return;
+    }
+
     var FirstName = results[0].FirstName;
     var LastName = results[0].LastName;
     var id = results[0]._id;
