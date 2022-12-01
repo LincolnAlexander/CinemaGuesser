@@ -617,7 +617,9 @@ exports.setApp = function ( app, client )
         ret[key] = json[key];
         //specially parse ratings
         if(key == 'Ratings'){
-          ret[key] = parseRatings(json[key]);
+          var {rating, source} = parseRatings(json[key]);
+          ret[key] = rating;
+          ret["Source"] = source;
         }
       }
     }
@@ -627,16 +629,19 @@ exports.setApp = function ( app, client )
   function parseRatings(ratings){
     //ret is string
     var ret;
+    var source;
     for(let i = 0; i < ratings.length; i++){
       if(!ret){
         ret = ratings[i]["Value"];
+        source = ratings[i]["Source"];
       }
       if(ratings[i]["Source"] === "Rotten Tomatoes"){
         ret = ratings[i]["Value"];
+        source = ratings[i]["Source"];
         break;
       }
     }
-    return ret;
+    return {rating: ret, source: source};
   }
   //function that makes requests to OMDB using promises and axios
   function makeGetRequest(search) {                            //makeGetRequest function

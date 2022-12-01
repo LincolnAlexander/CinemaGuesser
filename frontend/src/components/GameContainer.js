@@ -50,7 +50,7 @@ function GameContainer() {
       let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
       // bp.buildPath('api/movies_saved')
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
+      const response = await fetch(bp.buildPath('api/movies_saved'), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
@@ -68,7 +68,11 @@ function GameContainer() {
         setBoxOffice(res.omdb.BoxOffice);
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
-        setRating(parseInt(res.omdb.Ratings));
+        if(res.omdb.Source === 'Internet Movie Database')
+          setRating(parseFloat(res.omdb.Ratings)*10);
+        else if(res.omdb.Source === 'Rotten Tomatoes')
+          setRating(parseInt(res.omdb.Ratings));
+        
         setTitle(capitalize(res.omdb.Title));
         setYear(res.omdb.Year);
         //on reload don't run again
