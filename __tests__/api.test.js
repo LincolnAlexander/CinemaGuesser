@@ -8,6 +8,13 @@ const baseURL = 'http://localhost:5000/api';
 
 // Testing /login endopint
 describe('API Tests:', () => {
+    let { client, server } = require('../server');
+
+    afterAll(async () => {
+        client.close();
+        server.close();
+    });
+
     describe('POST /login', () => {
         // Testing on static dummy user
         const testUserRequest = {
@@ -69,7 +76,6 @@ describe('API Tests:', () => {
 
     // Testing /register endpoint
     describe('POST /register', () => {
-        let client = require('../server');
         let db;
 
         const registerTest = {
@@ -112,6 +118,19 @@ describe('API Tests:', () => {
             expect(res.statusCode).toBe(200);
             expect(res.body.err).toBeFalsy();
             console.log('Recieved movie: ' + res.body.title);
+        });
+    });
+
+    describe('POST /movies_saved', ()=> {
+        const req = {
+            filter: []
+        };
+
+        test('/movies_saved testing that api requests and recieves movie data', async () => {
+            const res = await request(baseURL).post('/movies_saved').send(req);
+
+            expect(res.statusCode).toBe(200);
+            expect(res.body.err).toBeFalsy();
         });
     });
 });
