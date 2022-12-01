@@ -23,647 +23,650 @@ const nodemailer = require('nodemailer');*/
 //Gaming
 exports.setApp = function ( app, client )
 {
-//-----------------------------------VALIDATION ENDPOINTS-----------------------------------
-// JWT Added by Casey
-    app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V2)
-    {
-      // incoming: login, password
-      // outgoing: firstName, lastName, error
-
-      const { login, password } = req.body;
-      if(!password || !login || password == null || login == null){
-        var ret = {error: "ERROR: Empty field(s)"} 
-        res.status(200).json(ret);
-        return
-      }
-      var Password = '';
-      if(password){
-        Password = sha256.hmac('key', password);
-      }
-
-      const db = client.db();
-      //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
-      var results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
-      var firstName = '';
-      var lastName = '';
-      var verify = '';
-      var err;
-      var ret;
-
-      if( results.length > 0 )
-      {
-        firstName = results[0].FirstName;
-        lastName = results[0].LastName;
-        verify = results[0].Verify;
-        err = '';
-
-        //check email verification
-        console.log(results)
-        if(results[0].Verify !== null && results[0].Verify === false)
-        {
-          ret = {error: "Email isn't verified"};
-          res.status(200).json(ret);
-          return;
-        }
-
-        try 
-        {
-          const token = require('./createJWT.js');
-          ret = token.createToken(firstName, lastName);
-        }
-        catch (e) {
-          ret = {error: e.message };
-        }
-      }
-      else
-      {
-        ret = {error: "Login/Password incorrect"};
-      }
-
-      //ret = {firstName: firstName, lastName: lastName, error: err}
+  //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
+  // JWT Added by Casey
+  app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V2)
+  {
+    // incoming: login, password
+    // outgoing: firstName, lastName, error
+    
+    const { login, password } = req.body;
+    if(!password || !login || password == null || login == null){
+      var ret = {error: "ERROR: Empty field(s)"} 
       res.status(200).json(ret);
-    });
- 
-    //Written by Casey
-    app.post('/api/register', async (req, res, next) =>                   //register (FORTIFY V1)
+      return
+    }
+    var Password = '';
+    if(password){
+      Password = sha256.hmac('key', password);
+    }
+    
+    const db = client.db();
+    //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
+    var results = await db.collection('Users').find({Login:login,Password:Password}).toArray();
+    var firstName = '';
+    var lastName = '';
+    var verify = '';
+    var err;
+    var ret;
+    
+    if( results.length > 0 )
     {
-
-      //password (and hashing) for user
-      var Verify = false;
-      var password = '';
-      const { FirstName, LastName, Login, Pass, Email } = req.body;
-      if(!FirstName || !LastName || !Login || !Pass || !Email){
-        var ret = {error: "ERROR: Empty field(s)"} 
+      firstName = results[0].FirstName;
+      lastName = results[0].LastName;
+      verify = results[0].Verify;
+      err = '';
+      
+      //check email verification
+      console.log(results)
+      if(results[0].Verify !== null && results[0].Verify === false)
+      {
+        ret = {error: "Email isn't verified"};
         res.status(200).json(ret);
-        return
+        return;
       }
       
-      if(Pass)
-        password = Pass
-      const Password = sha256.hmac('key', password);
-
-      //stats and list(s) for user
-      const Score = 0;
-      const GamesPlayed = 0;
-      const WatchList = [];
-
-      const db = client.db();
-
-      var err = '';
-
-      const resultsLogin = await db.collection('Users').find({Login:Login}).toArray();
-      const resultsEmail = await db.collection('Users').find({Email:Email}).toArray();
-
-      if(password == '')
+      try 
       {
-        err = "empty Pass field"
+        const token = require('./createJWT.js');
+        ret = token.createToken(firstName, lastName);
       }
-      else if(!FirstName || !LastName || !Login || !Email){
-        err = "empty non-Pass field"
+      catch (e) {
+        ret = {error: e.message };
       }
-      else if(resultsLogin.length == 0 && resultsEmail.length == 0)
-      {
-        try 
-        {
-
-          const token = require('./createJWT.js');
-          var ret = token.createToken(FirstName, LastName);
-          let bp = require('./frontend/src/components/Paths.js');
-          //'https://cinema-guesser.herokuapp.com/register-success?key='
-          var mes;
-          var route = 'register-success?key=';
-          if (process.env.NODE_ENV === 'production') 
-          {
-              mes = 'https://cinema-guesser.herokuapp.com/' + route;
-          }
-          else
-          {        
-              mes = 'http://localhost:3000/' + route;
-          }
-          let link = mes + ret.accessToken;
-          console.log(link);
-
-          const msg = {
-            to: Email,
-            from: 'cinemaguesser.devteam@gmail.com',
-            subject: 'Email Verification Needed',
-            text: 'Please click this link to confirm your email',
-            html: link,
-          }
-          if (buildPath() !== 'http://localhost:5000/') {
-            sgMail.send(msg)
-            .then(()=>
-            {
-              console.log('Email sent')
-            })
-            .catch((error) =>
-            {
-              console.log(error)
-            })
-          }
-        }
-        catch (e) 
-        {
-          ret = {error: e.message };
-        }
-        const Key = ret.accessToken 
-        const createdAt = new Date();
-        db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email, Verify, Key, createdAt});
-      }
-      else
-      {
-        //error message generation
-        if(resultsLogin.length != 0)
-        {
-          err += "Login "
-        }
-        if(resultsEmail.length != 0)
-        {
-          if(err != '')
-            err += "and "
-          err += "Email "
-        }
-        err += "already taken"
-      }
-
-      var ret;
-      if(err != '')
-        ret = {error: err}
-      else
-        ret = {firstname: FirstName, lastname: LastName, login: Login, verify: Verify,email: Email, error: err};
-      
-      res.status(200).json(ret);
-    });
-//-----------------------------------EMAIL VERFICATION ENDPOINTS-----------------------------------
-    //jwt safe
-    app.post('/api/update_profile', async (req, res, next) =>
+    }
+    else
     {
-      //IN - firstName, lastName, password, login
-      
-      var{firstName, lastName, password, login, jwtToken} = req.body;
-
-      //check jwt
-      let token = require('./createJWT.js');
-
-      try
+      ret = {error: "Login/Password incorrect"};
+    }
+    
+    //ret = {firstName: firstName, lastName: lastName, error: err}
+    res.status(200).json(ret);
+  });
+  
+  //Written by Casey
+  app.post('/api/register', async (req, res, next) =>                   //register (FORTIFY V1)
+  {
+    
+    //password (and hashing) for user
+    var Verify = false;
+    var password = '';
+    const { FirstName, LastName, Login, Pass, Email } = req.body;
+    if(!FirstName || !LastName || !Login || !Pass || !Email){
+      var ret = {error: "ERROR: Empty field(s)"} 
+      res.status(200).json(ret);
+      return
+    }
+    
+    if(Pass)
+    password = Pass
+    const Password = sha256.hmac('key', password);
+    
+    //stats and list(s) for user
+    const Score = 0;
+    const GamesPlayed = 0;
+    const WatchList = [];
+    
+    const db = client.db();
+    
+    var err = '';
+    
+    const resultsLogin = await db.collection('Users').find({Login:Login}).toArray();
+    const resultsEmail = await db.collection('Users').find({Email:Email}).toArray();
+    
+    if(password == '')
+    {
+      err = "empty Pass field"
+    }
+    else if(!FirstName || !LastName || !Login || !Email){
+      err = "empty non-Pass field"
+    }
+    else if(resultsLogin.length == 0 && resultsEmail.length == 0)
+    {
+      try 
       {
-        if(token.isExpired(jwtToken))
+        
+        const token = require('./createJWT.js');
+        var ret = token.createToken(FirstName, LastName);
+        
+        //in production or not in production
+        let bp = require('./frontend/src/components/Paths.js');
+        //'https://cinema-guesser.herokuapp.com/register-success?key='
+        var mes;
+        var route = 'register-success?key=';
+        if (process.env.NODE_ENV === 'production') 
         {
-          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
-          res.status(200).json(r);
-          return;
+          mes = 'https://cinema-guesser.herokuapp.com/' + route;
         }
+        else
+        {        
+          mes = 'http://localhost:3000/' + route;
+        }
+        let link = '<body>Click <a href="'+ mes + ret.accessToken+ '">here</a> to validate your account.</body>'
+        
+        //make message
+        const msg = {
+          to: Email,
+          from: 'cinemaguesser.devteam@gmail.com',
+          subject: 'Email Verification Needed',
+          text: 'Please click this link to confirm your email',
+          html: link,
+        }
+        //if (buildPath() !== 'http://localhost:5000/') {
+        sgMail.send(msg)
+        .then(()=>
+        {
+          console.log('Email sent')
+        })
+        .catch((error) =>
+        {
+          console.log(error)
+        })
+        // }
       }
-      catch(e)
+      catch (e) 
       {
-        console.log(e.message);
+        ret = {error: e.message };
       }
-
-      let password_flag = true;
-
-      //hash password if it exists
-      if(password && typeof(password) === 'string'){
-        password = sha256.hmac('key', password);
-      }
-
-      //find user through login
-      const db = client.db();
-      //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
-      var results = await db.collection('Users').find({Login:login}).toArray();
-
-      //user was not found
-      if(results.length == 0)
+      const Key = ret.accessToken 
+      const createdAt = new Date();
+      await db.collection('Users').insertOne({FirstName, LastName, Login, Password, Score, GamesPlayed, WatchList, Email, Verify, Key, createdAt});
+    }
+    else
+    {
+      //error message generation
+      if(resultsLogin.length != 0)
       {
-        var r = {error: 'No user found'};
+        err += "Login "
+      }
+      if(resultsEmail.length != 0)
+      {
+        if(err != '')
+        err += "and "
+        err += "Email "
+      }
+      err += "already taken"
+    }
+    
+    var ret;
+    if(err != '')
+    ret = {error: err}
+    else
+    ret = {firstname: FirstName, lastname: LastName, login: Login, verify: Verify,email: Email, error: err};
+    
+    res.status(200).json(ret);
+  });
+  //-----------------------------------PROFILE ENDPOINTS-----------------------------------
+  //jwt safe
+  app.post('/api/update_profile', async (req, res, next) =>
+  {
+    //IN - firstName, lastName, password, login
+    
+    var{firstName, lastName, password, login, jwtToken} = req.body;
+    
+    //check jwt
+    let token = require('./createJWT.js');
+    
+    try
+    {
+      if(token.isExpired(jwtToken))
+      {
+        var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
         res.status(200).json(r);
         return;
       }
-
-      //set firstName, lastName, password if empty
-      if(!firstName)
-        firstName = results[0].FirstName;
-      if(!lastName)
-        lastName = results[0].LastName;
-      if(!password || password === results[0].Password){
-        password = results[0].Password;
-        password_flag = false
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+    
+    let password_flag = true;
+    
+    //hash password if it exists
+    if(password && typeof(password) === 'string'){
+      password = sha256.hmac('key', password);
+    }
+    
+    //find user through login
+    const db = client.db();
+    //This line inherently makes this endpoint foritfied (just return nothing if empty inputs)
+    var results = await db.collection('Users').find({Login:login}).toArray();
+    
+    //user was not found
+    if(results.length == 0)
+    {
+      var r = {error: 'No user found'};
+      res.status(200).json(r);
+      return;
+    }
+    
+    //set firstName, lastName, password if empty
+    if(!firstName)
+    firstName = results[0].FirstName;
+    if(!lastName)
+    lastName = results[0].LastName;
+    if(!password || password === results[0].Password){
+      password = results[0].Password;
+      password_flag = false
+    }
+    
+    
+    //update info
+    var obj = {'$set': {Password: password, FirstName: firstName, LastName: lastName}};
+    await db.collection('Users').updateOne({Login:login}, obj);
+    
+    var refreshedToken = null;
+    
+    try
+    {
+      refreshedToken = token.refresh(jwtToken);
+    }
+    catch
+    {
+      console.log(e)
+    }
+    
+    ret = {login: login, changed_password: password_flag, firstName: firstName, lastName: lastName, jwtToken: refreshedToken.accessToken};
+    res.status(200).json(ret);
+  });
+  //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
+  //leaderboard endpoint that sorts by gamesplayed or score 
+  app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
+  {
+    //REQ: page, per_page(default=10), sortby
+    
+    //prevent negative values
+    var page = req.body.page > 0 ? req.body.page : 0;
+    var per_page = req.body.per_page >= 0 ? req.body.per_page : 1;
+    //prevent invalid sortby
+    var sortby = req.body.sortby;
+    if(sortby != "Score" && sortby != "GamesPlayed")
+    sortby = "Score"
+    
+    if(!req.body.per_page){
+      per_page = 10
+    }
+    const db = client.db();
+    //MongoDB pipeline sort -> project -> skip -> limit
+    var pipeline = [
+      {
+        '$sort': {
+          //define with req.body.sortby below
+        }
+      }, {
+        '$project': {
+          'Login': 1, 
+          'Score': 1, 
+          'GamesPlayed': 1,
+          'FirstName': 1,
+          'LastName': 1
+        }
+      }, {
+        '$skip': (per_page * page)
+      }, {
+        '$limit': per_page
       }
-        
-
-      //update info
-      var obj = {'$set': {Password: password, FirstName: firstName, LastName: lastName}};
+    ]
+    //build the $sort
+    pipeline[0]['$sort'][sortby] = -1;
+    var results = await db.collection('Users').aggregate(pipeline).toArray();
+    
+    //create number array to make it easier on the front end to make display
+    for(let i = 0; i < results.length; i++){
+      results[i]["Rank"] = i + 1 + (per_page * page)
+    }
+    
+    var user_count = await db.collection('Users').countDocuments();
+    var ret = {list: results, count: user_count};
+    res.status(200).json(ret);
+  });
+  //-----------------------------------STATS ENDPOINTS-----------------------------------
+  //get scores (ADJUST FOR JWT TOKEN)
+  // Adjusted for JWT tokens ------
+  app.post('/api/get_stats', async (req, res, next) =>                  //get_stats (FORTIFIED JWT)
+  {
+    //REQ: login
+    
+    let token = require('./createJWT.js');
+    const{login, jwtToken} = req.body;
+    
+    try
+    {
+      if(token.isExpired(jwtToken))
+      {
+        var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+        res.status(200).json(r);
+        return;
+      }
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+    
+    const db = client.db();
+    const results = await db.collection('Users').find({Login:login}).toArray();
+    var err = '';
+    
+    //Courtney Additions
+    var score;
+    var gamesPlayed;
+    var ret;
+    var retlogin;
+    
+    //check if record exists
+    if(results.length == 0)
+    {
+      err = 'no record found';
+    }
+    else
+    {
+      //Courtney Addition
+      score = results[0].Score;
+      gamesPlayed = results[0].GamesPlayed;
+      retlogin = login;
+      
+    }
+    
+    var refreshedToken = null;
+    
+    try
+    {
+      refreshedToken = token.refresh(jwtToken);
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+    ret = {login: retlogin, score: score, gamesPlayed: gamesPlayed, error: err, jwtToken: refreshedToken};
+    res.status(200).json(ret);
+  });
+  
+  //perform operations on scores (ADJUST FOR JWT TOKEN)
+  app.post('/api/op_stats', async (req, res, next) =>                  //op_stats (FORTIFIED JWT)
+  {
+    //REQ: login, value, mode, field, jwToken
+    //MODE OPs
+    /*
+    0: set
+    1: add
+    */
+    
+    var op;
+    var field;
+    var ret;
+    var value;
+    var mode;
+    var err = '';
+    
+    let token = require('./createJWT.js');
+    const login = req.body.login;
+    const jwtToken = req.body.jwtToken;
+    try
+    {
+      if(token.isExpired(jwtToken))
+      {
+        var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+        res.status(200).json(r);
+        return;
+      }
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+    
+    const db = client.db();
+    const results = await db.collection('Users').find({Login:login}).toArray();
+    //check if record exists
+    if(req.body.field != "Score" && req.body.field != "GamesPlayed"){
+      err = 'invalid field specified';
+    }
+    else if(results.length == 0)
+    {
+      err = 'no record found';
+    }
+    else
+    {
+      mode = req.body.mode;
+      field = req.body.field;
+      value = results[0][field];
+      if(!req.body.mode){
+        mode = 0;
+      }
+      //set mode
+      if(mode == 0){
+        value = req.body.value;
+        op = 'set';
+      }
+      //add mode
+      else if(mode == 1){
+        value += req.body.value;
+        op = 'add';
+      }
+      var obj = {'$set': {}};
+      obj['$set'][field] = value;
       await db.collection('Users').updateOne({Login:login}, obj);
-
-      var refreshedToken = null;
-
-      try
-      {
-        refreshedToken = token.refresh(jwtToken);
-      }
-      catch
-      {
-        console.log(e)
-      }
-
-      ret = {login: login, changed_password: password_flag, firstName: firstName, lastName: lastName, jwtToken: refreshedToken.accessToken};
-      res.status(200).json(ret);
-    });
-//-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
-    //leaderboard endpoint that sorts by gamesplayed or score 
-    app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
-    {
-      //REQ: page, per_page(default=10), sortby
-      
-      //prevent negative values
-      var page = req.body.page > 0 ? req.body.page : 0;
-      var per_page = req.body.per_page >= 0 ? req.body.per_page : 1;
-      //prevent invalid sortby
-      var sortby = req.body.sortby;
-      if(sortby != "Score" && sortby != "GamesPlayed")
-        sortby = "Score"
-
-      if(!req.body.per_page){
-        per_page = 10
-      }
-      const db = client.db();
-      //MongoDB pipeline sort -> project -> skip -> limit
-      var pipeline = [
-        {
-          '$sort': {
-            //define with req.body.sortby below
-          }
-        }, {
-          '$project': {
-            'Login': 1, 
-            'Score': 1, 
-            'GamesPlayed': 1,
-            'FirstName': 1,
-            'LastName': 1
-          }
-        }, {
-          '$skip': (per_page * page)
-        }, {
-          '$limit': per_page
-        }
-      ]
-      //build the $sort
-      pipeline[0]['$sort'][sortby] = -1;
-      var results = await db.collection('Users').aggregate(pipeline).toArray();
-
-      //create number array to make it easier on the front end to make display
-      for(let i = 0; i < results.length; i++){
-        results[i]["Rank"] = i + 1 + (per_page * page)
-      }
-
-      var user_count = await db.collection('Users').countDocuments();
-      var ret = {list: results, count: user_count};
-      res.status(200).json(ret);
-    });
-//-----------------------------------STATS ENDPOINTS-----------------------------------
-    //get scores (ADJUST FOR JWT TOKEN)
-    // Adjusted for JWT tokens ------
-    app.post('/api/get_stats', async (req, res, next) =>                  //get_stats (FORTIFIED JWT)
-    {
-      //REQ: login
-      
-      let token = require('./createJWT.js');
-      const{login, jwtToken} = req.body;
-
-      try
-      {
-        if(token.isExpired(jwtToken))
-        {
-          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
-          res.status(200).json(r);
-          return;
-        }
-      }
-      catch(e)
-      {
-        console.log(e.message);
-      }
-
-      const db = client.db();
-      const results = await db.collection('Users').find({Login:login}).toArray();
-      var err = '';
-
-      //Courtney Additions
-      var score;
-      var gamesPlayed;
-      var ret;
-      var retlogin;
-
-      //check if record exists
-      if(results.length == 0)
-      {
-        err = 'no record found';
-      }
-      else
-      {
-        //Courtney Addition
-        score = results[0].Score;
-        gamesPlayed = results[0].GamesPlayed;
-        retlogin = login;
-
-      }
-
-      var refreshedToken = null;
-
-      try
-      {
-        refreshedToken = token.refresh(jwtToken);
-      }
-      catch(e)
-      {
-        console.log(e.message);
-      }
-      ret = {login: retlogin, score: score, gamesPlayed: gamesPlayed, error: err, jwtToken: refreshedToken};
-      res.status(200).json(ret);
-    });
-
-     //perform operations on scores (ADJUST FOR JWT TOKEN)
-     app.post('/api/op_stats', async (req, res, next) =>                  //op_stats (FORTIFIED JWT)
-     {
-       //REQ: login, value, mode, field, jwToken
-       //MODE OPs
-       /*
-       0: set
-       1: add
-       */
-         
-      var op;
-      var field;
-      var ret;
-      var value;
-      var mode;
-      var err = '';
-      
-      let token = require('./createJWT.js');
-      const login = req.body.login;
-      const jwtToken = req.body.jwtToken;
-      try
-      {
-        if(token.isExpired(jwtToken))
-        {
-          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
-          res.status(200).json(r);
-          return;
-        }
-      }
-      catch(e)
-      {
-        console.log(e.message);
-      }
-
-      const db = client.db();
-      const results = await db.collection('Users').find({Login:login}).toArray();
-      //check if record exists
-      if(req.body.field != "Score" && req.body.field != "GamesPlayed"){
-        err = 'invalid field specified';
-      }
-      else if(results.length == 0)
-      {
-        err = 'no record found';
-      }
-      else
-      {
-        mode = req.body.mode;
-        field = req.body.field;
-        value = results[0][field];
-        if(!req.body.mode){
-          mode = 0;
-        }
-         //set mode
-         if(mode == 0){
-          value = req.body.value;
-          op = 'set';
-         }
-         //add mode
-         else if(mode == 1){
-          value += req.body.value;
-          op = 'add';
-         }
-         var obj = {'$set': {}};
-         obj['$set'][field] = value;
-         await db.collection('Users').updateOne({Login:login}, obj);
-       }
-
-
-       var refreshedToken = null;
-
-      try
-      {
-        refreshedToken = token.refresh(jwtToken);
-      }
-      catch(e)
-      {
-        console.log(e.message);
-      }
-
-
-       ret = {value: value, operation: op, field: field, error: err, jwtToken: refreshedToken};
-       res.status(200).json(ret);
-     });
-//-----------------------------------MOVIE ENDPOINTS-----------------------------------
-    //gets random movies (KEY)
-    app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
-    {
-
-      //REQ: filter (array)
-
-      //---------------------------MAKE PIPELINE FILTER---------------------------
-      //set defaults for filter by title
-      var filter = [];
-      if(Array.isArray(req.body.filter))
-        filter = req.body.filter;
-
-      const fields = ['Title', 'Genre', 'BoxOffice', 
-      'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
-
-      //capitalize all movie titles in 'Movies'
-      var filter_pipeline = [];
-      for(let i = 0; i < filter.length; i++)
-      {
-        var obj = {Title: {$not: {$eq: filter[i]}}};
-        filter_pipeline.push(obj);
-      }
-
-      var pipeline = [{
-        $project: {
-            "Title": { $toLower: "$Title" }
-        }
-    }]
-
-      if(filter_pipeline.length != 0){
-        pipeline.push({$match: {$and: filter_pipeline}})
-      }
-      pipeline.push({
-        '$sample': {
-          'size': 1
-        }
-      });
-      //--------------------------------------------------------------------------
-
-      const db = client.db();
-      var err = '';
-      //get 1 random movie title from database
-      const results = await db.collection('Movies').aggregate(pipeline).toArray();
-      const Title = results[0].Title;
-
-      //make request to OMDB with that random movie title
-      const omdb_ret = await makeGetRequest(Title);
-      //if bad movie
-      if(omdb_ret.Response == 'False'){
-        err = 'Invalid Movie: remove ' + Title;
-        //Add auto removal of invalid movie here
-      }
-
-      var ret = {omdb: omdb_ret, title: Title, error: err};
-      res.status(200).json(ret);
-    });
-
-    //gets random movies from MoviesSaved database 
-    //(unethical, but I wanted to develop this)
-    //this also gives more limited information compared to api/movies
-    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V1)
-    {
-      //REQ: filter (array)
-
-      //---------------------------MAKE PIPELINE FILTER---------------------------
-      //set defaults for filter by title
-      var filter = [];
-      if(Array.isArray(req.body.filter))
-        filter = req.body.filter;
-
-      const fields = ['Title', 'Genre', 'BoxOffice', 
-      'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
-
-      //capitalize all movie titles in 'Movies'
-      var filter_pipeline = [];
-      for(let i = 0; i < filter.length; i++)
-      {
-        var obj = {Title: {$not: {$eq: filter[i]}}};
-        filter_pipeline.push(obj);
-      }
-
-      var pipeline = [{
-        $project: {
-            "Title": { $toLower: "$Title" }
-        }
-    }]
-
-      if(filter_pipeline.length != 0){
-        pipeline.push({$match: {$and: filter_pipeline}})
-      }
-      pipeline.push({
-        '$sample': {
-          'size': 1
-        }
-      });
-      //--------------------------------------------------------------------------
-
-      const db = client.db();
-      var err = '';
-      var omdb_ret;
-      
-      //get 1 random movie title from database (with filter)
-      const results = await db.collection('Movies').aggregate(pipeline).toArray();
-
-      const title_search = results[0].Title.toLowerCase();
-
-      //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toLowerCase();
-      var omdb_ret = {};
-      //look in MoviesSaved
-      const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
-      
-      //if movie isn't in MoviesSaved -> OMDB -> Movies saved
-      //if movie is in MoviesSaved -> get
-      if(find_title.length == 0)
-      {
-        console.log("\x1b[36mMaking OMDB request on " + title_search + "\x1b[0m");
-        var result = await makeGetRequest(title_search);
-        if(result.Response !== "False")
-        {
-          omdb_ret = parseFields(fields, result);
-          //uppercase title to make consistant
-
-          omdb_ret["Title"] = omdb_ret["Title"].toLowerCase();
-          db.collection('MoviesSaved').insertOne(omdb_ret);
-        }
-        else
-        {
-          err = "Movie not recognized by OMDB"
-        }
-      }
-      else
-      {
-        omdb_ret = find_title[0];
-      }
-      //******
-
-      var ret = {omdb: omdb_ret, title: title_search, error: err};
-      res.status(200).json(ret);
-    });
-
-    //parses json to get certain fields in 'fields'
-    function parseFields(fields, json)
-    {
-      var ret = {};
-      for (var key of Object.keys(json)) {
-        // -1 if not in array
-        if(fields.indexOf(key) >= 0){
-          ret[key] = json[key];
-          //specially parse ratings
-          if(key == 'Ratings'){
-            ret[key] = parseRatings(json[key]);
-          }
-        }
-      }
-      return ret;
     }
-    //acccepts Array and parses 'Ratings' from OMDB for rotten tomatoes
-    function parseRatings(ratings){
-      //ret is string
-      var ret;
-      for(let i = 0; i < ratings.length; i++){
-        if(!ret){
-          ret = ratings[i]["Value"];
-        }
-        if(ratings[i]["Source"] === "Rotten Tomatoes"){
-          ret = ratings[i]["Value"];
-          break;
+    
+    
+    var refreshedToken = null;
+    
+    try
+    {
+      refreshedToken = token.refresh(jwtToken);
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
+    
+    
+    ret = {value: value, operation: op, field: field, error: err, jwtToken: refreshedToken};
+    res.status(200).json(ret);
+  });
+  //-----------------------------------MOVIE ENDPOINTS-----------------------------------
+  //gets random movies (KEY)
+  app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
+  {
+    
+    //REQ: filter (array)
+    
+    //---------------------------MAKE PIPELINE FILTER---------------------------
+    //set defaults for filter by title
+    var filter = [];
+    if(Array.isArray(req.body.filter))
+    filter = req.body.filter;
+    
+    const fields = ['Title', 'Genre', 'BoxOffice', 
+    'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+    
+    //capitalize all movie titles in 'Movies'
+    var filter_pipeline = [];
+    for(let i = 0; i < filter.length; i++)
+    {
+      var obj = {Title: {$not: {$eq: filter[i]}}};
+      filter_pipeline.push(obj);
+    }
+    
+    var pipeline = [{
+      $project: {
+        "Title": { $toLower: "$Title" }
+      }
+    }]
+    
+    if(filter_pipeline.length != 0){
+      pipeline.push({$match: {$and: filter_pipeline}})
+    }
+    pipeline.push({
+      '$sample': {
+        'size': 1
+      }
+    });
+    //--------------------------------------------------------------------------
+    
+    const db = client.db();
+    var err = '';
+    //get 1 random movie title from database
+    const results = await db.collection('Movies').aggregate(pipeline).toArray();
+    const Title = results[0].Title;
+    
+    //make request to OMDB with that random movie title
+    const omdb_ret = await makeGetRequest(Title);
+    //if bad movie
+    if(omdb_ret.Response == 'False'){
+      err = 'Invalid Movie: remove ' + Title;
+      //Add auto removal of invalid movie here
+    }
+    
+    var ret = {omdb: omdb_ret, title: Title, error: err};
+    res.status(200).json(ret);
+  });
+  
+  //gets random movies from MoviesSaved database 
+  //(unethical, but I wanted to develop this)
+  //this also gives more limited information compared to api/movies
+  app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V1)
+  {
+    //REQ: filter (array)
+    
+    //---------------------------MAKE PIPELINE FILTER---------------------------
+    //set defaults for filter by title
+    var filter = [];
+    if(Array.isArray(req.body.filter))
+    filter = req.body.filter;
+    
+    const fields = ['Title', 'Genre', 'BoxOffice', 
+    'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+    
+    //capitalize all movie titles in 'Movies'
+    var filter_pipeline = [];
+    for(let i = 0; i < filter.length; i++)
+    {
+      var obj = {Title: {$not: {$eq: filter[i]}}};
+      filter_pipeline.push(obj);
+    }
+    
+    var pipeline = [{
+      $project: {
+        "Title": { $toLower: "$Title" }
+      }
+    }]
+    
+    if(filter_pipeline.length != 0){
+      pipeline.push({$match: {$and: filter_pipeline}})
+    }
+    pipeline.push({
+      '$sample': {
+        'size': 1
+      }
+    });
+    //--------------------------------------------------------------------------
+    
+    const db = client.db();
+    var err = '';
+    var omdb_ret;
+    
+    //get 1 random movie title from database (with filter)
+    const results = await db.collection('Movies').aggregate(pipeline).toArray();
+    
+    const title_search = results[0].Title.toLowerCase();
+    
+    //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toLowerCase();
+    var omdb_ret = {};
+    //look in MoviesSaved
+    const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
+    
+    //if movie isn't in MoviesSaved -> OMDB -> Movies saved
+    //if movie is in MoviesSaved -> get
+    if(find_title.length == 0)
+    {
+      console.log("\x1b[36mMaking OMDB request on " + title_search + "\x1b[0m");
+      var result = await makeGetRequest(title_search);
+      if(result.Response !== "False")
+      {
+        omdb_ret = parseFields(fields, result);
+        //uppercase title to make consistant
+        
+        omdb_ret["Title"] = omdb_ret["Title"].toLowerCase();
+        db.collection('MoviesSaved').insertOne(omdb_ret);
+      }
+      else
+      {
+        err = "Movie not recognized by OMDB"
+      }
+    }
+    else
+    {
+      omdb_ret = find_title[0];
+    }
+    //******
+    
+    var ret = {omdb: omdb_ret, title: title_search, error: err};
+    res.status(200).json(ret);
+  });
+  
+  //parses json to get certain fields in 'fields'
+  function parseFields(fields, json)
+  {
+    var ret = {};
+    for (var key of Object.keys(json)) {
+      // -1 if not in array
+      if(fields.indexOf(key) >= 0){
+        ret[key] = json[key];
+        //specially parse ratings
+        if(key == 'Ratings'){
+          ret[key] = parseRatings(json[key]);
         }
       }
-      return ret;
     }
-    //function that makes requests to OMDB using promises and axios
-    function makeGetRequest(search) {                            //makeGetRequest function
-      return new Promise(function (resolve, reject) {
-          axios.get(`http://www.omdbapi.com/?apikey=${process.env.APIKEY}&`, {
-            params : {
-              t: search
-            }
-          }).then(
-              (response) => {
-                  var result = response.data;
-                  console.log('Processing Request');
-                  resolve(result);
-              },
-                  (error) => {
-                  reject(error);
-              }
-          );
-      });
+    return ret;
+  }
+  //acccepts Array and parses 'Ratings' from OMDB for rotten tomatoes
+  function parseRatings(ratings){
+    //ret is string
+    var ret;
+    for(let i = 0; i < ratings.length; i++){
+      if(!ret){
+        ret = ratings[i]["Value"];
+      }
+      if(ratings[i]["Source"] === "Rotten Tomatoes"){
+        ret = ratings[i]["Value"];
+        break;
+      }
+    }
+    return ret;
+  }
+  //function that makes requests to OMDB using promises and axios
+  function makeGetRequest(search) {                            //makeGetRequest function
+    return new Promise(function (resolve, reject) {
+      axios.get(`http://www.omdbapi.com/?apikey=${process.env.APIKEY}&`, {
+      params : {
+        t: search
+      }
+    }).then(
+      (response) => {
+        var result = response.data;
+        console.log('Processing Request');
+        resolve(result);
+      },
+      (error) => {
+        reject(error);
+      }
+      );
+    });
   }//end of function
-
-//-----------------------------------EMAIL VERFICATION ENDPOINTS-----------------------------------
+  
+  //-----------------------------------EMAIL ENDPOINTS-----------------------------------
+  //validate from sent email (this is after user clicks on link)
   app.post('/api/email_verify', async (req, res, next) => 
   {
     db = client.db();
     const token = require('./createJWT.js');
-   //db.collection('Users').createIndex( { "createdAttwo": 1 }, { expireAfterSeconds: 10 } )
-
-   //get key and search in database
+    //db.collection('Users').createIndex( { "createdAttwo": 1 }, { expireAfterSeconds: 10 } )
+    
+    //get key and search in database
     var key = req.query.key;
     const results = await db.collection('Users').find({Verify: false, Key: key}).toArray()
     //verify data from database
@@ -673,30 +676,23 @@ exports.setApp = function ( app, client )
       res.status(200).json(r);
       return;
     }
-
+    
     //check if token is good
     var jwtToken = key;
     try
+    {
+      if(token.isExpired(jwtToken))
       {
-        if(token.isExpired(jwtToken))
-        {
-          var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
-          res.status(200).json(r);
-          return;
-        }
+        var r = {error: 'The JWT token is no longer valid', jwtToken: ''};
+        res.status(200).json(r);
+        return;
       }
-      catch(e)
-      {
-        console.log(e.message);
-      }
+    }
+    catch(e)
+    {
+      console.log(e.message);
+    }
     //accept user
-    //only affect user with key, get rid of createdAt and Key, Verify to true
-    var pipeline = [
-      {'$match': {'Key': key}}, 
-      {'$unset': ['createdAt', 'Key']}, 
-      {'$set': {'Verify': true}}
-    ]
-    var user_ret;
     try
     {
       //user_ret = await db.collection("Users").aggregate(pipeline).toArray();
@@ -713,7 +709,67 @@ exports.setApp = function ( app, client )
     var ret = {message: verified};
     res.status(200).json(ret);
   }
-
+  
   );
+  
+  //send email to reset password (this sends link on password reset)
+  app.post('/api/email_password', async (req, res, next) =>{
 
+    //IN - email
+    const db = client.db()
+    const results = await db.collection('Users').find({Email: req.body.email}).toArray()
+    var FirstName = results[0].FirstName;
+    var LastName = results[0].LastName;
+    var id = results[0]._id;
+    console.log(id);
+
+    const token = require('./createJWT.js');
+    var ret = token.createToken(FirstName, LastName);
+    const results_password = await db.collection('PasswordReset').find({QueryID: id}).toArray()
+    console.log(results_password[0])
+
+    //user already has password reset request
+    if(results_password.length > 0){
+      var r = {error: 'ERROR: user already has password reset request'};
+      res.status(200).json(r);
+      return;
+    }
+
+    //register that user has requested password reset
+    //await db.collection('PasswordReset').createIndex( { "createdAt": 1 }, { expireAfterSeconds: 1800 } )
+    await db.collection('PasswordReset').insertOne({createdAt: (new Date()), QueryID: id, Key: ret.accessToken})
+
+    //in production or not in production
+    var mes;
+    var route = 'reset-password?key=';
+    if (process.env.NODE_ENV === 'production') 
+    {
+      mes = 'https://cinema-guesser.herokuapp.com/' + route;
+    }
+    else
+    {        
+      mes = 'http://localhost:3000/' + route;
+    }
+
+    console.log(mes + ret.accessToken);
+    let link = '<body>Click <a href="'+ mes + ret.accessToken+ '">here</a> to reset your password.</body>'
+    const msg = {
+      to: "kaedenle@gmail.com",
+      from: 'cinemaguesser.devteam@gmail.com',
+      subject: 'Email Verification Needed',
+      text: 'Please click this link to confirm your email',
+      html: link,
+    };
+    
+    sgMail.send(msg)
+    .then(()=>{
+      console.log('Email sent')
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    var ret = {message: "password reset request has been sent"};
+    res.status(200).json(ret);
+  });
+  
 }
