@@ -29,6 +29,7 @@ function GameContainer() {
   const [boxOffice, setBoxOffice] = useState(false);
   const [genre, setGenre] = useState(false);
   const [actors, setActors] = useState(false);
+  const [source, setSource] = useState(false);
   const [year, setYear] = useState(false);
   const [rating, setRating] = useState(0);
   const [score, setScore] = useState(0);
@@ -66,12 +67,18 @@ function GameContainer() {
         setDesc(res.omdb.Plot);
         setActors(res.omdb.Actors);
         setBoxOffice(res.omdb.BoxOffice);
+        if(!res.omdb.BoxOffice)
+          setBoxOffice("N/A");
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
-        if(res.omdb.Source === 'Internet Movie Database')
+        if(res.omdb.Source === 'Internet Movie Database'){
           setRating(parseFloat(res.omdb.Ratings)*10);
-        else if(res.omdb.Source === 'Rotten Tomatoes')
+          setSource(res.omdb.Source + " (IMDB)");
+        }
+        else if(res.omdb.Source === 'Rotten Tomatoes'){
           setRating(parseInt(res.omdb.Ratings));
+          setSource(res.omdb.Source);
+        }
         
         setTitle(capitalize(res.omdb.Title));
         setYear(res.omdb.Year);
@@ -309,6 +316,10 @@ function GameContainer() {
         <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2 '>Actors:</span>
           <span className='text-pr-white pr-2'>{actors}</span>
+        </div>
+        <div className='min-h-[50px] text-center sm:text-left'>
+          <span className='text-pr-yellow mr-2 '>Source:</span>
+          <span className='text-pr-white pr-2'>{source}</span>
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
