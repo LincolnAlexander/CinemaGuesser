@@ -52,12 +52,16 @@ function ResetPasswordPage() {
 
       if (res.length == 0 || (res.error && res.error !== '')) {
         //console.log(res.error);
-
+        setMessage(res.error);
     
       } 
       else 
       {
-
+        setMessage('Password Reset. Please Login');
+        setTimeout(() => {
+      
+          navigate('/');
+        }, 4000);
       }
     } 
     catch (e) 
