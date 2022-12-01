@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import GamePage from './pages/GamePage';
 import Nav from './components/Nav';
 import LeaderboardPage from './pages/LeaderboardPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
+import ResetPasswordPage from './components/ResetPasswordPage';
 import EmailCheck from './pages/EmailCheck';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import UserProfilePage from './pages/UserProfilePage';

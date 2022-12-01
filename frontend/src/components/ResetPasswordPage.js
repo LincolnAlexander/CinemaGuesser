@@ -41,15 +41,14 @@ function ResetPasswordPage() {
       
       // 'https://cinema-guesser.herokuapp.com/api/update-password?key=' + t
       // bp.buildPath('api/update-password' + t)
-      console.log(bp.buildPath('api/update-password?key=' + t));
-      const response = await fetch(bp.buildPath('api/update-password?key=' + t), {
+      console.log(bp.buildPath('api/update_password?key=' + t));
+      const response = await fetch(bp.buildPath('api/update_password?key=' + t), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
 
       let res = JSON.parse(await response.text());
-      console.log(res)
 
       if (res.length == 0 || (res.error && res.error !== '')) {
         //console.log(res.error);

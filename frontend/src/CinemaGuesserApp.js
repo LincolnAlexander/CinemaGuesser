@@ -12,7 +12,7 @@ import PrivateComponent from './components/PrivateComponent';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import RedirectPage from './pages/RedirectPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
+import ResetPasswordPage from './components/ResetPasswordPage';
 import EmailCheck from './pages/EmailCheck';
 import UserProfilePage from './pages/UserProfilePage';
 
