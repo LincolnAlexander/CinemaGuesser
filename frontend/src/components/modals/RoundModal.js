@@ -51,6 +51,7 @@ export default function RoundModal(props) {
                 >
                   <NextRoundBtn className='w-20 sm:w-auto' />
                 </button>
+                <button className='' title='Add Movie to WatchList'>+</button>
               </div>
               {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
             </div>
