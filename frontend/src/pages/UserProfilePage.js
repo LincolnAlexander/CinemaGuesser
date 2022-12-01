@@ -4,10 +4,12 @@ export default function UserProfilePage() {
   const auth = localStorage.getItem('user_data');
   const userData = JSON.parse(auth);
   const [isEditable, setIsEditable] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
-  const [password, setPassword] = useState('Password');
+  const [password, setPassword] = useState('');
   const [statusMsg, setStatusMsg] = useState('');
+  const matchingPass = useRef('');
 
   function getUserInitials() {
     if (!auth) return '?';
@@ -28,11 +30,31 @@ export default function UserProfilePage() {
     return classes.filter(Boolean).join(' ');
   }
 
+  function validateInputs() {
+    if (firstName === '' || lastName === '') return false;
+
+    if (!changePassword) return true;
+
+    const confirmPass = matchingPass.current.value;
+    if (confirmPass !== password) return false;
+
+    const regex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/;
+
+    return regex.test(password);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    setIsEditable(!isEditable);
-    console.log('here');
+    setIsEditable(true);
+
+    if (!validateInputs()) return;
+
+    if (changePassword) setChangePassword(false);
+
     if (!isEditable) return;
+
+    // console.log('validate input is:', validateInputs());
 
     let className = e.target.className;
 
@@ -43,6 +65,7 @@ export default function UserProfilePage() {
     setTimeout(() => {
       e.target.className = className;
       setStatusMsg('');
+      setIsEditable(false);
     }, 2000);
   }
 
@@ -57,12 +80,15 @@ export default function UserProfilePage() {
         </div>
         <span className='mb-1 text-pr-white text-3xl'>{userData.login}</span>
         <span className='mb-1 text-pr-white text-lg'>email@email.com</span>
-        <span className='mb-6 text-pr-yellow text-2xl'>456</span>
+        <p className='mb-1 text-pr-white text-lg'>
+          score:
+          <span className='ml-2 mb-6 text-pr-yellow text-2xl'>456</span>
+        </p>
 
         <form className='flex flex-col items-center w-[80%] min-w-fit max-w-sm'>
           <div className='mt-6'>
             <input
-              className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-white text-lg focus:outline-none bg-transparent'
+              className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-gray focus:text-pr-white text-lg focus:outline-none bg-transparent'
               id='firstname'
               type='text'
               value={firstName}
@@ -76,15 +102,15 @@ export default function UserProfilePage() {
               Empty Field!
             </span>
             <label
-              className='block text-pr-yellow text-md self-start'
+              className='block text-pr-yellow text-md self-start peer-focus:font-medium'
               htmlFor='firstname'
             >
-              Firstname
+              {isEditable ? 'Edit firstname' : 'Firstname'}
             </label>
           </div>
           <div className='mt-6'>
             <input
-              className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-white text-lg focus:outline-none bg-transparent'
+              className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-gray focus:text-pr-white text-lg focus:outline-none bg-transparent'
               id='lastname'
               type='text'
               value={lastName}
@@ -98,36 +124,73 @@ export default function UserProfilePage() {
               Empty Field!
             </span>
             <label
-              className='block text-pr-yellow text-md self-start'
+              className='block text-pr-yellow text-md self-start peer-focus:font-medium'
               htmlFor='lastname'
             >
-              Lastname
+              {isEditable ? 'Edit lastname' : 'Lastname'}
             </label>
           </div>
-          <div className={isEditable ? 'mt-6 self-center' : 'hidden'}>
-            <input
-              className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-white text-lg focus:outline-none bg-transparent'
-              id='password'
-              type='password'
-              pattern='^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$'
-              onBlur={handleFocus}
-              focused='false'
-              required
-            ></input>
-            <span className='text-orange-600 w-52 text-xs font-light peer-valid:hidden peer-disabled:hidden'>
-              Must be 8-20 characters and contain 1 letter, 1 number, 1 special
-              character!
-            </span>
-            <label
-              className='block text-pr-yellow text-md self-start'
-              htmlFor='password'
-            >
-              Password
-            </label>
-          </div>
+          {isEditable ? (
+            <>
+              <div
+                className='flex justify-center items-center transition-all ease-in-out duration-300 hover:scale-110 active:scale-100 cursor-pointer mt-6 rounded-full bg-slate-700 text-white text-sm w-36 h-8 font-normal hover:font-extrabold'
+                onClick={(e) => setChangePassword(!changePassword)}
+              >
+                Change Password
+              </div>
+              {changePassword ? (
+                <>
+                  <div className={'mt-6 self-center'}>
+                    <input
+                      className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-white text-lg focus:outline-none bg-transparent'
+                      id='password'
+                      type='password'
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      pattern='^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$'
+                      onBlur={handleFocus}
+                      focused='false'
+                      required
+                    ></input>
+                    <span className='text-orange-600 w-52 text-xs font-light peer-valid:hidden peer-disabled:hidden'>
+                      Must be 8-20 characters and contain 1 letter, 1 number, 1
+                      special character!
+                    </span>
+                    <label
+                      className='block text-pr-yellow text-md self-start peer-focus:font-medium'
+                      htmlFor='password'
+                    >
+                      New password
+                    </label>
+                  </div>
+                  <div className={'mt-6 self-center'}>
+                    <input
+                      className='peer h-10  border-b border-pr-yellow focus:border-b-2 focus:border-pr-white text-pr-white text-lg focus:outline-none bg-transparent'
+                      id='password'
+                      type='password'
+                      ref={matchingPass}
+                      pattern={password}
+                      onBlur={handleFocus}
+                      focused='false'
+                      required
+                    ></input>
+                    <span className='text-orange-600 w-52 text-xs font-light peer-valid:hidden peer-disabled:hidden'>
+                      Password must match
+                    </span>
+                    <label
+                      className='block text-pr-yellow text-md self-start peer-focus:font-medium'
+                      htmlFor='password'
+                    >
+                      Repeat password
+                    </label>
+                  </div>
+                </>
+              ) : null}
+            </>
+          ) : null}
           <span
             className={classNames(
-              statusMsg === '' ? '' : 'mt-16',
+              statusMsg === '' ? '' : 'my-12',
               ' text-pr-white text-md'
             )}
           >
@@ -141,6 +204,14 @@ export default function UserProfilePage() {
             {isEditable ? 'Update' : 'Edit'}
           </button>
         </form>
+        {isEditable ? (
+          <div
+            className='flex justify-center items-center transition-all ease-in-out duration-300 hover:scale-110 active:scale-100 mt-2 rounded-full bg-slate-700 text-white text-sm w-24 h-8 font-normal hover:font-extrabold'
+            onClick={() => setIsEditable(false)}
+          >
+            Cancel
+          </div>
+        ) : null}
       </div>
     </div>
   );
