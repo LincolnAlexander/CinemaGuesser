@@ -720,7 +720,7 @@ exports.setApp = function ( app, client )
     const results = await db.collection('Users').find({Email: req.body.email}).toArray()
     //if email not in database or user not validated
     if(results.length == 0 || !results[0].Verify){
-      var r = {error: 'ERROR: invalid email provided'};
+      var r = {error: 'Invalid email provided'};
       res.status(200).json(r);
       return;
     }
@@ -736,7 +736,7 @@ exports.setApp = function ( app, client )
 
     //user already has password reset request
     if(results_password.length > 0){
-      var r = {error: 'ERROR: user already has password reset request'};
+      var r = {error: 'User already has password reset request'};
       res.status(200).json(r);
       return;
     }
