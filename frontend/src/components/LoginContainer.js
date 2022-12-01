@@ -124,7 +124,7 @@ const LoginContainer = () => {
                 Register
               </button>
               <button
-                className='block text-pr-yellow text-center text-sm font-medium py-2 hover:font-extrabold hover:underline'
+                className='block text-pr-yellow text-center text-sm font-medium pl-[3.5vw] py-2 hover:font-extrabold hover:underline'
               //  onClick={turnOnModal}
               onClick={() => navigate('/forgot-password')}
               >

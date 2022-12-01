@@ -1,47 +1,72 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-function UpdatePasswordPage() {
+function ResetPasswordPage() {
   const newPasswordRef = useRef();
   const confirmPasswordRef = useRef();
   
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
-  const doRegister = async (event) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const resetPassword = async (event) => {
     event.preventDefault();
 
-    const newPasswordRef = newPasswordRef.current.value;
-    const confirmPasswordRef = confirmPasswordRef.current.value;
+    // newPasswordRef = newPasswordRef.current.value;
+    // confirmPasswordRef = confirmPasswordRef.current.value;
     
-    let obj = {
+    if(newPasswordRef.current.value == '' || confirmPasswordRef.current.value== '')
+    {
       
-    };
-    let js = JSON.stringify(obj);
-
+      setMessage('Empty Field!')
+      return;
+    }
+    else if(newPasswordRef.current.value != confirmPasswordRef.current.value)
+    {
+      
+      setMessage("Passwords don't match!");
+      return;
+    }
+    
+    
+    var t = searchParams.get("key")
+    
     try {
-    //   let bp = require('./Paths.js');
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/', {
+      let bp = require('./Paths.js');
+      let obj = 
+      {
+        password: confirmPasswordRef.current.value,
+        key: t,
+      }
+      let js = JSON.stringify(obj);
+      
+      // 'https://cinema-guesser.herokuapp.com/api/update-password?key=' + t
+      // bp.buildPath('api/update-password' + t)
+      console.log(bp.buildPath('api/update_password?key=' + t));
+      const response = await fetch(bp.buildPath('api/update_password?key=' + t), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
+
       let res = JSON.parse(await response.text());
 
-      if (res.error !== '') {
-        setMessage('Username is taken, please try a different one.');
-      } else {
-        // const user = {
-        //   firstName: res.firstName,
-        //   lastName: res.lastName,
-        //   id: res.id,
-        // };
-        // localStorage.setItem('user_data', JSON.stringify(user));
-        setMessage('');
-        navigate('/register-success');
+      if (res.length == 0 || (res.error && res.error !== '')) {
+        //console.log(res.error);
+        setMessage(res.error);
+    
+      } 
+      else 
+      {
+        setMessage('Password Reset. Please Login');
+        setTimeout(() => {
+      
+          navigate('/');
+        }, 4000);
       }
-    } catch (e) {
-      alert(e.toString());
+    } 
+    catch (e) 
+    {
+      console.log(e);
       return;
     }
   };
@@ -58,21 +83,24 @@ function UpdatePasswordPage() {
       
         <div className='flex flex-col basis-1/2 justify-center items-center rounded-md bg-slate-500 bg-opacity-10 backdrop-blur-sm mb-8'>
             
-          <form className='relative m-10' onSubmit={doRegister}>
+          <form className='relative m-10' onSubmit={resetPassword}>
             <div className='flex flex-col w-full'>
               <div className='relative w-full'>
                 <input
                   className='peer h-10  border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent mr-4'
                   id='newPassword'
                   ref={newPasswordRef}
-                  type='text'
+                  type='password'
                   placeholder='a'
                   onBlur={handleFocus}
+                  pattern='^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$'
+                  onClick = {() => setMessage('')}
                   focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  Empty Field!
+                <span className='text-pr-yellow text-xs w-52 peer-valid:hidden'>
+                  Must be 8-20 characters and contain 1 letter, 1 number, 1
+                  special character!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5 text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
@@ -87,14 +115,17 @@ function UpdatePasswordPage() {
                   className='peer h-10 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent placeholder-transparent'
                   id='confirmPassword'
                   ref={confirmPasswordRef}
-                  type='text'
+                  type='password'
                   placeholder='a'
                   onBlur={handleFocus}
+                  pattern='^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$'
+                  onClick = {() => setMessage('')}
                   focused='false'
                   required
                 ></input>
-                <span className='text-pr-yellow text-xs peer-valid:hidden'>
-                  Empty Field!
+                <span className='text-pr-yellow text-xs w-52 peer-valid:hidden'>
+                  Must be 8-20 characters and contain 1 letter, 1 number, 1
+                  special character!
                 </span>
                 <label
                   className='absolute left-0 -top-3.5  text-pr-yellow text-md transtion-all peer-placeholder-shown:text-base peer-placeholder-shown:text-pr-gray peer-placeholder-shown:top-2 peer-focus: -top-3.5  peer-focus: text-md '
@@ -103,6 +134,9 @@ function UpdatePasswordPage() {
                   Confirm New Password
                 </label>
               </div>
+              <div className='relative w-full mt-5'>
+                <p className='text-pr-white text-lg bold'>{message}</p>
+              </div>
               
               
             </div>
@@ -110,9 +144,9 @@ function UpdatePasswordPage() {
             <div>
               <button
                 className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-52 h-10 font-medium hover:font-extrabold '
-                type='submit'
+                type='submit' onClick={resetPassword}
               >
-                Update Password
+                Reset Password
               </button>
             </div>
           </form>
@@ -122,4 +156,4 @@ function UpdatePasswordPage() {
   );
 }
 
-export default UpdatePasswordPage;
+export default ResetPasswordPage;

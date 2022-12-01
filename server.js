@@ -65,10 +65,13 @@ app.use((req, res, next) =>
 });
 
 //listen on PORT (either custom or 5000)
-app.listen(PORT, () => 
+var server = app.listen(PORT, () => 
 {
   console.log('Server listening on port ' + PORT);
 });
 
 
-module.exports = client;
+module.exports = {
+  client: client, 
+  server: server
+};
