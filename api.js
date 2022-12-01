@@ -200,7 +200,7 @@ exports.setApp = function ( app, client )
   //jwt safe
   app.post('/api/update_profile', async (req, res, next) =>
   {
-    //IN - firstName, lastName, password, login
+    //IN - firstName, lastName, password, login, jwtToken
     
     var{firstName, lastName, password, login, jwtToken} = req.body;
     
@@ -733,7 +733,6 @@ exports.setApp = function ( app, client )
     const token = require('./createJWT.js');
     var ret = token.createToken(FirstName, LastName);
     const results_password = await db.collection('PasswordReset').find({QueryID: id}).toArray()
-    console.log(results_password[0])
 
     //user already has password reset request
     if(results_password.length > 0){
@@ -776,6 +775,44 @@ exports.setApp = function ( app, client )
       console.log(error)
     })
     var ret = {message: "password reset request has been sent"};
+    res.status(200).json(ret);
+  });
+
+  //specifically from reset password
+  app.post('/api/update_password', async (req, res, next) =>{
+    //IN - key, password
+
+    const db = client.db();
+    //prepare password
+    //hash password if it exists
+    var password = req.body.password;
+    if(password && typeof(password) === 'string'){
+      password = sha256.hmac('key', password);
+    }
+
+    const results = await db.collection('PasswordReset').find({Key: req.body.key}).toArray()
+
+    //user already has password reset request
+    if(results.length == 0){
+      var r = {error: 'ERROR: no password reset request'};
+      res.status(200).json(r);
+      return;
+    }
+
+    //update info
+    try{
+      var obj = {'$set': {Password: password}};
+      await db.collection('Users').updateOne({_id:results[0].QueryID}, obj);
+      //delete from PasswordReset
+      await db.collection('PasswordReset').deleteOne({ Key: req.body.key });
+    }
+    catch(e)
+    {
+      var r = {error: 'ERROR: ' + e};
+      res.status(200).json(r);
+      return;
+    }
+    var ret = {message: "password has been reset!"};
     res.status(200).json(ret);
   });
   
