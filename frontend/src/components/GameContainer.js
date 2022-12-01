@@ -29,6 +29,7 @@ function GameContainer() {
   const [boxOffice, setBoxOffice] = useState(false);
   const [genre, setGenre] = useState(false);
   const [actors, setActors] = useState(false);
+  const [source, setSource] = useState(false);
   const [year, setYear] = useState(false);
   const [rating, setRating] = useState(0);
   const [score, setScore] = useState(0);
@@ -50,7 +51,7 @@ function GameContainer() {
       let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
       // bp.buildPath('api/movies_saved')
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/movies_saved', {
+      const response = await fetch(bp.buildPath('api/movies_saved'), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
@@ -66,9 +67,19 @@ function GameContainer() {
         setDesc(res.omdb.Plot);
         setActors(res.omdb.Actors);
         setBoxOffice(res.omdb.BoxOffice);
+        if(!res.omdb.BoxOffice)
+          setBoxOffice("N/A");
         setGenre(res.omdb.Genre);
         setPoster(res.omdb.Poster);
-        setRating(parseInt(res.omdb.Ratings));
+        if(res.omdb.Source === 'Internet Movie Database'){
+          setRating(parseFloat(res.omdb.Ratings)*10);
+          setSource(res.omdb.Source + " (IMDB)");
+        }
+        else if(res.omdb.Source === 'Rotten Tomatoes'){
+          setRating(parseInt(res.omdb.Ratings));
+          setSource(res.omdb.Source);
+        }
+        
         setTitle(capitalize(res.omdb.Title));
         setYear(res.omdb.Year);
         //on reload don't run again
@@ -305,6 +316,10 @@ function GameContainer() {
         <div className='min-h-[50px] text-center sm:text-left'>
           <span className='text-pr-yellow mr-2 '>Actors:</span>
           <span className='text-pr-white pr-2'>{actors}</span>
+        </div>
+        <div className='min-h-[50px] text-center sm:text-left'>
+          <span className='text-pr-yellow mr-2 '>Source:</span>
+          <span className='text-pr-white pr-2'>{source}</span>
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
         <div className='min-h-[50px] col-span-1 sm:col-span-2 text-center  '>
