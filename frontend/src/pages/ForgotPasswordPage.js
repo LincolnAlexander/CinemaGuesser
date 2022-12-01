@@ -42,6 +42,7 @@ const ForgotPasswordPage = () => {
       } 
       else 
       {
+        setMessage('Link has been sent to your email');
         setTimeout(() => {
       
           navigate('/');
