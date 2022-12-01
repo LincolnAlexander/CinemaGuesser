@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import GamePage from './pages/GamePage';
 import Nav from './components/Nav';
 import LeaderboardPage from './pages/LeaderboardPage';
-import UpdatePasswordPage from './pages/UpdatePasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import EmailCheck from './pages/EmailCheck';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import UserProfilePage from './pages/UserProfilePage';
@@ -21,7 +21,7 @@ root.render(
       {/* <LeaderboardPage /> */}
       {/* <GamePage/> */}
       {/* <Nav /> */}
-      {/* <UpdatePasswordPage></UpdatePasswordPage> */}
+      {/* <ResetPasswordPage/> */}
       {/* <EmailCheck/> */}
       {/* <RegistrationSuccess/> */}
     </BrowserRouter>

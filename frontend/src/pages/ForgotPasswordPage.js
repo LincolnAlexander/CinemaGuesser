@@ -3,20 +3,58 @@ import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
-
+  const[message, setMessage] = useState('');
   useEffect(() => {
     const auth = localStorage.getItem('user_data');
     if (auth) navigate('/home');
   });
 
   const emailRef = useRef();
-  function sett(e)
+  async function sett(e) 
   {
     e.preventDefault();
-    setTimeout(() => {
+    
+    try {
+      //let bp = require('./Paths.js');
+      let obj = 
+      {
+        email: emailRef.current.value
+      }
+      let js = JSON.stringify(obj);
       
-      navigate('/');
-    }, 5000);
+      // 'https://cinema-guesser.herokuapp.com/api/email_password' + t
+      // bp.buildPath('api/email_verify?key=' + t)
+      //console.log(bp.buildPath('api/email_verify?key=' + t));
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/email_password', {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      let res = JSON.parse(await response.text());
+      console.log('ll');
+      //console.log(res)
+
+      if (res.length == 0 || (res.error && res.error !== '')) {
+        //console.log(res.error);
+        setMessage(res.error);
+    
+      } 
+      else 
+      {
+        setTimeout(() => {
+      
+          navigate('/');
+        }, 4000);
+      }
+    } 
+    catch (e) 
+    {
+      console.log(e);
+      return;
+    }
+
+    
   }
   const handleFocus = (e) => {
     const input = e.target;
@@ -52,6 +90,10 @@ const ForgotPasswordPage = () => {
                 >
                   Enter Email
                 </label>
+
+                <div className='relative w-full mt-5'>
+                  <p className='text-pr-white text-lg bold'>{message}</p>
+                </div>
                 <button
                   className='transition-all ease-in-out delay-150 duration-300 hover:scale-110 block my-6 rounded-full bg-gradient-to-r from-pr-yellow to-pr-red  text-white w-52 h-10 font-medium hover:font-extrabold '
                   type='submit'
