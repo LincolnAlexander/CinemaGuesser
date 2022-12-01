@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import GameContainer from "../components/GameContainer";
 import {
   StyleSheet,
   Image,

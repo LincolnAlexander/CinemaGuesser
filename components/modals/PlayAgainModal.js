@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ReactComponent as PlayAgainBtn } from "../../images/PlayAgainBtn.svg";
-import { useNavigate } from "react-router-dom";
+//import { XMarkIcon } from "@heroicons/react/24/outline";
+// import { ReactComponent as PlayAgainBtn } from ".../assets/images/PlayAgainBtn.svg";
+import { useNavigate } from "@react-navigation/native";
 
 export default function PlayAgainModal(props) {
   const navigate = useNavigate();

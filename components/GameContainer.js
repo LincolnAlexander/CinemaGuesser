@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ReactComponent as SubmitBtn } from "../images/SubmitBtn.svg";
+import { useNavigate } from "@react-navigation/native";
+import { ReactComponent as SubmitBtn } from "../assets/images/SubmitBtn.svg";
 import PlayAgainModal from "./modals/PlayAgainModal";
 import RoundModal from "./modals/RoundModal";
 

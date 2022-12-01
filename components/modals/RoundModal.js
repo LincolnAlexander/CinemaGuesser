@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ReactComponent as NextRoundBtn } from "../../images/NextRoundBtn.svg";
-import { useNavigate } from "react-router-dom";
+//import { XMarkIcon } from "@heroicons/react/24/outline";
+// import { ReactComponent as NextRoundBtn } from ".../assets/images/NextRoundBtn.svg";
+import { useNavigate } from "@react-navigation/native";
 
 export default function RoundModal(props) {
   // const navigate = useNavigate();
@@ -55,12 +55,12 @@ export default function RoundModal(props) {
               {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
             </div>
 
-            <XMarkIcon
+            {/* <XMarkIcon
               className="absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               onClick={toggleModal}
             >
               Close
-            </XMarkIcon>
+            </XMarkIcon> */}
           </div>
         </div>
       )}
