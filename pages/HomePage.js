@@ -69,6 +69,8 @@ const HomePage = ({ navigation }) => {
     //   <View style={{ flex: 2, backgroundColor: "darkorange" }} />
     //   <View style={{ flex: 1, backgroundColor: "blue" }} />
     // </View>
+
+    //comment the code below to access gamepage
     return (
       <div className="flex justify-center items-center h-full sm:h-5/6">
         <GameContainer />
