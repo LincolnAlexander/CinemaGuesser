@@ -348,13 +348,14 @@ const RegisterPage = ({ navigation }) => {
           source={require("../assets/images/AppBackground.jpg")}
         >
           <View style={{ marginTop: "15%", paddingHorizontal: 10, flex: 1, }}>
-          <Input
+            <Input style = {styles.inputBox}
               onChangeText={(text) => handleOnchange(text, "firstname")}
               onFocus={() => handleError(null, "firstname")}
               iconName="account-outline"
               label="FirstName"
               placeholder="Enter Firstame"
               error={errors.fullname}
+              
             />
             <Input
               onChangeText={(text) => handleOnchange(text, "lastname")}
@@ -363,6 +364,7 @@ const RegisterPage = ({ navigation }) => {
               label="LastName"
               placeholder="Enter Lastname"
               error={errors.fullname}
+              
             />
             <Input
               onChangeText={(text) => handleOnchange(text, "email")}
@@ -433,13 +435,7 @@ const styles = StyleSheet.create({
     // margin: '5%',
   },
 
-  username: {
-    margin: 15,
-  },
-
-  password: {
-    margin: 15,
-  },
+  
   text: {
     color: "white",
     textAlign: "center",
@@ -448,29 +444,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  horizontalBar: {
-    backgroundColor: "#F1CF54",
-    height: 3,
-    width: 275,
-  },
-  verticalBar: {
-    backgroundColor: "#F1CF54",
-    height: 20,
-    width: 2,
-  },
+  // horizontalBar: {
+  //   backgroundColor: "#F1CF54",
+  //   height: 3,
+  //   width: 275,
+  // },
+  
 
   touchables: {
     flex: 1,
     alignItems: "center",
     // justifyContent: 'center',
   },
-  loginText: {
-    fontWeight: "500",
-    fontSize: 16,
-    textAlign: "center",
-    margin: 10,
-    color: "white",
-    textAlign: "center",
-    fontFamily: "RobotoSlab-Medium",
-  },
+
+ 
+  
 });
