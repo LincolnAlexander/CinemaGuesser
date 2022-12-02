@@ -8,7 +8,7 @@ export default function UserProfilePage() {
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
   const [score, setScore] = useState(0);
-  const [gamesPlayed, setGamesPlayed] = useState(0);
+  // const [gamesPlayed, setGamesPlayed] = useState(0);
   const [password, setPassword] = useState('');
   const [statusMsg, setStatusMsg] = useState('');
   const matchingPass = useRef('');
@@ -40,9 +40,9 @@ export default function UserProfilePage() {
 
     // store JWT token here
     // storage.storeToken(res);
-    
+
     setScore(res.score);
-    setGamesPlayed(res.gamesPlayed);
+    // setGamesPlayed(res.gamesPlayed);
   }
 
   useEffect(() => {
@@ -84,6 +84,62 @@ export default function UserProfilePage() {
     return regex.test(password);
   }
 
+  async function updateUserProfile() {
+    const jwtToken = storage.retrieveToken();
+
+    let newUserData = {
+      login: userData.login,
+      firstName: firstName,
+      lastName: lastName,
+    };
+
+    // Attach password if it was updated by user
+    if (password && password !== '') {
+      newUserData.password = password;
+      setPassword('');
+    }
+
+    newUserData.jwtToken = jwtToken;
+
+    let newUserDataJs = JSON.stringify(newUserData);
+
+    // // let bp = require('./Paths.js');
+    // // 'https://cinema-guesser.herokuapp.com/api/login'
+    // // bp.buildPath('api/login')
+
+    const response = await fetch(
+      'https://cinema-guesser.herokuapp.com/api/update_profile',
+      {
+        method: 'POST',
+        body: newUserDataJs,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    ).catch((error) => {
+      console.error('Error:', error);
+      return false;
+    });
+
+    const res = await response.json();
+
+    if (res.error && res.error !== '') {
+      setStatusMsg(res.error);
+      return false;
+    }
+
+    userData.login = res.login;
+    userData.firstName = res.firstName;
+    userData.lastName = res.lastName;
+
+    localStorage.setItem('user_data', JSON.stringify(userData));
+    localStorage.setItem('token_data', res.jwtToken);
+
+    if (res.changed_password)
+      setStatusMsg('Your account info and password have been updated!');
+    else setStatusMsg('Your account has been updated!');
+
+    return true;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     setIsEditable(true);
@@ -98,16 +154,15 @@ export default function UserProfilePage() {
     let className = e.target.className;
     e.target.className = 'hidden';
 
-    // Set API request here
-
-    if (true) setStatusMsg('Your profile has been updated!');
+    // Send API request to update user data in DB
+    if (!updateUserProfile()) setStatusMsg('Sorry, unable to update.');
 
     setTimeout(() => {
       // Make button visible and reset its state
       e.target.className = className;
       setStatusMsg('');
       setIsEditable(false);
-    }, 2000);
+    }, 3000);
   }
 
   return (
@@ -233,7 +288,7 @@ export default function UserProfilePage() {
           <span
             className={classNames(
               statusMsg === '' ? '' : 'my-12',
-              ' text-pr-white text-md'
+              ' text-pr-white w-64 text-md text-center'
             )}
           >
             {statusMsg}
