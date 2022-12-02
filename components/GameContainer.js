@@ -1,20 +1,79 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "@react-navigation/native";
 import { ReactComponent as SubmitBtn } from "../assets/images/SubmitBtn.svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import PlayAgainModal from "./modals/PlayAgainModal";
 import RoundModal from "./modals/RoundModal";
+//import { sessionStorage } from "Storage";
+
+class Storage {
+  constructor() {
+    this.data = new Map();
+  }
+
+  key(n) {
+    return [...this.data.keys()][n];
+  }
+  getItem(key) {
+    return this.data.get(key);
+  }
+  get length() {
+    return this.data.size;
+  }
+
+  setItem(key, value) {
+    this.data.set(key, value);
+  }
+  removeItem(key) {
+    this.data.delete(key);
+  }
+  clear() {
+    this.data = new Map();
+  }
+}
+
+let sessionStorage = (globalThis.sessionStorage =
+  globalThis.sessionStorage ?? new Storage());
+
+//export { Storage, sessionStorage };
 
 function GameContainer() {
   const storage = require("../tokenStorage.js");
+  const set_store = async (value, field) => {
+    try {
+      await AsyncStorage.setItem(field, JSON.stringify(value));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  async function get_store(field) {
+    try {
+      const userData = await AsyncStorage.getItem(field);
+      console.log(userData);
+      return userData;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  //1
+  set_store("cake", "movie_mem");
+  //2
+  set_store("potato", "carl");
+  const res = get_store("movie_mem");
+  const ret = get_store("carl");
+  console.log("hello " + res);
+  console.log("no");
 
   //MOVIE_MEM TO HANDLE REPEAT MOVIES
   //make movie mem if doesn't exist
-  if (sessionStorage.getItem("movie_mem") === null) {
-    sessionStorage.setItem("movie_mem", JSON.stringify({ list: [], head: 0 }));
+  //3
+  if (get_store("movie_mem") === null) {
+    set_store("movie_mem", JSON.stringify({ list: [], head: 0 }));
   }
 
   //GET USER DATA
-  let _ud = localStorage.getItem("user_data");
+  let _ud = get_store("user_data");
   let ud = JSON.parse(_ud);
   // var firstName = ud.firstName;
   // var lastName = ud.lastName;
@@ -39,8 +98,11 @@ function GameContainer() {
 
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
-    var movie_mem = JSON.parse(sessionStorage.getItem("movie_mem"));
-    console.log(movie_mem);
+    var movie_memt = JSON.parse(get_store("carl"));
+    var movie_mem = JSON.parse(await get_store("movie_mem"));
+
+    console.log(movie_mem + "hi");
+    console.log(movie_memt);
     let obj = {
       filter: movie_mem["list"],
     };
@@ -80,7 +142,7 @@ function GameContainer() {
           movie_mem.head %= 25;
           console.log("UPDATE: " + JSON.stringify(movie_mem));
           //update movie_mem
-          sessionStorage.setItem("movie_mem", JSON.stringify(movie_mem));
+          AsyncStorage.setItem("movie_mem", JSON.stringify(movie_mem));
         }
 
         //console.log(res.omdb);
@@ -173,27 +235,11 @@ function GameContainer() {
     setClicked(false);
     guesses.current.value = "";
   }
-
-  //exponential (delta 30)
-  /*function pointsAwarded(delta) {
-      if (delta >= 30) return 0;
-      
-      let exp = delta - 30;
-      return Math.round((1/9) * exp * exp);
-    }*/
-  //single linear (delta 33, 3)
   function pointsAwarded(delta) {
     if (delta >= 33) return 0;
     if (delta === 0) return 120;
     return Math.round(100 - 3 * delta);
   }
-  //double linear (delta 26, slope 2 [delta <= 10], slope 5 [delta > 10])
-  /*function pointsAwarded(delta) {
-      if (delta >= 26) return 0;
-      if (delta == 0 ) return 120;
-      if (delta <= 10) return Math.round(100 - 2 * delta)
-      return Math.round(130 - 5 * delta);
-    }*/
   // End of Code for Modal *****************************************************************************************************************************
 
   const [overallPoints, setOverall] = useState(0);
@@ -276,17 +322,17 @@ function GameContainer() {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg p-1 md:p-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md mt-40 sm:mt-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg text-1 md:text-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md mt-40 sm:mt-0">
         <div className="text-center mt-5">
-          <p className="text-pr-yellow text-xl">
+          <text className="text-pr-yellow text-xl">
             {title} &#40;{year}&#41;
-          </p>
+          </text>
         </div>
         <div className="min-h-[50px] text-center mt-5">
-          <span className="text-pr-yellow mr-2">Score:</span>
-          <span className="text-pr-red pr-2 ">{totalScore}pts</span>
+          <text className="text-pr-yellow mr-2">Score:</text>
+          <text className="text-pr-red pr-2 ">{totalScore}pts</text>
         </div>
-        <div className="min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center">
+        <div className="min-h-[50px] row-text-1 sm:row-text-6 text-center justify-self-center">
           <img
             className="w-32 sm:w-60 sm:h-84 rounded-lg"
             src={poster}
@@ -294,23 +340,23 @@ function GameContainer() {
           ></img>
         </div>
         <div className="min-h-[50px] text-center sm:text-left">
-          <p className="text-pr-yellow">Description:</p>
-          <p className="text-pr-white pr-2">{desc}</p>
+          <text className="text-pr-yellow">Description:</text>
+          <text className="text-pr-white pr-2">{desc}</text>
         </div>
         <div className="min-h-[50px] text-center sm:text-left">
-          <span className="text-pr-yellow mr-2">Genre:</span>
-          <span className="text-pr-white pr-2">{genre}</span>
+          <text className="text-pr-yellow mr-2">Genre:</text>
+          <text className="text-pr-white pr-2">{genre}</text>
         </div>
         <div className="min-h-[50px] text-center sm:text-left">
-          <span className="text-pr-yellow mr-2">Box Office:</span>
-          <span className="text-pr-white pr-2">{boxOffice}</span>
+          <text className="text-pr-yellow mr-2">Box Office:</text>
+          <text className="text-pr-white pr-2">{boxOffice}</text>
         </div>
         <div className="min-h-[50px] text-center sm:text-left">
-          <span className="text-pr-yellow mr-2 ">Actors:</span>
-          <span className="text-pr-white pr-2">{actors}</span>
+          <text className="text-pr-yellow mr-2 ">Actors:</text>
+          <text className="text-pr-white pr-2">{actors}</text>
         </div>
         {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
-        <div className="min-h-[50px] col-span-1 sm:col-span-2 text-center  ">
+        <div className="min-h-[50px] col-text-1 sm:col-text-2 text-center  ">
           <form
             onSubmit={(e) => e.preventDefault()}
             className="sm:flex justify-center sm:flex-wrap"
@@ -321,7 +367,7 @@ function GameContainer() {
               className="flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none"
               onClick={decrement}
             >
-              <span className="m-auto text-2xl font-light">−</span>
+              <text className="m-auto text-2xl font-light">−</text>
             </button>
             <input
               className="peer h-10 w-32 sm:w-48 border-b-2 border-pr-yellow text-pr-white focus:outline-none bg-transparent focus:placeholder-transparent text-center"
@@ -335,7 +381,7 @@ function GameContainer() {
               className="flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none"
               onClick={increment}
             >
-              <span className="m-auto text-2xl font-light">+</span>
+              <text className="m-auto text-2xl font-light">+</text>
             </button>
             <button className="mx-6" onClick={!clicked ? handleGuess : null}>
               <SubmitBtn className="mx-6 w-20 sm:w-24 self-center hover:scale-105" />
