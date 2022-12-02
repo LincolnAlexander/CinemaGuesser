@@ -132,12 +132,13 @@ export default function UserProfilePage() {
           </div>
           {isEditable ? (
             <>
-              <div
+              <button
                 className='flex justify-center items-center transition-all ease-in-out duration-300 hover:scale-110 active:scale-100 cursor-pointer mt-6 rounded-full bg-slate-700 text-white text-sm w-36 h-8 font-normal hover:font-extrabold'
+                type='button'
                 onClick={(e) => setChangePassword(!changePassword)}
               >
                 Change Password
-              </div>
+              </button>
               {changePassword ? (
                 <>
                   <div className={'mt-6 self-center'}>
@@ -205,12 +206,13 @@ export default function UserProfilePage() {
           </button>
         </form>
         {isEditable ? (
-          <div
-            className='flex justify-center items-center transition-all ease-in-out duration-300 hover:scale-110 active:scale-100 mt-2 rounded-full bg-slate-700 text-white text-sm w-24 h-8 font-normal hover:font-extrabold'
+          <button
+            className='flex justify-center items-center transition-all ease-in-out duration-300 hover:scale-110 active:scale-100 mt-1 rounded-full bg-slate-700 text-white text-sm w-24 h-8 font-normal hover:font-extrabold'
+            type='button'
             onClick={() => setIsEditable(false)}
           >
             Cancel
-          </div>
+          </button>
         ) : null}
       </div>
     </div>
