@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function UserProfilePage() {
   const auth = localStorage.getItem('user_data');
@@ -7,9 +7,47 @@ export default function UserProfilePage() {
   const [changePassword, setChangePassword] = useState(false);
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
+  const [score, setScore] = useState(0);
+  const [gamesPlayed, setGamesPlayed] = useState(0);
   const [password, setPassword] = useState('');
   const [statusMsg, setStatusMsg] = useState('');
   const matchingPass = useRef('');
+  const storage = require('../tokenStorage.js');
+
+  async function getUserStats() {
+    const jwtToken = storage.retrieveToken();
+    let obj = { login: userData.login, jwtToken: jwtToken };
+    let js = JSON.stringify(obj);
+
+    // let bp = require('./Paths.js');
+    // 'https://cinema-guesser.herokuapp.com/api/login'
+    // bp.buildPath('api/login')
+
+    const response = await fetch(
+      'https://cinema-guesser.herokuapp.com/api/get_stats',
+      {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    ).catch((error) => {
+      console.error('Error:', error);
+    });
+
+    let res = await response.json();
+
+    if (res.error && res.error !== '') return;
+
+    // store JWT token here
+    // storage.storeToken(res);
+    
+    setScore(res.score);
+    setGamesPlayed(res.gamesPlayed);
+  }
+
+  useEffect(() => {
+    getUserStats();
+  }, []);
 
   function getUserInitials() {
     if (!auth) return '?';
@@ -35,7 +73,9 @@ export default function UserProfilePage() {
 
     if (!changePassword) return true;
 
-    const confirmPass = matchingPass.current.value;
+    const confirmPass = matchingPass.current
+      ? matchingPass.current.value
+      : null;
     if (confirmPass !== password) return false;
 
     const regex =
@@ -54,15 +94,16 @@ export default function UserProfilePage() {
 
     if (!isEditable) return;
 
-    // console.log('validate input is:', validateInputs());
-
+    // Save button classes before hiding it.
     let className = e.target.className;
-
     e.target.className = 'hidden';
+
+    // Set API request here
 
     if (true) setStatusMsg('Your profile has been updated!');
 
     setTimeout(() => {
+      // Make button visible and reset its state
       e.target.className = className;
       setStatusMsg('');
       setIsEditable(false);
@@ -82,7 +123,7 @@ export default function UserProfilePage() {
         <span className='mb-1 text-pr-white text-lg'>email@email.com</span>
         <p className='mb-1 text-pr-white text-lg'>
           score:
-          <span className='ml-2 mb-6 text-pr-yellow text-2xl'>456</span>
+          <span className='ml-2 mb-6 text-pr-yellow text-2xl'>{score}</span>
         </p>
 
         <form className='flex flex-col items-center w-[80%] min-w-fit max-w-sm'>
