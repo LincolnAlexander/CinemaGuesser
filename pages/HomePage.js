@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
+
+import React, { useState, useRef, useEffect } from "react";
+import { SafeAreaView, Text,  View, ScrollView } from "react-native";
 import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,6 +16,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
+// import { background } from "native-base/lib/typescript/theme/styled-system";
 
 // <Button title="Logout" onPress={logout} />
 const HomePage = ({ navigation }) => {
@@ -37,44 +39,163 @@ const HomePage = ({ navigation }) => {
     );
     navigation.navigate("LoginPage");
   };
-
-  // function GamePage() {
-  //   return (
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         backgroundColor: "#0A0A0A",
-  //       }}
-  //     >
-  //       <Text>Click now to play</Text>
-  //     </View>
-  //   );
-  // }
-
+  
+  
   const GamePage = () => {
-    // return (
-    // <View
-    //   style={[
-    //     styles.flexContainer,
-    //     {
-    //       // Try setting `flexDirection` to `"row"`.
-    //       flexDirection: "column",
-    //       backgroundColor: "#000",
-    //     },
-    //   ]}
-    // >
-    //   <View style={{ flex: 5, backgroundColor: "red" }} />
-    //   <View style={{ flex: 2, backgroundColor: "darkorange" }} />
-    //   <View style={{ flex: 1, backgroundColor: "blue" }} />
-    // </View>
+    const [poster, setPoster] = useState(null);
+    const [title, setTitle] = useState(false);
+    const [desc, setDesc] = useState(false);
+    const [genre, setGenre] = useState(false);
+    const [actors, setActors] = useState(false);
+    const [year, setYear] = useState(false);
+     const [rating, setRating] = useState(0);
+    const [score, setScore] = useState(0);
+    const [guess, setGuess] = useState(null);
+    
+    const loadMovieInfo = async (event) => {
+      
+      // var movie_memt = JSON.parse(get_store("carl"));
+      // var movie_mem = JSON.parse(await get_store("movie_mem"));
+  
+      // console.log(movie_mem + "hi");
+      // console.log(movie_memt);
+      let obj = {
+        filter: [],
+      };
+      let js = JSON.stringify(obj);
+      try {
+        
+        // 'https://cinema-guesser.herokuapp.com/api/movies_saved'
+        // bp.buildPath('api/movies_saved')
+        const response = await fetch(
+          "https://cinema-guesser.herokuapp.com/api/movies_saved",
+          {
+            method: "POST",
+            body: js,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        let res = JSON.parse(await response.text());
+  
+        if (res.length == 0 || (res.error && res.error !== "")) {
+          // setMessage('Username is taken, please try a different one.');
+          //either by default or after filter
+          console.log(res.err);
+        } else
+        {
+          setDesc(res.omdb.Plot);
+          setActors(res.omdb.Actors);
+          // setBoxOffice(res.omdb.BoxOffice);
+          setGenre(res.omdb.Genre);
+          setPoster((res.omdb.Poster));
+          setRating(parseInt(res.omdb.Ratings));
+          setTitle(capitalize(res.omdb.Title));
+          setYear(res.omdb.Year);
+          setDesc(res.omdb.Plot)
+          setGuess('');
+          //on reload don't run again
+          // if (movie_mem.list[movie_mem.head] !== res.omdb.Title) {
+          //   movie_mem.list[movie_mem.head] = res.omdb.Title;
+          //   movie_mem.head += 1;
+          //   //this number '25' must be smaller than number of movies in 'Movies' DB
+          //   //movie_mem.head %= 25;
+          //   //console.log("UPDATE: " + JSON.stringify(movie_mem));
+          //   //update movie_mem
+          //   AsyncStorage.setItem("movie_mem", JSON.stringify(movie_mem));
+          // }
+  
+          console.log(res.omdb);
+        }
+      } catch (e) {
+        console.log(e);
+        return;
+      }
+    };
 
-    //comment the code below to access gamepage
+    useEffect(() => {
+      loadMovieInfo();
+    }, []);
+
+    const capitalize = (str, lower = false) =>
+    (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
+      match.toUpperCase()
+    );
+    
     return (
-      <div className="flex justify-center items-center h-full sm:h-5/6">
-        <GameContainer />
-      </div>
+      <View style = {{flex:1,}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
+      
+        <View style=
+        {{ 
+          flex: 1,
+          width: '100%', 
+          height: '100%',
+          backgroundColor: "#0A0A0A"
+        }}>
+        {/* <GameContainer /> */}
+        <View style= 
+          {{
+            
+            flex: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            
+            
+          }}>
+            <Text style = {{textAlign: 'center', color: '#f1cf54', fontSize: 19, marginTop: 5}}>{title} &#40;{year}&#41;</Text>
+            <View style = 
+            {{
+              flex: 1,
+              width: '70%',
+              
+              
+              
+            }}>
+              <Image style = {{flex: 1, width: "100%", height: "100%", resizeMode: 'contain',}} source={{uri: poster}}></Image>
+              
+            </View>
+           
+        </View>
+          <View style= 
+            {{
+              flex: 1, 
+              borderColor: 'red',
+              
+            }}>
+            <View style= 
+            {{
+              flex: 1, 
+              borderColor: 'green',
+              
+            }}>
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Description:<Text style={{color:'white',}}>{desc}</Text> </Text>
+            
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Genre:<Text style={{color:'white',}}>{genre}</Text> </Text>
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Actors:<Text style={{color:'white',}}>{actors}</Text> </Text>
+          </View>
+          
+          
+          <View style= 
+            {{
+              flex: 1, 
+              borderColor: 'blue',
+              
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              
+            {/* instead of loadMovieInfo, change it to display the round modal  */}
+            <TextInput onSubmitEditing={ () => loadMovieInfo() } style = {{textAlign: 'center', color: 'white', fontSize: 18, borderBottomColor: '#f1cf54', borderBottomWidth: 2.5, width: '70%'}} onChangeText = {setGuess} placeholder = 'Guess Rating' placeholderTextColor= 'white'></TextInput>
+
+          </View>
+          
+
+          </View>
+        </View>
+        
+        </ScrollView>
+        </View>
+        
     );
   };
 
@@ -117,6 +238,7 @@ const HomePage = ({ navigation }) => {
   const Tab = createBottomTabNavigator();
 
   return (
+    
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -145,6 +267,7 @@ const HomePage = ({ navigation }) => {
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
     </Tab.Navigator>
+   
   );
 };
 
@@ -196,6 +319,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     backgroundColor: "transparent",
   },
+  
 });
 
 export default HomePage;

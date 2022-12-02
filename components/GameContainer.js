@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "@react-navigation/native";
+// import { useNavigate } from "@react-navigation/native";
+import { SafeAreaView, Text, View } from "react-native";
 import { ReactComponent as SubmitBtn } from "../assets/images/SubmitBtn.svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PlayAgainModal from "./modals/PlayAgainModal";
@@ -38,46 +39,46 @@ let sessionStorage = (globalThis.sessionStorage =
 //export { Storage, sessionStorage };
 
 function GameContainer() {
-  const storage = require("../tokenStorage.js");
-  const set_store = async (value, field) => {
-    try {
-      await AsyncStorage.setItem(field, JSON.stringify(value));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  async function get_store(field) {
-    try {
-      const userData = await AsyncStorage.getItem(field);
-      console.log(userData);
-      return userData;
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // const storage = require("../tokenStorage.js");
+  // const set_store = async (value, field) => {
+  //   try {
+  //     await AsyncStorage.setItem(field, JSON.stringify(value));
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+  // async function get_store(field) {
+  //   try {
+  //     const userData = await AsyncStorage.getItem(field);
+  //     console.log(userData);
+  //     return userData;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   //1
-  set_store("cake", "movie_mem");
-  //2
-  set_store("potato", "carl");
-  const res = get_store("movie_mem");
-  const ret = get_store("carl");
-  console.log("hello " + res);
-  console.log("no");
+  // set_store("cake", "movie_mem");
+  // //2
+  // set_store("potato", "carl");
+  // const res = get_store("movie_mem");
+  // const ret = get_store("carl");
+  // console.log("hello " + res);
+  // console.log("no");
 
   //MOVIE_MEM TO HANDLE REPEAT MOVIES
   //make movie mem if doesn't exist
   //3
-  if (get_store("movie_mem") === null) {
-    set_store("movie_mem", JSON.stringify({ list: [], head: 0 }));
-  }
+  // if (get_store("movie_mem") === null) {
+  //   set_store("movie_mem", JSON.stringify({ list: [], head: 0 }));
+  // }
 
   //GET USER DATA
-  let _ud = get_store("user_data");
-  let ud = JSON.parse(_ud);
+  // let _ud = get_store("user_data");
+  // let ud = JSON.parse(_ud);
   // var firstName = ud.firstName;
   // var lastName = ud.lastName;
-  let loginName = ud.login;
+  
   // console.log("FirstName: "+ firstName +"\nLastName: "+ lastName +"\nLogin: "+ loginName);
 
   // Code for Movie Info ***************************************************************************************************************
@@ -98,13 +99,13 @@ function GameContainer() {
 
   const loadMovieInfo = async (event) => {
     // event.preventDefault();
-    var movie_memt = JSON.parse(get_store("carl"));
-    var movie_mem = JSON.parse(await get_store("movie_mem"));
+    // var movie_memt = JSON.parse(get_store("carl"));
+    // var movie_mem = JSON.parse(await get_store("movie_mem"));
 
-    console.log(movie_mem + "hi");
-    console.log(movie_memt);
+    // console.log(movie_mem + "hi");
+    // console.log(movie_memt);
     let obj = {
-      filter: movie_mem["list"],
+      filter: [],
     };
     let js = JSON.stringify(obj);
     try {
@@ -135,15 +136,15 @@ function GameContainer() {
         setTitle(capitalize(res.omdb.Title));
         setYear(res.omdb.Year);
         //on reload don't run again
-        if (movie_mem.list[movie_mem.head] !== res.omdb.Title) {
-          movie_mem.list[movie_mem.head] = res.omdb.Title;
-          movie_mem.head += 1;
-          //this number '25' must be smaller than number of movies in 'Movies' DB
-          movie_mem.head %= 25;
-          console.log("UPDATE: " + JSON.stringify(movie_mem));
-          //update movie_mem
-          AsyncStorage.setItem("movie_mem", JSON.stringify(movie_mem));
-        }
+        // if (movie_mem.list[movie_mem.head] !== res.omdb.Title) {
+        //   movie_mem.list[movie_mem.head] = res.omdb.Title;
+        //   movie_mem.head += 1;
+        //   //this number '25' must be smaller than number of movies in 'Movies' DB
+        //   //movie_mem.head %= 25;
+        //   //console.log("UPDATE: " + JSON.stringify(movie_mem));
+        //   //update movie_mem
+        //   AsyncStorage.setItem("movie_mem", JSON.stringify(movie_mem));
+        // }
 
         //console.log(res.omdb);
       }
@@ -155,7 +156,7 @@ function GameContainer() {
   // End of Code for Movie Info ***********************************************************************************************************************
 
   // Code for Modal ***********************************************************************************************************************************
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [turnOn, setRoundModal] = useState(false);
   const [turnOny, setPlayAgainModal] = useState(false);
   const [curGuess, setGuess] = useState(1);
@@ -321,47 +322,47 @@ function GameContainer() {
     );
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg text-1 md:text-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md mt-40 sm:mt-0">
-        <div className="text-center mt-5">
-          <text className="text-pr-yellow text-xl">
+    <View>
+      <View className="grid grid-cols-1 sm:grid-cols-2 w-5/6 lg:max-w-screen-lg text-1 md:text-4 gap-x-5 gap-y-4 bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-md mt-40 sm:mt-0">
+        <View className="text-center mt-5">
+          <Text className="text-pr-yellow text-xl">
             {title} &#40;{year}&#41;
-          </text>
-        </div>
-        <div className="min-h-[50px] text-center mt-5">
-          <text className="text-pr-yellow mr-2">Score:</text>
-          <text className="text-pr-red pr-2 ">{totalScore}pts</text>
-        </div>
-        <div className="min-h-[50px] row-text-1 sm:row-text-6 text-center justify-self-center">
+          </Text>
+        </View>
+        <View className="min-h-[50px] text-center mt-5">
+          <Text className="text-pr-yellow mr-2">Score:</Text>
+          <Text className="text-pr-red pr-2 ">{totalScore}pts</Text>
+        </View>
+        <View className="min-h-[50px] row-text-1 sm:row-text-6 text-center justify-self-center">
           <img
             className="w-32 sm:w-60 sm:h-84 rounded-lg"
             src={poster}
             alt="MoviePoster"
           ></img>
-        </div>
-        <div className="min-h-[50px] text-center sm:text-left">
-          <text className="text-pr-yellow">Description:</text>
-          <text className="text-pr-white pr-2">{desc}</text>
-        </div>
-        <div className="min-h-[50px] text-center sm:text-left">
-          <text className="text-pr-yellow mr-2">Genre:</text>
-          <text className="text-pr-white pr-2">{genre}</text>
-        </div>
-        <div className="min-h-[50px] text-center sm:text-left">
-          <text className="text-pr-yellow mr-2">Box Office:</text>
-          <text className="text-pr-white pr-2">{boxOffice}</text>
-        </div>
-        <div className="min-h-[50px] text-center sm:text-left">
-          <text className="text-pr-yellow mr-2 ">Actors:</text>
-          <text className="text-pr-white pr-2">{actors}</text>
-        </div>
-        {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
-        <div className="min-h-[50px] col-text-1 sm:col-text-2 text-center  ">
+        </View>
+        <View className="min-h-[50px] text-center sm:text-left">
+          <Text className="text-pr-yellow">Description:</Text>
+          <Text className="text-pr-white pr-2">{desc}</Text>
+        </View>
+        <View className="min-h-[50px] text-center sm:text-left">
+          <Text className="text-pr-yellow mr-2">Genre:</Text>
+          <Text className="text-pr-white pr-2">{genre}</Text>
+        </View>
+        <View className="min-h-[50px] text-center sm:text-left">
+          <Text className="text-pr-yellow mr-2">Box Office:</Text>
+          <Text className="text-pr-white pr-2">{boxOffice}</Text>
+        </View>
+        <View className="min-h-[50px] text-center sm:text-left">
+          <Text className="text-pr-yellow mr-2 ">Actors:</Text>
+          <Text className="text-pr-white pr-2">{actors}</Text>
+        </View>
+        {/* <View className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></View> */}
+        <View className="min-h-[50px] col-text-1 sm:col-text-2 text-center  ">
           <form
             onSubmit={(e) => e.preventDefault()}
             className="sm:flex justify-center sm:flex-wrap"
           >
-            {/* <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
+            {/* <View className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
             <button
               data-action="decrement"
               className="flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none"
@@ -387,8 +388,8 @@ function GameContainer() {
               <SubmitBtn className="mx-6 w-20 sm:w-24 self-center hover:scale-105" />
             </button>
           </form>
-        </div>
-      </div>
+        </View>
+      </View>
       <RoundModal
         value={turnOn}
         closeRoundModal={closeRoundModal}
@@ -408,7 +409,7 @@ function GameContainer() {
         guess={gg}
         overallPoints={overallPoints}
       />
-    </>
+    </View>
   );
 }
 export default GameContainer;
