@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import GameContainer from "../components/GameContainer";
+
 import {
   StyleSheet,
   Image,
@@ -53,47 +54,27 @@ const HomePage = ({ navigation }) => {
   // }
 
   const GamePage = () => {
+    // return (
+    // <View
+    //   style={[
+    //     styles.flexContainer,
+    //     {
+    //       // Try setting `flexDirection` to `"row"`.
+    //       flexDirection: "column",
+    //       backgroundColor: "#000",
+    //     },
+    //   ]}
+    // >
+    //   <View style={{ flex: 5, backgroundColor: "red" }} />
+    //   <View style={{ flex: 2, backgroundColor: "darkorange" }} />
+    //   <View style={{ flex: 1, backgroundColor: "blue" }} />
+    // </View>
     return (
-      <View
-        style={[
-          styles.flexContainer,
-          {
-            // Try setting `flexDirection` to `"row"`.
-            flexDirection: "column",
-            backgroundColor: "#000",
-          },
-        ]}
-      >
-        <View style={{ flex: 5, backgroundColor: "red" }} />
-        <View style={{ flex: 2, backgroundColor: "darkorange" }} />
-        <View style={{ flex: 1, backgroundColor: "blue" }} />
-      </View>
+      <div className="flex justify-center items-center h-full sm:h-5/6">
+        <GameContainer />
+      </div>
     );
   };
-
-  //     <FlipCard
-  //       style={styles.card}
-  //       friction={6}
-  //       perspective={1000}
-  //       flipHorizontal={true}
-  //       flipVertical={false}
-  //       flip={false}
-  //       clickable={true}
-  //       onFlipEnd={(isFlipEnd) => {
-  //         console.log("isFlipEnd", isFlipEnd);
-  //       }}
-  //     >
-  //       {/* Face Side */}
-  //       <View style={styles.face}>
-  //         <Text>The Face</Text>
-  //       </View>
-  //       {/* Back Side */}
-  //       <View style={styles.back}>
-  //         <Text>The Back</Text>
-  //       </View>
-  //     </FlipCard>
-  //   );
-  // }
 
   function ProfilePage() {
     return (
@@ -110,26 +91,6 @@ const HomePage = ({ navigation }) => {
       </View>
     );
   }
-
-  // function WatchListPage() {
-  //   return (
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         backgroundColor: "#0A0A0A",
-  //       }}
-  //     >
-  //       <Text>Watch List!</Text>
-  //       <Text>
-  //         Implement a plus symbol on the home page that will allow the user to
-  //         add the movie to their watch list. The watch list will be a list of
-  //         movies that the user can reference.
-  //       </Text>
-  //     </View>
-  //   );
-  // }
 
   function RulesPage() {
     return (
