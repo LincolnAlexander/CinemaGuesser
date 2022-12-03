@@ -73,7 +73,7 @@ function GameContainer() {
         setPoster(res.omdb.Poster);
         if(res.omdb.Source === 'Internet Movie Database'){
           setRating(parseFloat(res.omdb.Ratings)*10);
-          setSource(res.omdb.Source + " (IMDB out of 100)");
+          setSource("IMDB (out of 100)");
         }
         else if(res.omdb.Source === 'Rotten Tomatoes'){
           setRating(parseInt(res.omdb.Ratings));
