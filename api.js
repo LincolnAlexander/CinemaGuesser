@@ -58,7 +58,7 @@ exports.setApp = function ( app, client )
       err = '';
       
       //check email verification
-      console.log(results)
+      //console.log(results)
       if(results[0].Verify !== null && results[0].Verify === false)
       {
         ret = {error: "Email isn't verified"};
@@ -70,6 +70,7 @@ exports.setApp = function ( app, client )
       {
         const token = require('./createJWT.js');
         ret = token.createToken(firstName, lastName);
+        ret.email = results[0].Email;
       }
       catch (e) {
         ret = {error: e.message };
@@ -733,7 +734,7 @@ exports.setApp = function ( app, client )
     var FirstName = results[0].FirstName;
     var LastName = results[0].LastName;
     var id = results[0]._id;
-    console.log(id);
+    //console.log(id);
 
     const token = require('./createJWT.js');
     var ret = token.createToken(FirstName, LastName);

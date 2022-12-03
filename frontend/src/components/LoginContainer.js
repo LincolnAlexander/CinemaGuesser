@@ -23,7 +23,7 @@ const LoginContainer = () => {
       let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/login'
       // bp.buildPath('api/login')
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/login', {
+      const response = await fetch(bp.buildPath('api/login'), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
@@ -45,6 +45,7 @@ const LoginContainer = () => {
           firstName: res.firstName,
           lastName: res.lastName,
           login: loginName,
+          email: res.email
         };
         localStorage.setItem('user_data', JSON.stringify(user));
         //store JWT token here

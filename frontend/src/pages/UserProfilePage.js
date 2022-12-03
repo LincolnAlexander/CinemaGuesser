@@ -175,7 +175,7 @@ export default function UserProfilePage() {
           <span>{auth ? getUserInitials() : '?'}</span>
         </div>
         <span className='mb-1 text-pr-white text-3xl'>{userData.login}</span>
-        <span className='mb-1 text-pr-white text-lg'>email@email.com</span>
+        <span className='mb-1 text-pr-white text-lg'>{userData.email}</span>
         <p className='mb-1 text-pr-white text-lg'>
           score:
           <span className='ml-2 mb-6 text-pr-yellow text-2xl'>{score}</span>
