@@ -31,12 +31,14 @@ function GameContainer() {
   const [actors, setActors] = useState(false);
   const [source, setSource] = useState(false);
   const [year, setYear] = useState(false);
+  const [inWatchList, setinWatchList] = useState(false)
   const [rating, setRating] = useState(0);
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
 
   useEffect(() => {
     loadMovieInfo();
+    //performance issues here as you have to scan through whole watchlist
   }, []);
 
   const loadMovieInfo = async (event) => {
@@ -91,10 +93,14 @@ function GameContainer() {
         movie_mem.head += 1;
         //this number '25' must be smaller than number of movies in 'Movies' DB
         movie_mem.head %= 25
-        console.log("UPDATE: " + JSON.stringify(movie_mem));
+        //console.log("UPDATE: " + JSON.stringify(movie_mem));
         //update movie_mem
         sessionStorage.setItem('movie_mem', JSON.stringify(movie_mem));
         }
+        const watchList = await WatchList();
+
+        if(watchList.includes(movie.Title))
+          setinWatchList(true)
         
       }
     } catch (e) {
@@ -102,6 +108,43 @@ function GameContainer() {
       return;
     }
   };
+  // Watchlist code to see if movie in watchlist ***********************************************************************************************************************
+  //check if movie is in watchlist
+  const WatchList = async (event) => {
+    if(!title)
+      return
+    setinWatchList(false);
+    //get watchlist to see if movie in watchlist
+    let obj = {
+      login: loginName
+    };
+
+    let js = JSON.stringify(obj);
+    try {
+      let bp = require('./Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
+      // bp.buildPath('api/get_watchlist')
+      const response = await fetch(
+        bp.buildPath('api/get_watchlist'),
+        {
+          method: 'POST',
+          body: js,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      let res = JSON.parse(await response.text());
+
+      if (res.error && res.error !== '') {
+        console.log(res.error);
+      } else {
+        return res.list
+      }
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+
+  }
   // End of Code for Movie Info ***********************************************************************************************************************
 
   // Code for Modal ***********************************************************************************************************************************
@@ -363,6 +406,8 @@ function GameContainer() {
         score={score}
         guess={gg}
         round={round}
+        inWatchList = {inWatchList}
+        title = {title}
       />
       <PlayAgainModal
         value={turnOny}
@@ -373,6 +418,8 @@ function GameContainer() {
         score={score}
         guess={gg}
         overallPoints={overallPoints}
+        inWatchList = {inWatchList}
+        title = {title}
       />
     </>
   );

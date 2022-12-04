@@ -2,7 +2,8 @@ require('mongodb');
 
 module.exports = function ( app, client ){
 //-----------------------------------WATCHLIST ENDPOINTS-----------------------------------
-    app.post('/api/add_watchlist', async (req, res, next) =>{               //add_watchlist
+    //if movie in watchlist delete it, if it's not in watchlist add it
+    app.post('/api/watchlist_toggle', async (req, res, next) =>{               //watchlist_toggle
         //IN - login, title
 
         //input error checks
@@ -14,6 +15,8 @@ module.exports = function ( app, client ){
         }
 
         const db = client.db();
+        let msg = '';
+        let op = 0;
 
         //to lower title for consistancy
         let title = req.body.title
@@ -37,23 +40,36 @@ module.exports = function ( app, client ){
             return;
         }
         
+        //delete if it's in watchlist
         if(cursor[0].WatchList.includes(movie[0].Title)){
-            var r = {error: 'ERROR: movie already in watchlist'};
-            res.status(200).json(r);
-            return;
+            //remove from WatchList
+            try{
+                await db.collection('Users').updateOne({ Login: req.body.login },{ $pull: { WatchList: movie[0].Title } })
+                msg = 'Removed movie from watchlist!'
+                op = 0
+            }
+            catch(e){
+                var r = {error: 'ERROR: ' + e};
+                res.status(200).json(r);
+                return;
+            }
         }
-
-        //add to WatchList
-        try{
-            await db.collection('Users').updateOne({ Login: req.body.login },{ $push: { WatchList: movie[0].Title } })
-        }
-        catch(e){
-            var r = {error: 'ERROR: ' + e};
-            res.status(200).json(r);
-            return;
-        }
+        //add if it's not in watchlist
+        else{
+            //add to WatchList
+            try{
+                await db.collection('Users').updateOne({ Login: req.body.login },{ $push: { WatchList: movie[0].Title } })
+                msg = 'Added movie to watchlist!'
+                op = 1
+            }
+            catch(e){
+                var r = {error: 'ERROR: ' + e};
+                res.status(200).json(r);
+                return;
+            }
+        } 
         
-        let ret = {message: "Movie added!", title: movie[0].Title}
+        let ret = {message: msg, title: movie[0].Title, op: op}
         res.status(200).json(ret);
     });
     
@@ -86,7 +102,7 @@ module.exports = function ( app, client ){
     });
 
     app.post('/api/get_watchlist', async (req, res, next) =>{               //get_watchlist
-        //IN - login, page = 0, per_page = 10
+        //IN - login, (optional) page, (optional) per_page
         var{login, page, per_page} = req.body;
         //input error checks
         if(!login)
@@ -96,30 +112,30 @@ module.exports = function ( app, client ){
             return;
         }
 
-        //default values
-        if(!page)
-            page = 0
-        if(!per_page)
-            per_page = 10
+        //default values (need to have both or none)
+        if((typeof page !== 'undefined' && typeof per_page === 'undefined') || (typeof page === 'undefined' && typeof per_page !== 'undefined')){
+            var r = {error: 'ERROR: need to have BOTH page and per_page OR NEITHER'};
+            res.status(200).json(r);
+            return;
+        }
         
         //query
-        const db = client.db();    
-
-        const slice = [ page * per_page, page * per_page + per_page];
-        console.log(slice + " " + page + " " + per_page);
+        const db = client.db();
+        let command = 1;
+        if(typeof page !== 'undefined' && typeof page !== 'undefined')
+            command = {$slice: [ page * per_page, page * per_page + per_page]};
 
         var results;
         try{
             results = await db.collection('Users').
             find({Login: login}).
-            project({ WatchList: { $slice: slice }, length: {$size: "$WatchList" }}).toArray();
+            project({ WatchList: command, length: {$size: "$WatchList" }}).toArray();
         }
         catch(e){
             var r = {error: 'ERROR: ' + e};
             res.status(200).json(r);
             return;
         }
-        
 
         if(results.length == 0){
             var r = {error: 'ERROR: invalid user provided'};

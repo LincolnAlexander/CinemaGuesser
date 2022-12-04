@@ -218,6 +218,7 @@ module.exports = function ( app, client ){
 
         //put one movie in array for queryMovies
         req.body.movie_requests = [results[0].Title]
+        //req.body.movie_requests = ['AVENgers: endgame']
         next();
 
     }, queryMovies);

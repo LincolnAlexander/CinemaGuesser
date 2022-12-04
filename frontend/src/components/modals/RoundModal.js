@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, CheckIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ReactComponent as NextRoundBtn } from '../../images/NextRoundBtn.svg';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,10 +7,14 @@ export default function RoundModal(props) {
   // const navigate = useNavigate();
   // console.log(props);
   const [modal, setModal] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const [login, setLogin] = useState(JSON.parse(localStorage.getItem('user_data')).login);
 
   useEffect(() => {
+    setClicked(props.inWatchList)
     setModal(props.value);
   }, [props.value]);
+
   // console.log("Modal value:"+ modal);
   const toggleModal = () => {
     // props.value = !props.value;
@@ -18,6 +22,40 @@ export default function RoundModal(props) {
     setModal(false);
     props.closeRoundModal();
   };
+
+  const toggleWatchlist = async (event) => {
+    let obj = {
+      login: login,
+      title: props.title.toLowerCase()
+    };
+    let js = JSON.stringify(obj);
+    try {
+      let bp = require('../Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/remove_watchlist'
+      // bp.buildPath('api/remove_watchlist')
+      const response = await fetch(bp.buildPath('api/watchlist_toggle'), {
+        method: 'POST',
+        body: js,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      // console.log(res.value);
+      let res = JSON.parse(await response.text());
+
+      if (res.error && res.error !== '') 
+        console.log(res.error)
+      else{
+        //added movie
+        if(res.op === 1)
+          setClicked(true);
+        else
+          setClicked(false);
+      }      
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  }
+
   return (
     <>
       {modal && (
@@ -51,10 +89,23 @@ export default function RoundModal(props) {
                 >
                   <NextRoundBtn className='w-20 sm:w-auto' />
                 </button>
-                <button className='' title='Add Movie to WatchList'>+</button>
               </div>
               {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
             </div>
+            {clicked ? 
+              (<CheckIcon
+                className='absolute top-[15px] right-[60px] 
+                block h-8 w-8 rounded-md bg-green-600 text-black-400 hover:bg-green-800 hover:text-gray
+                focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800' title='Add Movie to WatchList'
+                onClick = {toggleWatchlist}>
+                </CheckIcon>):
+                (<PlusIcon 
+                  className='absolute top-[15px] right-[60px] 
+                  block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white 
+                  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800' title='Add Movie to WatchList' 
+                onClick = {toggleWatchlist}>
+                </PlusIcon>)
+              }
 
             <XMarkIcon
               className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
@@ -62,6 +113,7 @@ export default function RoundModal(props) {
             >
               Close
             </XMarkIcon>
+            
           </div>
         </div>
       )}
