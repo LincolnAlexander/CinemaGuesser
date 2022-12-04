@@ -1,7 +1,7 @@
 
 require('mongodb');
 const express = require('express');
-const axios = require("axios");
+
 var sha256 = require('js-sha256');
 const { ConnectionClosedEvent } = require('mongodb');
 
@@ -455,202 +455,6 @@ exports.setApp = function ( app, client )
     ret = {value: value, operation: op, field: field, error: err, jwtToken: refreshedToken};
     res.status(200).json(ret);
   });
-//-----------------------------------MOVIE ENDPOINTS-----------------------------------
-  //gets random movies (KEY)
-  app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
-  {
-    
-    //REQ: filter (array)
-    
-    //---------------------------MAKE PIPELINE FILTER---------------------------
-    //set defaults for filter by title
-    var filter = [];
-    if(Array.isArray(req.body.filter))
-    filter = req.body.filter;
-    
-    const fields = ['Title', 'Genre', 'BoxOffice', 
-    'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
-    
-    //capitalize all movie titles in 'Movies'
-    var filter_pipeline = [];
-    for(let i = 0; i < filter.length; i++)
-    {
-      var obj = {Title: {$not: {$eq: filter[i]}}};
-      filter_pipeline.push(obj);
-    }
-    
-    var pipeline = [{
-      $project: {
-        "Title": { $toLower: "$Title" }
-      }
-    }]
-    
-    if(filter_pipeline.length != 0){
-      pipeline.push({$match: {$and: filter_pipeline}})
-    }
-    pipeline.push({
-      '$sample': {
-        'size': 1
-      }
-    });
-    //--------------------------------------------------------------------------
-    
-    const db = client.db();
-    var err = '';
-    //get 1 random movie title from database
-    const results = await db.collection('Movies').aggregate(pipeline).toArray();
-    const Title = results[0].Title;
-    
-    //make request to OMDB with that random movie title
-    const omdb_ret = await makeGetRequest(Title);
-    //if bad movie
-    if(omdb_ret.Response == 'False'){
-      err = 'Invalid Movie: remove ' + Title;
-      //Add auto removal of invalid movie here
-    }
-    
-    var ret = {omdb: omdb_ret, title: Title, error: err};
-    res.status(200).json(ret);
-  });
-  
-  //gets random movies from MoviesSaved database 
-  //(unethical, but I wanted to develop this)
-  //this also gives more limited information compared to api/movies
-  app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V1)
-  {
-    //REQ: filter (array)
-    
-    //---------------------------MAKE PIPELINE FILTER---------------------------
-    //set defaults for filter by title
-    var filter = [];
-    if(Array.isArray(req.body.filter))
-    filter = req.body.filter;
-    
-    const fields = ['Title', 'Genre', 'BoxOffice', 
-    'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
-    
-    //capitalize all movie titles in 'Movies'
-    var filter_pipeline = [];
-    for(let i = 0; i < filter.length; i++)
-    {
-      var obj = {Title: {$not: {$eq: filter[i]}}};
-      filter_pipeline.push(obj);
-    }
-    
-    var pipeline = [{
-      $project: {
-        "Title": { $toLower: "$Title" }
-      }
-    }]
-    
-    if(filter_pipeline.length != 0){
-      pipeline.push({$match: {$and: filter_pipeline}})
-    }
-    pipeline.push({
-      '$sample': {
-        'size': 1
-      }
-    });
-    //--------------------------------------------------------------------------
-    
-    const db = client.db();
-    var err = '';
-    var omdb_ret;
-    
-    //get 1 random movie title from database (with filter)
-    const results = await db.collection('Movies').aggregate(pipeline).toArray();
-    
-    const title_search = results[0].Title.toLowerCase();
-    
-    //const title_search = ("Harry Potter and the Deathly Hallows: Part 2").toLowerCase();
-    var omdb_ret = {};
-    //look in MoviesSaved
-    const find_title = await db.collection('MoviesSaved').find({Title:title_search}).toArray();
-    
-    //if movie isn't in MoviesSaved -> OMDB -> Movies saved
-    //if movie is in MoviesSaved -> get
-    if(find_title.length == 0)
-    {
-      console.log("\x1b[36mMaking OMDB request on " + title_search + "\x1b[0m");
-      var result = await makeGetRequest(title_search);
-      if(result.Response !== "False")
-      {
-        omdb_ret = parseFields(fields, result);
-        //uppercase title to make consistant
-        
-        omdb_ret["Title"] = omdb_ret["Title"].toLowerCase();
-        db.collection('MoviesSaved').insertOne(omdb_ret);
-      }
-      else
-      {
-        err = "Movie not recognized by OMDB"
-      }
-    }
-    else
-    {
-      omdb_ret = find_title[0];
-    }
-    //******
-    
-    var ret = {omdb: omdb_ret, title: title_search, error: err};
-    res.status(200).json(ret);
-  });
-  
-  //parses json to get certain fields in 'fields'
-  function parseFields(fields, json)
-  {
-    var ret = {};
-    for (var key of Object.keys(json)) {
-      // -1 if not in array
-      if(fields.indexOf(key) >= 0){
-        ret[key] = json[key];
-        //specially parse ratings
-        if(key == 'Ratings'){
-          var {rating, source} = parseRatings(json[key]);
-          ret[key] = rating;
-          ret["Source"] = source;
-        }
-      }
-    }
-    return ret;
-  }
-  //acccepts Array and parses 'Ratings' from OMDB for rotten tomatoes
-  function parseRatings(ratings){
-    //ret is string
-    var ret;
-    var source;
-    for(let i = 0; i < ratings.length; i++){
-      if(!ret){
-        ret = ratings[i]["Value"];
-        source = ratings[i]["Source"];
-      }
-      if(ratings[i]["Source"] === "Rotten Tomatoes"){
-        ret = ratings[i]["Value"];
-        source = ratings[i]["Source"];
-        break;
-      }
-    }
-    return {rating: ret, source: source};
-  }
-  //function that makes requests to OMDB using promises and axios
-  function makeGetRequest(search) {                            //makeGetRequest function
-    return new Promise(function (resolve, reject) {
-      axios.get(`http://www.omdbapi.com/?apikey=${process.env.APIKEY}&`, {
-      params : {
-        t: search
-      }
-    }).then(
-      (response) => {
-        var result = response.data;
-        console.log('Processing Request');
-        resolve(result);
-      },
-      (error) => {
-        reject(error);
-      }
-      );
-    });
-  }//end of function
   
 //-----------------------------------EMAIL ENDPOINTS-----------------------------------
   //validate from sent email (this is after user clicks on link)
@@ -811,4 +615,6 @@ exports.setApp = function ( app, client )
   });
 //-----------------------------------WATCHLIST ENDPOINTS-----------------------------------
   require('./watchListAPI')(app, client);
+//-----------------------------------MOVIE ENDPOINTS-----------------------------------
+  require('./movieAPI')(app, client);
 }

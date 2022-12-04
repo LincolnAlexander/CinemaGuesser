@@ -57,6 +57,7 @@ function GameContainer() {
         headers: { 'Content-Type': 'application/json' },
       });
       let res = JSON.parse(await response.text());
+      let movie = res.omdb[0];
       
       if (res.length == 0 || (res.error && res.error !== '')) {
         // setMessage('Username is taken, please try a different one.');
@@ -64,29 +65,29 @@ function GameContainer() {
         console.log(res.err)
       } else {
 
-        setDesc(res.omdb.Plot);
-        setActors(res.omdb.Actors);
-        setBoxOffice(res.omdb.BoxOffice);
-        if(!res.omdb.BoxOffice)
+        setDesc(movie.Plot);
+        setActors(movie.Actors);
+        setBoxOffice(movie.BoxOffice);
+        if(!movie.BoxOffice)
           setBoxOffice("N/A");
-        setGenre(res.omdb.Genre);
-        setPoster(res.omdb.Poster);
-        if(res.omdb.Source === 'Internet Movie Database'){
-          setRating(parseFloat(res.omdb.Ratings)*10);
+        setGenre(movie.Genre);
+        setPoster(movie.Poster);
+        if(movie.Source === 'Internet Movie Database'){
+          setRating(parseFloat(movie.Ratings)*10);
           setSource("IMDB (out of 100)");
         }
-        else if(res.omdb.Source === 'Rotten Tomatoes'){
-          setRating(parseInt(res.omdb.Ratings));
-          setSource(res.omdb.Source);
+        else if(movie.Source === 'Rotten Tomatoes'){
+          setRating(parseInt(movie.Ratings));
+          setSource(movie.Source);
         }
         
-        setTitle(capitalize(res.omdb.Title));
-        setYear(res.omdb.Year);
+        setTitle(capitalize(movie.Title));
+        setYear(movie.Year);
         //on reload don't run again
-        if(movie_mem.list[movie_mem.head] !== res.omdb.Title)
+        if(movie_mem.list[movie_mem.head] !== movie.Title)
         {
           
-        movie_mem.list[movie_mem.head] = res.omdb.Title;
+        movie_mem.list[movie_mem.head] = movie.Title;
         movie_mem.head += 1;
         //this number '25' must be smaller than number of movies in 'Movies' DB
         movie_mem.head %= 25
@@ -95,7 +96,6 @@ function GameContainer() {
         sessionStorage.setItem('movie_mem', JSON.stringify(movie_mem));
         }
         
-        //console.log(res.omdb);
       }
     } catch (e) {
       console.log(e);
