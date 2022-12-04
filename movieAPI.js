@@ -2,7 +2,7 @@ require('mongodb');
 const axios = require("axios");
 
 module.exports = function ( app, client ){
-//-----------------------------------MOVIE ENDPOINTS-----------------------------------
+//-----------------------------------MOVIE ENDPOINTS-----------------------------------\
     //query movie from MoviesSaved then OMDB if not in MoviesSaved
     const queryMovies = async (req, res, next) => {
         //IN - movie_requests
@@ -30,16 +30,21 @@ module.exports = function ( app, client ){
 
         //filter out movies not in Movies
         const movie_consistancy = await db.collection('Movies').find({Title:{$in:movie_requests}}).toArray();
-        var movie_array = []
+
+        var movie_titles = []
+        var movie_ids = []
+        var id_obj = {}
         //unpack titles to array
-        for(let i = 0; i < movie_consistancy.length; i++)
-            movie_array.push(movie_consistancy[i].Title);
+        for(let i = 0; i < movie_consistancy.length; i++){
+            movie_titles.push(movie_consistancy[i].Title);
+            movie_ids.push(movie_consistancy[i]._id);
+            id_obj[movie_consistancy[i].Title] = movie_consistancy[i]._id
+        }
         
         //to find movies that need to be queried by OMDB
         var found_movies = [];
         //look in MoviesSaved
-        var find_titles = await db.collection('MoviesSaved').find({Title:{$in:movie_requests}}).toArray();
-        console.log(find_titles);
+        var find_titles = await db.collection('MoviesSaved').find({TitleID:{$in:movie_ids}}).toArray();
 
         var omdb_ret = [];
         //iterate over all movies in found_movies, getting the title and the returned json
@@ -48,19 +53,31 @@ module.exports = function ( app, client ){
             found_movies.push(find_titles[i].Title.toLowerCase())
         }
         
-        //set difference between movie_array and found_movies
-        let unfound_movies = movie_array.filter(x => !found_movies.includes(x));
-
+        //set difference between movie_titles and found_movies
+        let unfound_movies = movie_titles.filter(x => !found_movies.includes(x));
+        let error_movies = [];
         //make omdb request on remaining movies
         for(let i = 0; i < unfound_movies.length; i++){
-            console.log("\x1b[36mMaking OMDB request on " + unfound_movies[i] + (i+1) + " of " + unfound_movies.length + "\x1b[0m");
-            var result = await makeGetRequest(movie_title);
+
+            console.log("\x1b[36mMaking OMDB request on " + unfound_movies[i] +" " + (i+1) + " of " + unfound_movies.length + "\x1b[0m");
+            var result = await makeGetRequest(unfound_movies[i]);
+
             if(result.Response !== "False")
             {
                 let temp_ret = parseFields(fields, result);
                 //lower title to make consistant
                 temp_ret["Title"] = temp_ret["Title"].toLowerCase();
-                db.collection('MoviesSaved').insertOne(omdb_ret);
+                temp_ret["TitleID"] = id_obj[temp_ret["Title"]];
+
+                //if error occurs with sotring TitleID don't store instance
+                if(temp_ret["TitleID"])
+                {
+                    db.collection('MoviesSaved').insertOne(temp_ret);
+                }
+                else{
+                    console.log("\x1b[31mTitleID error on " + unfound_movies[i] + '. Should be ' + temp_ret["Title"] + "\x1b[0m");
+                    error_movies.push(temp_ret["Title"])
+                }
                 omdb_ret.push(temp_ret);
                 found_movies.push(temp_ret.Title);
             }
@@ -70,24 +87,47 @@ module.exports = function ( app, client ){
             }
 
         }
-        
-        var ret = {omdb: omdb_ret, found_movies: found_movies, executed_on: movie_array};
+        //let unprocessed_movies = movie_requests.filter(x => !movie_titles.includes(x));
+        //console.log("UNPROCESSED: ", unprocessed_movies)
+        //console.log("EXECUTED ON: ", movie_titles)
+        //console.log("MISSING: ", unfound_movies)
+        console.log("ERRORS: ", error_movies)
+        var ret = {omdb: omdb_ret, found_movies: found_movies};
         res.status(200).json(ret);
     }
+    
+    //for testing purposes (need password)
+    app.post('/api/all_movies', async (req, res, next) =>  {
+        if(req.body.password !== process.env.ALL_MOVIES_PASS){
+            res.status(200).json({error: "ERROR: invalid password field"});
+            return
+        }
+
+        const db = client.db();
+        const all_movies = await db.collection('Movies').find().toArray();
+        let titles = [];
+        for(let i = 0; i < all_movies.length; i++){
+            titles.push(all_movies[i].Title);
+        }
+
+        req.body.movie_requests = titles;
+        next();
+    },queryMovies);
+
     //gets random movies (KEY)
-    app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
+    app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V2)
     {
         
         //REQ: filter (array)
         
+        const fields = ['Title', 'Genre', 'BoxOffice', 
+            'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+
         //---------------------------MAKE PIPELINE FILTER---------------------------
         //set defaults for filter by title
         var filter = [];
         if(Array.isArray(req.body.filter))
         filter = req.body.filter;
-        
-        const fields = ['Title', 'Genre', 'BoxOffice', 
-        'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
         
         //capitalize all movie titles in 'Movies'
         var filter_pipeline = [];
@@ -126,15 +166,16 @@ module.exports = function ( app, client ){
         err = 'Invalid Movie: remove ' + Title;
         //Add auto removal of invalid movie here
         }
-        
-        var ret = {omdb: omdb_ret, title: Title, error: err};
+        let new_ret = parseFields(fields, omdb_ret);
+
+        var ret = {omdb: [new_ret], title: Title, error: err};
         res.status(200).json(ret);
     });
     
     //gets random movies from MoviesSaved database 
     //(unethical, but I wanted to develop this)
     //this also gives more limited information compared to api/movies
-    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V1)
+    app.post('/api/movies_saved', async (req, res, next) =>               //movies_saved (FORTIFIED V2)
     {
         //REQ: filter (array)
         
@@ -177,7 +218,6 @@ module.exports = function ( app, client ){
 
         //put one movie in array for queryMovies
         req.body.movie_requests = [results[0].Title]
-        console.log(results)
         next();
 
     }, queryMovies);
