@@ -13,8 +13,21 @@ module.exports = function ( app, client ){
             return;
         }
 
-        //query
         const db = client.db();
+
+        //to lower title for consistancy
+        let title = req.body.title
+        title = title.toLowerCase();
+        
+        const movie = await db.collection('Movies').find({Title: title}).toArray()
+
+        if(movie.length == 0){
+            var r = {error: 'ERROR: movie not found in Movies'};
+            res.status(200).json(r);
+            return;
+        }
+
+        //query for Watchlist
         //check if user exists and if title already in WatchList
         const cursor = await db.collection('Users').find({Login: req.body.login}).project({WatchList: 1}).toArray();
 
@@ -24,7 +37,7 @@ module.exports = function ( app, client ){
             return;
         }
         
-        if(cursor[0].WatchList.includes(req.body.title)){
+        if(cursor[0].WatchList.includes(movie[0].Title)){
             var r = {error: 'ERROR: movie already in watchlist'};
             res.status(200).json(r);
             return;
@@ -32,7 +45,7 @@ module.exports = function ( app, client ){
 
         //add to WatchList
         try{
-            await db.collection('Users').updateOne({ Login: req.body.login },{ $push: { WatchList: req.body.title } })
+            await db.collection('Users').updateOne({ Login: req.body.login },{ $push: { WatchList: movie[0].Title } })
         }
         catch(e){
             var r = {error: 'ERROR: ' + e};
@@ -40,11 +53,11 @@ module.exports = function ( app, client ){
             return;
         }
         
-        let ret = {message: "Movie added!", title: req.body.title}
+        let ret = {message: "Movie added!", title: movie[0].Title}
         res.status(200).json(ret);
     });
     
-    app.post('/api/remove_watchlist', async (req, res, next) =>{               //remove_watchlist
+    app.post('/api/remove_watchlist', async (req, res, next) =>{            //remove_watchlist
         //IN - login, title
 
         //input error checks
@@ -91,17 +104,29 @@ module.exports = function ( app, client ){
         
         //query
         const db = client.db();    
-        const results = await db.collection('Users').
-        find({Login: login}).
-        project({ WatchList: { $slice: [ page * per_page, page * per_page + per_page - 1 ] } }).toArray();
-        console.log(results);
+
+        const slice = [ page * per_page, page * per_page + per_page];
+        console.log(slice + " " + page + " " + per_page);
+
+        var results;
+        try{
+            results = await db.collection('Users').
+            find({Login: login}).
+            project({ WatchList: { $slice: slice }, length: {$size: "$WatchList" }}).toArray();
+        }
+        catch(e){
+            var r = {error: 'ERROR: ' + e};
+            res.status(200).json(r);
+            return;
+        }
+        
 
         if(results.length == 0){
             var r = {error: 'ERROR: invalid user provided'};
             res.status(200).json(r);
             return;
         }
-        var r = {list: results[0].WatchList};
+        var r = {list: results[0].WatchList, total_length: results[0].length};
         res.status(200).json(r);
     });
 }

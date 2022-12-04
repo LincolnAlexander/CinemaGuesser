@@ -42,9 +42,7 @@ function LeaderboardContainer() {
       if (res.error && res.error !== '') {
         console.log(res.error);
       } else {
-        //max page amount based on how many users there are
         setMaxPage(Math.ceil(res.count / per_number));
-        //setting the list of data
         setList(res.list);
       }
     } catch (e) {
