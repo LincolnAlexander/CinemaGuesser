@@ -8,22 +8,10 @@ const { ConnectionClosedEvent } = require('mongodb');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-const buildPath = require('./frontend/src/components/Paths');
-/*const router = express.Router();
-const emailValidator = require('deep-email-validator');
-const nodemailer = require('nodemailer');*/
-
-
-
-/*async function isEmailValid(email) {
-  return emailValidator.validate(email)
-}*/
-
-
 //Gaming
 exports.setApp = function ( app, client )
 {
-  //-----------------------------------VALIDATION ENDPOINTS-----------------------------------
+//-----------------------------------VALIDATION ENDPOINTS-----------------------------------
   // JWT Added by Casey
   app.post('/api/login', async (req, res, next) =>                      //login (FORTIFIED V2)
   {
@@ -197,7 +185,7 @@ exports.setApp = function ( app, client )
     
     res.status(200).json(ret);
   });
-  //-----------------------------------PROFILE ENDPOINTS-----------------------------------
+//-----------------------------------PROFILE ENDPOINTS-----------------------------------
   //jwt safe
   app.post('/api/update_profile', async (req, res, next) =>
   {
@@ -271,7 +259,7 @@ exports.setApp = function ( app, client )
     ret = {login: login, changed_password: password_flag, firstName: firstName, lastName: lastName, jwtToken: refreshedToken.accessToken};
     res.status(200).json(ret);
   });
-  //-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
+//-----------------------------------LEADERBOARD ENDPOINTS------------------------------------
   //leaderboard endpoint that sorts by gamesplayed or score 
   app.post('/api/leaderboard', async (req, res, next) =>                //leaderboard (FORTIFIED V1)
   {
@@ -322,7 +310,7 @@ exports.setApp = function ( app, client )
     var ret = {list: results, count: user_count};
     res.status(200).json(ret);
   });
-  //-----------------------------------STATS ENDPOINTS-----------------------------------
+//-----------------------------------STATS ENDPOINTS-----------------------------------
   //get scores (ADJUST FOR JWT TOKEN)
   // Adjusted for JWT tokens ------
   app.post('/api/get_stats', async (req, res, next) =>                  //get_stats (FORTIFIED JWT)
@@ -467,7 +455,7 @@ exports.setApp = function ( app, client )
     ret = {value: value, operation: op, field: field, error: err, jwtToken: refreshedToken};
     res.status(200).json(ret);
   });
-  //-----------------------------------MOVIE ENDPOINTS-----------------------------------
+//-----------------------------------MOVIE ENDPOINTS-----------------------------------
   //gets random movies (KEY)
   app.post('/api/movies', async (req, res, next) =>                     //movies (FORTIFIED V1)
   {
@@ -664,7 +652,7 @@ exports.setApp = function ( app, client )
     });
   }//end of function
   
-  //-----------------------------------EMAIL ENDPOINTS-----------------------------------
+//-----------------------------------EMAIL ENDPOINTS-----------------------------------
   //validate from sent email (this is after user clicks on link)
   app.post('/api/email_verify', async (req, res, next) => 
   {
@@ -821,5 +809,6 @@ exports.setApp = function ( app, client )
     var ret = {message: "password has been reset!"};
     res.status(200).json(ret);
   });
-  
+//-----------------------------------WATCHLIST ENDPOINTS-----------------------------------
+  require('./watchListAPI')(app, client);
 }
