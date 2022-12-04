@@ -10,13 +10,15 @@ module.exports = function ( app, client ){
         //define things
         const db = client.db();
         var movie_requests = req.body.movie_requests
+
         //fields to parse later
         const fields = ['Title', 'Genre', 'BoxOffice', 
-            'Actors', 'Plot', 'Poster', 'Ratings', 'Year'];
+            'Actors', 'Plot', 'Poster', 'Ratings', 'Year', 
+            'Director', 'Runtime', 'Released', 'Rated'];
 
         //error message
         if(!Array.isArray(movie_requests)){
-            res.status(200).json({error: "ERROR: mismatch input on movie_request"});
+            res.status(200).json({error: "ERROR: mismatch input on movie_requests"});
             return;
         }
         if(movie_requests.length == 0){
@@ -24,9 +26,16 @@ module.exports = function ( app, client ){
             return;
         }
 
+
         //get all movie titles to lowercase
-        for(let i = 0; i < movie_requests.length; i++)
+        for(let i = 0; i < movie_requests.length; i++){
+            if(movie_requests[i] === null){
+                res.status(200).json({error: "ERROR: null type found in array"});
+                return;
+            }
             movie_requests[i] = movie_requests[i].toLowerCase();
+        }
+            
 
         //filter out movies not in Movies
         const movie_consistancy = await db.collection('Movies').find({Title:{$in:movie_requests}}).toArray();
@@ -45,7 +54,7 @@ module.exports = function ( app, client ){
         var found_movies = [];
         //look in MoviesSaved
         var find_titles = await db.collection('MoviesSaved').find({TitleID:{$in:movie_ids}}).toArray();
-
+        
         var omdb_ret = [];
         //iterate over all movies in found_movies, getting the title and the returned json
         for(let i = 0; i < find_titles.length; i++){
@@ -233,13 +242,31 @@ module.exports = function ( app, client ){
         for (var key of Object.keys(json)) {
         // -1 if not in array
         if(fields.indexOf(key) >= 0){
+            
+            //adjusted for TV shows
+            if(key === 'Runtime'){
+                if(json['Type'] === 'series')
+                    ret['totalSeasons'] = json['totalSeasons'];
+                else
+                    ret[key] = json[key]
+                continue;
+            }
+            if(key === 'Director'){
+                if(json['Type'] === 'series')
+                    ret['Writer'] = json['Writer'];
+                else
+                    ret[key] = json[key]
+                continue;
+            }
+
             ret[key] = json[key];
             //specially parse ratings
-            if(key == 'Ratings'){
+            if(key === 'Ratings'){
             var {rating, source} = parseRatings(json[key]);
             ret[key] = rating;
             ret["Source"] = source;
             }
+            
         }
         }
         return ret;

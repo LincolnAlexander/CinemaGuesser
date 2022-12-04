@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import MovieModal from './modals/MovieModal';
 
 function WatchlistContainer()
 {
@@ -8,11 +8,87 @@ const [list, setList] = useState([]);
 let [maxPage, setMaxPage] = useState();
 let [page, setPage] = useState(0);
 const [login, setLogin] = useState(JSON.parse(localStorage.getItem('user_data')).login)
+const [turnOn, setModal] = useState(false);
+
+const[poster, setPoster] = useState(false);
+const[year, setYear] = useState(false);
+const[title, setTitle] = useState(false);
+const [desc, setDesc] = useState(false);
+const [boxOffice, setBoxOffice] = useState(false);
+const [genre, setGenre] = useState(false);
+const [actors, setActors] = useState(false);
+const [source, setSource] = useState(false);
+const [rating, setRating] = useState(0);
+const [director, setDirector] = useState(false);
+const [writer, setWriter] = useState(false);
+const [runtime, setRuntime] = useState(false);
+const [totalSeasons, setSeasons] = useState(false);
+const [released, setRelease] = useState(false);
+const [rated, setRated] = useState(false);
 
 //load watchlist on render
 useEffect(() => {
     loadWatchList();  
 }, []);
+
+const loadMovie = async (movie) => {
+    //state page, per_number const, and only score
+    let obj = {
+        movie_requests: [movie]
+    };
+
+    let js = JSON.stringify(obj);
+    try {
+        let bp = require('./Paths.js');
+        // 'https://cinema-guesser.herokuapp.com/api/movies_get'
+        // bp.buildPath('api/movies_get')
+        const response = await fetch(
+        bp.buildPath('api/movies_get'),
+        {
+            method: 'POST',
+            body: js,
+            headers: { 'Content-Type': 'application/json' },
+        }
+        );
+
+        let res = JSON.parse(await response.text());
+        let movie = res.omdb[0];
+
+        if (res.error && res.error !== '') {
+            console.log(res.error);
+        } else {
+            setPoster(movie.Poster)
+            setYear(movie.Year)
+            setTitle(capitalize(movie.Title))
+            setDesc(movie.Plot)
+            setActors(movie.Actors)
+            setRating(movie.Rating)
+            setGenre(movie.Genre);
+            setBoxOffice(movie.BoxOffice)
+            if(!movie.BoxOffice)
+                setBoxOffice("N/A");
+            //movie source
+            if(movie.Source === 'Internet Movie Database'){
+                setRating(parseFloat(movie.Ratings)*10);
+                setSource("IMDB (out of 100)");
+            }
+            else if(movie.Source === 'Rotten Tomatoes'){
+                setRating(parseInt(movie.Ratings));
+                setSource(movie.Source);
+            }
+            setDirector(movie.Director)
+            setWriter(movie.Writer)
+            setRuntime(movie.Runtime)
+            setSeasons(movie.totalSeasons)
+            setRelease(movie.Released)
+            setRated(movie.Rated)
+        }
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+}
+
 const loadWatchList = async (event) => {
     const per_number = 10
     //state page, per_number const, and only score
@@ -20,36 +96,36 @@ const loadWatchList = async (event) => {
     page: page,
     per_page: per_number,
     login: login
+    };
+
+    let js = JSON.stringify(obj);
+    try {
+        let bp = require('./Paths.js');
+        // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
+        // bp.buildPath('api/get_watchlist')
+        const response = await fetch(
+        bp.buildPath('api/get_watchlist'),
+        {
+            method: 'POST',
+            body: js,
+            headers: { 'Content-Type': 'application/json' },
+        }
+        );
+
+        let res = JSON.parse(await response.text());
+
+        if (res.error && res.error !== '') {
+        console.log(res.error);
+        } else {
+        setMaxPage(Math.ceil(res.total_length/ per_number));
+        setList(res.list);
+        }
+    } catch (e) {
+        console.log(e);
+        return;
+    }
 };
 
-let js = JSON.stringify(obj);
-try {
-    let bp = require('./Paths.js');
-    // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
-    // bp.buildPath('api/get_watchlist')
-    const response = await fetch(
-    bp.buildPath('api/get_watchlist'),
-    {
-        method: 'POST',
-        body: js,
-        headers: { 'Content-Type': 'application/json' },
-    }
-    );
-
-    let res = JSON.parse(await response.text());
-    console.log(res);
-
-    if (res.error && res.error !== '') {
-    console.log(res.error);
-    } else {
-    setMaxPage(Math.ceil(res.total_length/ per_number));
-    setList(res.list);
-    }
-} catch (e) {
-    console.log(e);
-    return;
-}
-};
 //subtract 1 to page unless you're at page 0
 function prevPage(e)
 {
@@ -85,6 +161,14 @@ function nextPage(e)
     }
 }
 
+async function openModal(movie){
+    await loadMovie(movie)
+    setModal(true)
+}
+function closeRoundModal() {
+    setModal(false);
+}
+
 const capitalize = (str, lower = false) =>
 (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 ;
@@ -94,7 +178,7 @@ return (
         {/*whole box that leaderboard will lay on*/}
         <div className='flex flex-col justify-between m-8 md:m-20 min-h-[46rem]'>
         {/*the actual table*/}
-        <table className='w-screen sm:w-1/3 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4'>
+        <table className='w-screen sm:w-1/6 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4'>
             {/*the above header for the table*/}
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
             {/*Must be used at least once for thead, defines the values of the row*/}
@@ -111,7 +195,8 @@ return (
                 //logic for borders only appearing in between data and hover, tr is row of cells
                 <tr
                 className='last:rounded-b-lg last:border-b-0 hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
-                key={listItem}>
+                key={listItem}
+                onClick = {() => openModal(listItem)}>
 
                 {/*define data cell
                 rank, first and last name, then score*/}
@@ -147,6 +232,23 @@ return (
         </div>
         
         </div>
+        <MovieModal
+        value={turnOn}
+        closeRoundModal={closeRoundModal}
+        poster = {poster}
+        title = {title}
+        year = {year}
+        desc = {desc}
+        boxOffice = {boxOffice}
+        source = {source}
+        actors = {actors}
+        genre = {genre}
+        rating = {rating}
+        creator = {director ? director : writer}
+        time = {runtime ? runtime : totalSeasons}
+        released = {released}
+        rated = {rated}
+      />
     </>
     );
 }
