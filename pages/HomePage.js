@@ -52,6 +52,7 @@ const HomePage = ({ navigation }) => {
     const [year, setYear] = useState(false);
      const [rating, setRating] = useState(0);
     const [score, setScore] = useState(0);
+    const [totalScore, setTotalScore] = useState(0);
     const [guess, setGuess] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const loadMovieInfo = async (event) => {
@@ -78,22 +79,22 @@ const HomePage = ({ navigation }) => {
           }
         );
         let res = JSON.parse(await response.text());
-  
+        let movie = res.omdb[0];
         if (res.length == 0 || (res.error && res.error !== "")) {
           // setMessage('Username is taken, please try a different one.');
           //either by default or after filter
           console.log(res.err);
         } else
         {
-          setDesc(res.omdb.Plot);
-          setActors(res.omdb.Actors);
+          setDesc(movie.Plot);
+          setActors(movie.Actors);
           // setBoxOffice(res.omdb.BoxOffice);
-          setGenre(res.omdb.Genre);
-          setPoster((res.omdb.Poster));
-          setRating(parseInt(res.omdb.Ratings));
-          setTitle(capitalize(res.omdb.Title));
-          setYear(res.omdb.Year);
-          setDesc(res.omdb.Plot)
+          setGenre(movie.Genre);
+          setPoster((movie.Poster));
+          setRating(parseInt(movie.Ratings));
+          setTitle(capitalize(movie.Title));
+          setYear(movie.Year);
+          setDesc(movie.Plot)
           setGuess('');
           //on reload don't run again
           // if (movie_mem.list[movie_mem.head] !== res.omdb.Title) {
@@ -106,7 +107,7 @@ const HomePage = ({ navigation }) => {
           //   AsyncStorage.setItem("movie_mem", JSON.stringify(movie_mem));
           // }
   
-          console.log(res.omdb);
+          console.log(res.omdb[0]);
         }
       } catch (e) {
         console.log(e);
@@ -129,13 +130,16 @@ const HomePage = ({ navigation }) => {
     }
     function openRoundModal()
     {
-      setScore(score + pointsAwarded(Math.abs(guess - rating)));
+      
+      setScore(pointsAwarded(Math.abs(guess - rating)));
+      setTotalScore(totalScore + (score + pointsAwarded(Math.abs(guess - rating))));
       setModalVisible(!modalVisible);
     }
 
     function closeRoundModal()
     {
       setModalVisible(!modalVisible);
+      setScore(0);
       setPlaceholder('Guess Rating');
       loadMovieInfo();
     }
@@ -187,10 +191,11 @@ const HomePage = ({ navigation }) => {
               borderColor: 'green',
               
             }}>
-            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Description:<Text style={{color:'white',}}>{desc}</Text> </Text>
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5, padding: 4}}>Description:<Text style={{color:'white',}}>{desc}</Text> </Text>
             
-            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Genre:<Text style={{color:'white',}}>{genre}</Text> </Text>
-            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5}}>Actors:<Text style={{color:'white',}}>{actors}</Text> </Text>
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5, padding: 4}}>Genre:<Text style={{color:'white',}}>{genre}</Text> </Text>
+            <Text style = {{color: '#f1cf54', fontSize: 16, marginTop: 5, padding: 4}}>Actors:<Text style={{color:'white',}}>{actors}</Text> </Text>
+            
           </View>
           
           
@@ -246,8 +251,9 @@ const HomePage = ({ navigation }) => {
                 onPress={() => closeRoundModal()}>
                   <Icon name = "close"></Icon>
               </Pressable>
-              <Text style = {{textAlign: 'left',color: '#f1cf54', fontSize: 18,}}>Movie Rating: <Text style ={{color: '#d00000'}}>{rating}% </Text></Text>
-              <Text style = {{ marginTop: 5, color: '#f1cf54', fontSize: 18,}}>You Scored: <Text style ={{color: '#d00000'}}> {score}pts </Text>  </Text>
+              <Text style = {{textAlign: 'left',color: '#f1cf54', fontSize: 20,}}>Movie Rating: <Text style ={{color: '#d00000'}}>{rating}% </Text></Text>
+              <Text style = {{ marginTop: 5, color: '#f1cf54', fontSize: 20,}}>You Scored: <Text style ={{color: '#d00000'}}> {score}pts </Text>  </Text>
+              <Text style = {{ marginTop: 5, color: '#f1cf54', fontSize: 20,}}>Total Score: <Text style ={{color: '#d00000'}}> {totalScore}pts </Text>  </Text>
             </View>
           </View>
         </Modal>
@@ -284,11 +290,15 @@ const HomePage = ({ navigation }) => {
         }}
       >
         <Text style={styles.baseText}>
-          Use your movie knowledge to guess the movie rating out of 100. Your
-          will be given the movie poster, plot, actors, cast, and box office
-          earnings. The closer you are to the movie rating, the more points you
-          score. Good Luck Agent!
+          Use your movie knowledge to guess the movie rating out of 100. 
         </Text>
+        <Text style={styles.baseText}>
+          Your file
+          will be given the movie poster, plot, actors, cast, and box office
+          earnings.
+        </Text>
+        <Text style={styles.baseText}>The closer you are to the movie rating, the more points you
+          score. Good Luck Agent!</Text> 
       </View>
     );
   }
@@ -342,6 +352,7 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontWeight: "bold",
     color: "white",
+    padding: 2,
   },
   cardContainer: {
     width: 320,
