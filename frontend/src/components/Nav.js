@@ -28,10 +28,14 @@ function Nav() {
 
   function getUserInitials() {
     if (!auth) return '?';
-
-    const userInitials =
+    var userInitials;
+    if(userData.firstName){
+      userInitials =
       userData.firstName.substring(0, 1).toUpperCase() +
       userData.lastName.substring(0, 1).toUpperCase();
+    }
+    else 
+      userInitials = '?'
 
     return userInitials;
   }

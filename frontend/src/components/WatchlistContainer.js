@@ -69,11 +69,11 @@ const loadMovie = async (movie) => {
                 setBoxOffice("N/A");
             //movie source
             if(movie.Source === 'Internet Movie Database'){
-                setRating(parseFloat(movie.Ratings)*10);
-                setSource("IMDB (out of 100)");
+                setRating(movie.Ratings);
+                setSource("IMDB");
             }
             else if(movie.Source === 'Rotten Tomatoes'){
-                setRating(parseInt(movie.Ratings));
+                setRating(movie.Ratings);
                 setSource(movie.Source);
             }
             setDirector(movie.Director)
@@ -244,9 +244,13 @@ return (
         actors = {actors}
         genre = {genre}
         rating = {rating}
-        creator = {director ? director : writer}
-        time = {runtime ? runtime : totalSeasons}
+
+        director = {director}
+        writer = {writer}
+
+        runtime = {runtime}
         released = {released}
+        
         rated = {rated}
       />
     </>

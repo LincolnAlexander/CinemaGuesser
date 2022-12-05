@@ -38,18 +38,36 @@ export default function MovieModal(props) {
                   alt='MoviePoster'
                 ></img>
               </div>
-              <div className=' text-base text-center sm:text-left'>
+              <div className=' text-sm text-center sm:text-left'>
                 <p className='text-pr-yellow'>Description: <span className='text-pr-white pr-2'>{props.desc}</span></p>
                 
               </div>
-              <div className='text-base text-center sm:text-left'>
+              <div className='text-sm text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2'>Genre:</span>
                 <span className='text-pr-white pr-2'>{props.genre}</span>
               </div>
-              <div className='text-base  text-center sm:text-left'>
+              <div className='text-sm  text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Actors:</span>
                 <span className='text-pr-white pr-2'>{props.actors}</span>
              </div>
+             <div className='text-sm text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Rating:</span>
+                <span className='text-pr-white pr-2'>{props.rating + " via " + props.source}</span>
+             </div>
+             {props.director ? 
+             (<div className='text-sm  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Director:</span>
+                <span className='text-pr-white pr-2'>{props.director}</span>
+             </div>):
+             (<div className='text-sm text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Writer {'(' + 's' + ')'}:</span>
+                <span className='text-pr-white pr-2'>{props.writer}</span>
+              </div>)}
+              <div className='text-sm  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Rated:</span>
+                <span className='text-pr-white pr-2'>{props.rated}</span>
+              </div>
+             
         
              {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
                 <XMarkIcon
