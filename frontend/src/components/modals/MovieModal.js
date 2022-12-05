@@ -26,25 +26,34 @@ export default function MovieModal(props) {
           ></div>
             {/*<div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
             </div>*/}
-            <div className='grid grid-flow-col gap-3 absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-zinc-800 
-            px-4 sm:px-16 py-8 rounded-md max-w-4xl w-5/6 text-pr-white text-sm md:text-lg lg:text-xl'>
-                <div class="col-span-1">
-                    <div className='text-pr-yellow mr-2'>{props.title}</div>
-                    <img
-                        className='w-32 sm:w-60 sm:h-84 rounded-lg'
-                        src={props.poster}
-                        alt='MoviePoster'
-                    ></img>
-                </div>
-                <div class="col-span-2">
-                    <br></br>
-                    <span className='text-pr-yellow mr-2'>hello2</span>
-                </div>
-                {/*<div className='min-h-[150px] col-xs-8'>
-                    <span className='text-pr-yellow mr-2'>{props.title}</span>
-        </div>*/}
+            <div className='grid grid-cols-1 gap-3 absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-zinc-800 
+            px-4 sm:px-16 py-8 rounded-md max-w-4xl w-screen sm:w-1/2 lg:w-1/2 xl:w-1/4  text-pr-white text-sm md:text-lg lg:text-xl'>
+              <div className='text-center'>
+                <p className='text-pr-yellow text-xl'>{props.title} &#40;{props.year}&#41;</p>
+              </div>
+              <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
+                <img
+                  className='w-32 sm:w-60 sm:h-84 rounded-lg'
+                  src={props.poster}
+                  alt='MoviePoster'
+                ></img>
+              </div>
+              <div className=' text-base text-center sm:text-left'>
+                <p className='text-pr-yellow'>Description: <span className='text-pr-white pr-2'>{props.desc}</span></p>
+                
+              </div>
+              <div className='text-base text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2'>Genre:</span>
+                <span className='text-pr-white pr-2'>{props.genre}</span>
+              </div>
+              <div className='text-base  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Actors:</span>
+                <span className='text-pr-white pr-2'>{props.actors}</span>
+             </div>
+        
+             {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
                 <XMarkIcon
-                className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
                 onClick={toggleModal}
                 >
                 Close

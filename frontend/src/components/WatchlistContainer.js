@@ -43,7 +43,7 @@ const loadMovie = async (movie) => {
         // 'https://cinema-guesser.herokuapp.com/api/movies_get'
         // bp.buildPath('api/movies_get')
         const response = await fetch(
-        bp.buildPath('api/movies_get'),
+        'https://cinema-guesser.herokuapp.com/api/movies_get',
         {
             method: 'POST',
             body: js,
@@ -104,7 +104,7 @@ const loadWatchList = async (event) => {
         // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
         // bp.buildPath('api/get_watchlist')
         const response = await fetch(
-        bp.buildPath('api/get_watchlist'),
+        'https://cinema-guesser.herokuapp.com/api/get_watchlist',
         {
             method: 'POST',
             body: js,
@@ -200,7 +200,7 @@ return (
 
                 {/*define data cell
                 rank, first and last name, then score*/}
-                <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap'>
+                <td className='text-md text-white font-medium px-4 py-4 whitespace-nowrap hover:cursor-pointer'>
                     {capitalize(listItem)}
                     
                 </td>
