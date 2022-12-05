@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import GameContainer from "../components/GameContainer";
+import LeaderboardContainer from "../components/LeaderboardContainer";
 
 import {
   StyleSheet,
@@ -47,6 +48,19 @@ const HomePage = ({ navigation }) => {
     );
     navigation.navigate("LoginPage");
   };
+
+  function LeaderboardPage() {
+    return (
+      <>
+        <div className="flex justify-center text-pr-white mt-8 md:mt-20">
+          <p className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-white font-bold">
+            LeaderBoard
+          </p>
+        </div>
+        <LeaderboardContainer />
+      </>
+    );
+  }
 
   const GamePage = () => {
     const [placeholder, setPlaceholder] = useState("Guess Rating");
@@ -388,6 +402,8 @@ const HomePage = ({ navigation }) => {
             //   iconName = focused ? "film" : "film-outline";
           } else if (route.name === "Rules") {
             iconName = focused ? "newspaper" : "newspaper-outline";
+          } else if (route.name === "Leaderboard") {
+            iconName = focused ? "trophy" : "trophy-outline";
           }
 
           // You can return any component that you like here!
@@ -402,6 +418,7 @@ const HomePage = ({ navigation }) => {
       {/* <Tab.Screen name="Watch List" component={WatchListPage} /> */}
       <Tab.Screen name="Rules" component={RulesPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
+      <Tab.Screen name="Leaderboard" component={LeaderboardPage} />
     </Tab.Navigator>
   );
 };

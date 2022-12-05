@@ -1,5 +1,5 @@
 import React from "react";
-import LeaderboardContainer from "../components/LeaderboardContainer";
+import LeaderboardContainer from "./components/LeaderboardContainer";
 
 function LeaderboardPage() {
   return (
