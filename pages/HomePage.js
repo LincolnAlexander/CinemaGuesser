@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import React, { useState, useRef, useEffect } from "react";
-import { SafeAreaView, Text,  View, ScrollView } from "react-native";
+import { SafeAreaView, Text,  View, ScrollView, Modal, Pressable } from "react-native";
 import Button from "../components/Button";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,6 +16,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
+import { Icon } from "react-native-elements";
 // import { background } from "native-base/lib/typescript/theme/styled-system";
 
 // <Button title="Logout" onPress={logout} />
@@ -42,6 +43,7 @@ const HomePage = ({ navigation }) => {
   
   
   const GamePage = () => {
+    const [placeholder,setPlaceholder] = useState('Guess Rating');
     const [poster, setPoster] = useState(null);
     const [title, setTitle] = useState(false);
     const [desc, setDesc] = useState(false);
@@ -51,7 +53,7 @@ const HomePage = ({ navigation }) => {
      const [rating, setRating] = useState(0);
     const [score, setScore] = useState(0);
     const [guess, setGuess] = useState(null);
-    
+    const [modalVisible, setModalVisible] = useState(false);
     const loadMovieInfo = async (event) => {
       
       // var movie_memt = JSON.parse(get_store("carl"));
@@ -120,6 +122,23 @@ const HomePage = ({ navigation }) => {
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase()
     );
+    function pointsAwarded(delta) {
+      if (delta >= 33) return 0;
+      if (delta === 0) return 120;
+      return Math.round(100 - 3 * delta);
+    }
+    function openRoundModal()
+    {
+      setScore(score + pointsAwarded(Math.abs(guess - rating)));
+      setModalVisible(!modalVisible);
+    }
+
+    function closeRoundModal()
+    {
+      setModalVisible(!modalVisible);
+      setPlaceholder('Guess Rating');
+      loadMovieInfo();
+    }
     
     return (
       <View style = {{flex:1,}}>
@@ -185,14 +204,53 @@ const HomePage = ({ navigation }) => {
             }}>
               
             {/* instead of loadMovieInfo, change it to display the round modal  */}
-            <TextInput onSubmitEditing={ () => loadMovieInfo() } style = {{textAlign: 'center', color: 'white', fontSize: 18, borderBottomColor: '#f1cf54', borderBottomWidth: 2.5, width: '70%'}} onChangeText = {setGuess} placeholder = 'Guess Rating' placeholderTextColor= 'white'></TextInput>
+            <TextInput onSubmitEditing={ () => openRoundModal()} style = {{textAlign: 'center', color: 'white', fontSize: 18, borderBottomColor: '#f1cf54', borderBottomWidth: 2.5, width: '70%'}}  onPressIn = {() => setPlaceholder('')} onChangeText = {setGuess} placeholder = {placeholder} placeholderTextColor= 'white' keyboardType="numeric"></TextInput>
 
           </View>
           
 
           </View>
         </View>
-        
+        <Modal visible={modalVisible} transparent={true}>
+          <View style = 
+          {{ 
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22, 
+          }}>
+            <View style = 
+            {{
+              flex: 0.5,  
+              width: '70%', 
+              height: '10%',
+              margin: 20, 
+              backgroundColor: '#acacac', 
+              borderRadius: 20,
+              padding: 35,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5 }}>
+      
+              <Pressable style = 
+              {{
+                position: 'absolute',
+                right: 10,
+                top: 5, 
+                }} 
+                onPress={() => closeRoundModal()}>
+                  <Icon name = "close"></Icon>
+              </Pressable>
+              <Text style = {{textAlign: 'left',color: '#f1cf54', fontSize: 18,}}>Movie Rating: <Text style ={{color: '#d00000'}}>{rating}% </Text></Text>
+              <Text style = {{ marginTop: 5, color: '#f1cf54', fontSize: 18,}}>You Scored: <Text style ={{color: '#d00000'}}> {score}pts </Text>  </Text>
+            </View>
+          </View>
+        </Modal>
         </ScrollView>
         </View>
         
