@@ -109,8 +109,9 @@ const HomePage = ({ navigation }) => {
           setGenre(movie.Genre);
           setPoster(movie.Poster);
           if (movie.Ratings.includes("/")) {
-            var rating = eval(movie.Ratings);
-            setRating(rating * 100);
+            // var rating = eval(movie.Ratings);
+            // setRating(rating * 100);
+            setRating(parseFloat(movie.Ratings)*10);
           } else setRating(parseInt(movie.Ratings));
 
           setTitle(capitalize(movie.Title));
@@ -380,6 +381,9 @@ const HomePage = ({ navigation }) => {
         </Text>
         <Text style={styles.baseText}>
           The closer you are to the movie rating, the more points you score.
+          
+        </Text>
+        <Text style={styles.baseText}>
           Good Luck Agent!
         </Text>
       </View>
