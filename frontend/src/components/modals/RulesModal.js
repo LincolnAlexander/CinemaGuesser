@@ -30,18 +30,12 @@ export default function RulesModal(props) {
             <p className='text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-yellow font-bold'>
               Welcome Agent{ud ? ` ${lastName}` : ''}!
             </p>
+            <div className='lg:px-[7.5%] sm:px-1'>
+              <p className='px-[10%] text-justify text-base text-pr-white font-medium mt-5'>
+                Use your specialized skill set to guess the movie rating out of 100. Your file will include the movie poster, plot, actors, cast, and how much money it earned in the box office. The closer you are to the movie rating, the more points you score.
+              </p>
+            </div>
             <p className='text-center text-base text-pr-white font-medium mt-5'>
-              Use your specialized skill set to guess the movie rating out of
-              100.
-            </p>
-            <p className='text-center text-base text-pr-white font-medium '>
-              Your file will include the movie poster, plot, actors, cast, and
-              how much money it earned in the box office.
-            </p>
-            <p className='text-center text-base text-pr-white font-medium '>
-              The closer you are to the movie rating, the more points you score.
-            </p>
-            <p className='text-center text-base text-pr-white font-medium '>
               Good Luck Agent!
             </p>
             <img
