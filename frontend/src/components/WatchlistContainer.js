@@ -249,8 +249,9 @@ return (
         writer = {writer}
 
         runtime = {runtime}
+        totalSeasons = {totalSeasons}
         released = {released}
-        
+
         rated = {rated}
       />
     </>

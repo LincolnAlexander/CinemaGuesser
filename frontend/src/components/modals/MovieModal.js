@@ -33,7 +33,7 @@ export default function MovieModal(props) {
               </div>
               <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
                 <img
-                  className='w-32 sm:w-60 sm:h-84 rounded-lg'
+                  className='w-24 sm:w-60 sm:h-84 rounded-lg'
                   src={props.poster}
                   alt='MoviePoster'
                 ></img>
@@ -46,6 +46,10 @@ export default function MovieModal(props) {
                 <span className='text-pr-yellow mr-2'>Genre:</span>
                 <span className='text-pr-white pr-2'>{props.genre}</span>
               </div>
+              <div className='text-sm  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Released:</span>
+                <span className='text-pr-white pr-2'>{props.released}</span>
+             </div>
               <div className='text-sm  text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Actors:</span>
                 <span className='text-pr-white pr-2'>{props.actors}</span>
@@ -67,6 +71,15 @@ export default function MovieModal(props) {
                 <span className='text-pr-yellow mr-2 '>Rated:</span>
                 <span className='text-pr-white pr-2'>{props.rated}</span>
               </div>
+              {props.runtime ? 
+             (<div className='text-sm  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Director:</span>
+                <span className='text-pr-white pr-2'>{props.runtime}</span>
+             </div>):
+             (<div className='text-sm text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Total Seasons:</span>
+                <span className='text-pr-white pr-2'>{props.totalSeasons}</span>
+              </div>)}
              
         
              {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
