@@ -102,15 +102,18 @@ module.exports = function ( app, client ){
     });
 
     app.post('/api/get_watchlist', async (req, res, next) =>{               //get_watchlist
-        //IN - login, (optional) page, (optional) per_page
-        var{login, page, per_page} = req.body;
+        //IN - login, (optional) page, (optional) per_page,(optional) search
+        var{login, page, per_page, search} = req.body;
         //input error checks
-        if(!login)
+        if(typeof login === 'undefined')
         {
             var r = {error: 'ERROR: empty field(s)'};
             res.status(200).json(r);
             return;
         }
+
+        if(typeof search === 'undefined')
+            search = ""
 
         //default values (need to have both or none)
         if((typeof page !== 'undefined' && typeof per_page === 'undefined') || (typeof page === 'undefined' && typeof per_page !== 'undefined')){
@@ -120,29 +123,39 @@ module.exports = function ( app, client ){
         }
         
         //query
-        const db = client.db();
-        let command = 1;
-        if(typeof page !== 'undefined' && typeof page !== 'undefined')
-            command = {$slice: [ page * per_page, per_page]};
+        const db = client.db();    
 
         var results;
         try{
             results = await db.collection('Users').
             find({Login: login}).
-            project({ WatchList: command, length: {$size: "$WatchList" }}).toArray();
+            project({ WatchList: 1, length: {$size: "$WatchList" }}).toArray();
         }
         catch(e){
             var r = {error: 'ERROR: ' + e};
             res.status(200).json(r);
             return;
         }
-
         if(results.length == 0){
             var r = {error: 'ERROR: invalid user provided'};
             res.status(200).json(r);
             return;
         }
-        var r = {list: results[0].WatchList, total_length: results[0].length};
+        //parse watchlist
+        let watchlist = results[0].WatchList;
+        let regex = new RegExp("^"+search)
+        let result_array = []
+        for(let i = 0; i < watchlist.length; i++){
+            if(regex.test(watchlist[i]))
+                result_array.push(watchlist[i])
+        }
+        let length = result_array.length;
+
+        //enforce page
+        if(typeof page !== 'undefined' && typeof page !== 'undefined')
+            result_array = result_array.slice(page * per_page, page * per_page + per_page)
+
+        var r = {list: result_array, total_length: length};
         res.status(200).json(r);
     });
 }

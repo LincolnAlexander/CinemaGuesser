@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieModal from './modals/MovieModal';
@@ -9,6 +11,8 @@ let [maxPage, setMaxPage] = useState();
 let [page, setPage] = useState(0);
 const [login, setLogin] = useState(JSON.parse(localStorage.getItem('user_data')).login)
 const [turnOn, setModal] = useState(false);
+
+const[searchMovie, setSearchMovie] = useState('');
 
 const[poster, setPoster] = useState(false);
 const[year, setYear] = useState(false);
@@ -89,22 +93,23 @@ const loadMovie = async (movie) => {
     }
 }
 
-const loadWatchList = async (event) => {
+const loadWatchList = async (search) => {
     const per_number = 10
     //state page, per_number const, and only score
     let obj = {
     page: page,
     per_page: per_number,
-    login: login
+    login: login,
+    search: search
     };
-    console.log(page * per_number + " " + (page * per_number + per_number))
+
     let js = JSON.stringify(obj);
     try {
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
         // bp.buildPath('api/get_watchlist')
         const response = await fetch(
-        bp.buildPath('api/get_watchlist'),
+            bp.buildPath('api/get_watchlist'),
         {
             method: 'POST',
             body: js,
@@ -171,14 +176,24 @@ function closeRoundModal() {
 
 const capitalize = (str, lower = false) =>
 (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
-;
+
+
+// Write new api code here
+async function searchList(movie)
+{
+    setSearchMovie(movie);
+    await loadWatchList(movie);
+}
 
 return (
     <>
         {/*whole box that leaderboard will lay on*/}
-        <div className='flex flex-col justify-between m-8 md:m-20 min-h-[46rem]'>
+        <div className='flex flex-col  m-8 md:m-10 min-h-[46rem]'>
+        <div className='flex justify-center'>
+            <input className='w-80 h-8 border-pr-white bg-slate-300 bg-opacity-20  backdrop-blur-sm rounded hover:border-2 focus:border-2 focus:outline-none text-pr-white pl-1' placeholder='Enter Movie to Seach' type = 'search' alt = "seach-bar" onChange={(e)=>{searchList(e.target.value)}} value = {searchMovie}></input>
+        </div>
         {/*the actual table*/}
-        <table className='w-screen sm:w-1/6 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4'>
+        <table className='w-screen sm:w-1/6 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4 mt-10'>
             {/*the above header for the table*/}
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
             {/*Must be used at least once for thead, defines the values of the row*/}
