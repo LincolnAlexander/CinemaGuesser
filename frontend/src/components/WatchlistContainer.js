@@ -99,14 +99,14 @@ const loadWatchList = async (event) => {
     per_page: per_number,
     login: login
     };
-
+    console.log(page * per_number + " " + (page * per_number + per_number))
     let js = JSON.stringify(obj);
     try {
         let bp = require('./Paths.js');
         // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
         // bp.buildPath('api/get_watchlist')
         const response = await fetch(
-        'https://cinema-guesser.herokuapp.com/api/get_watchlist',
+        bp.buildPath('api/get_watchlist'),
         {
             method: 'POST',
             body: js,

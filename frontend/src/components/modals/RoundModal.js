@@ -44,16 +44,15 @@ export default function RoundModal(props) {
       if (res.error && res.error !== '') 
         console.log(res.error)
       else{
-        //added movie
-        if(res.op === 1)
-          setClicked(true);
-        else
-          setClicked(false);
       }      
     } catch (e) {
       console.log(e);
       return;
     }
+  }
+  const toggleClick = () =>
+  {
+    setClicked(!clicked)
   }
 
   return (
@@ -84,6 +83,7 @@ export default function RoundModal(props) {
                 <button
                   onClick={() => {
                     props.closeRoundModal();
+                    toggleWatchlist();
                     // navigate('/game');
                   }}
                 >
@@ -97,13 +97,13 @@ export default function RoundModal(props) {
                 className='absolute top-[15px] right-[60px] 
                 block h-8 w-8 rounded-md bg-green-600 text-black-400 hover:bg-green-800 hover:text-gray
                 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer' title='Add Movie to WatchList'
-                onClick = {toggleWatchlist}>
+                onClick = {toggleClick}>
                 </CheckIcon>):
                 (<PlusIcon 
                   className='absolute top-[15px] right-[60px] 
                   block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white 
                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer' title='Add Movie to WatchList' 
-                onClick = {toggleWatchlist}>
+                onClick = {toggleClick}>
                 </PlusIcon>)
               }
 

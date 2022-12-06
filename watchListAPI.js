@@ -123,7 +123,7 @@ module.exports = function ( app, client ){
         const db = client.db();
         let command = 1;
         if(typeof page !== 'undefined' && typeof page !== 'undefined')
-            command = {$slice: [ page * per_page, page * per_page + per_page]};
+            command = {$slice: [ page * per_page, per_page]};
 
         var results;
         try{
