@@ -53,6 +53,7 @@ export default function RoundModal(props) {
   const toggleClick = () =>
   {
     setClicked(!clicked)
+    console.log(clicked);
   }
 
   return (
@@ -83,7 +84,8 @@ export default function RoundModal(props) {
                 <button
                   onClick={() => {
                     props.closeRoundModal();
-                    toggleWatchlist();
+                    if(clicked)
+                      toggleWatchlist();
                     // navigate('/game');
                   }}
                 >
