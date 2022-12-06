@@ -180,7 +180,8 @@ const capitalize = (str, lower = false) =>
 
 // Write new api code here
 async function searchList(movie)
-{
+{   
+    setPage(0)
     setSearchMovie(movie);
     await loadMovieList(movie);
 }
