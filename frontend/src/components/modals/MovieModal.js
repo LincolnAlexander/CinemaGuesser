@@ -26,60 +26,52 @@ export default function MovieModal(props) {
           ></div>
             {/*<div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
             </div>*/}
-            <div className='grid grid-cols-1 gap-3 absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-zinc-800 
-            px-4 sm:px-16 py-8 rounded-md max-w-4xl w-screen sm:w-1/2 lg:w-1/2 xl:w-1/4  text-pr-white text-sm md:text-lg lg:text-xl'>
-              <div className='text-center'>
-                <p className='text-pr-yellow text-xl'>{props.title} &#40;{props.year}&#41;</p>
-              </div>
-              <div className='min-h-[50px] row-span-1 sm:row-span-6 text-center justify-self-center'>
+            <div className='grid grid-cols-1  sm:grid-cols-2 gap-3 absolute top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%] leading-loose bg-zinc-800 
+            px-4 sm:px-16 py-8 rounded-md max-w-4xl w-screen sm:w-4/5 lg:w-3/5 xl:w-3/5  text-pr-white text-sm md:text-lg lg:text-xl'>
+              
+              <div className='col-span-1 text-center justify-self-center'>
+              <p className='text-pr-yellow text-xl mb-4'>{props.title} &#40;{props.year}&#41;</p>
                 <img
                   className='w-24 sm:w-60 sm:h-84 rounded-lg'
                   src={props.poster}
                   alt='MoviePoster'
                 ></img>
               </div>
-              <div className=' text-sm text-center sm:text-left'>
-                <p className='text-pr-yellow'>Description: <span className='text-pr-white pr-2'>{props.desc}</span></p>
+              
+              <div className='row-span-1 text-base text-center sm:text-left'>
+                <p className='mb-2 text-pr-yellow'>Description: <span className='text-pr-white pr-2'>{props.desc}</span></p>
+                <p className='mb-2 text-pr-yellow mr-2'>Genre: <span className='text-pr-white pr-2'>{props.genre}</span></p>
                 
-              </div>
-              <div className='text-sm text-center sm:text-left'>
-                <span className='text-pr-yellow mr-2'>Genre:</span>
-                <span className='text-pr-white pr-2'>{props.genre}</span>
-              </div>
-              <div className='text-sm  text-center sm:text-left'>
-                <span className='text-pr-yellow mr-2 '>Released:</span>
-                <span className='text-pr-white pr-2'>{props.released}</span>
-             </div>
-              <div className='text-sm  text-center sm:text-left'>
-                <span className='text-pr-yellow mr-2 '>Actors:</span>
-                <span className='text-pr-white pr-2'>{props.actors}</span>
-             </div>
-             <div className='text-sm text-center sm:text-left'>
-                <span className='text-pr-yellow mr-2 '>Rating:</span>
-                <span className='text-pr-white pr-2'>{props.rating + " via " + props.source}</span>
-             </div>
-             {props.director ? 
-             (<div className='text-sm  text-center sm:text-left'>
+                <p className=' mb-2 text-pr-yellow mr-2  '>Released: <span className='text-pr-white pr-2  '>{props.released}</span></p>
+                
+                <p className='mb-2 text-pr-yellow mr-2'>Actors: <span className='text-pr-white pr-2'>{props.actors}</span></p>
+                
+                <p className='mb-2 text-pr-yellow mr-2 '>Rating: <span className='text-pr-white pr-2'>{props.rating + " via " + props.source}</span></p>
+                
+                {props.director ? 
+             (<div className='mb-2 text-base text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Director:</span>
                 <span className='text-pr-white pr-2'>{props.director}</span>
              </div>):
-             (<div className='text-sm text-center sm:text-left'>
+             (<div className='mb-2 text-sm text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Writer {'(' + 's' + ')'}:</span>
                 <span className='text-pr-white pr-2'>{props.writer}</span>
               </div>)}
-              <div className='text-sm  text-center sm:text-left'>
+              <div className='mb-2 text-base  text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Rated:</span>
                 <span className='text-pr-white pr-2'>{props.rated}</span>
               </div>
               {props.runtime ? 
-             (<div className='text-sm  text-center sm:text-left'>
-                <span className='text-pr-yellow mr-2 '>Director:</span>
+             (<div className='mb-2 text-base  text-center sm:text-left'>
+                <span className='text-pr-yellow mr-2 '>Runtime:</span>
                 <span className='text-pr-white pr-2'>{props.runtime}</span>
              </div>):
-             (<div className='text-sm text-center sm:text-left'>
+             (<div className='mb-2 text-base text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Total Seasons:</span>
                 <span className='text-pr-white pr-2'>{props.totalSeasons}</span>
               </div>)}
+              </div>
+              
              
         
              {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}

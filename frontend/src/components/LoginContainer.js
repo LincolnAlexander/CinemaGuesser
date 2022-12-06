@@ -23,7 +23,7 @@ const LoginContainer = () => {
       let bp = require('./Paths.js');
       // 'https://cinema-guesser.herokuapp.com/api/login'
       // bp.buildPath('api/login')
-      const response = await fetch(bp.buildPath('api/login'), {
+      const response = await fetch('https://cinema-guesser.herokuapp.com/api/login', {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
