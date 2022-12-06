@@ -145,7 +145,7 @@ function prevPage(e)
     {
         //subtract 1 page then reload leaderboard
         setPage(page = page - 1);
-        loadWatchList();
+        loadWatchList(searchMovie);
     }
 }
 //move to next page
@@ -162,7 +162,7 @@ function nextPage(e)
     {
         //add to page then reload leaderboard
         setPage(page = page + 1);
-        loadWatchList();
+        loadWatchList(searchMovie);
     }
 }
 
