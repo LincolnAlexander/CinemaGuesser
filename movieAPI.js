@@ -234,6 +234,39 @@ module.exports = function ( app, client ){
 
     //grab movies by array
     app.post('/api/movies_get', queryMovies);
+
+    app.post('/api/movies_all_list', async (req, res, next) =>{
+        //IN - (optional) page, (optional) per_page, search
+
+        var{page, per_page, search} = req.body;
+
+        //default values (need to have both or none)
+        if((typeof page !== 'undefined' && typeof per_page === 'undefined') || (typeof page === 'undefined' && typeof per_page !== 'undefined')){
+            var r = {error: 'ERROR: need to have BOTH page and per_page OR NEITHER'};
+            res.status(200).json(r);
+            return;
+        }
+
+        if(typeof search === 'undefined')
+            search = "";
+
+        const db = client.db();
+        const all_movies = await db.collection('Movies').find().toArray();
+        let titles = [];
+        const regex = new RegExp("^" + search)
+        for(let i = 0; i < all_movies.length; i++){
+            if(regex.test(all_movies[i].Title))
+                titles.push(all_movies[i].Title);
+        }
+        let length = titles.length;
+        
+        //enforce page
+        if(typeof page !== 'undefined' && typeof page !== 'undefined')
+            titles = titles.slice(page * per_page, page * per_page + per_page)
+        
+        res.status(200).json({list: titles, total_length: length})
+
+    });
   
     //parses json to get certain fields in 'fields'
     function parseFields(fields, json)

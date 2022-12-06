@@ -15,6 +15,7 @@ import RedirectPage from './pages/RedirectPage';
 import ResetPasswordPage from './components/ResetPasswordPage';
 import EmailCheck from './pages/EmailCheck';
 import UserProfilePage from './pages/UserProfilePage';
+import MovielistPage from './pages/MovielistPage';
 
 function CinemaGuesserApp() {
   return (
@@ -27,6 +28,7 @@ function CinemaGuesserApp() {
           <Route path='/home' element={<HomePage />} />
           <Route path='/leaderboard' element={<LeaderboardPage />} />
           <Route path='/watchlist' element={<WatchlistPage />} />
+          <Route path='/movielist' element={<MovielistPage />} />
           <Route path='/user' element={<UserProfilePage />} />
         </Route>
 

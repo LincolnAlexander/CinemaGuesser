@@ -19,6 +19,7 @@ function Nav() {
     { name: 'Home', href: '/home', current: false },
     { name: 'Watchlist', href: '/watchlist', current: false },
     { name: 'Leaderboard', href: '/leaderboard', current: false },
+    { name: 'Movie List', href: '/movielist', current: false },
   ];
   const auth = localStorage.getItem('user_data');
   const userData = JSON.parse(auth);

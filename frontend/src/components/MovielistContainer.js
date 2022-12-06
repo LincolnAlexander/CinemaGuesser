@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieModal from './modals/MovieModal';
 
-function WatchlistContainer()
+function MovielistContainer()
 {
 const [list, setList] = useState([]);
 let [maxPage, setMaxPage] = useState();
@@ -30,9 +30,9 @@ const [totalSeasons, setSeasons] = useState(false);
 const [released, setRelease] = useState(false);
 const [rated, setRated] = useState(false);
 
-//load watchlist on render
+//load movielist on render
 useEffect(() => {
-    loadWatchList();  
+    loadMovieList();  
 }, []);
 
 const loadMovie = async (movie) => {
@@ -93,7 +93,7 @@ const loadMovie = async (movie) => {
     }
 }
 
-const loadWatchList = async (search) => {
+const loadMovieList = async (search) => {
     const per_number = 10
     //state page, per_number const, and only score
     let obj = {
@@ -106,10 +106,10 @@ const loadWatchList = async (search) => {
     let js = JSON.stringify(obj);
     try {
         let bp = require('./Paths.js');
-        // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
-        // bp.buildPath('api/get_watchlist')
+        // 'https://cinema-guesser.herokuapp.com/api/movies_all_list'
+        // bp.buildPath('api/movies_all_list')
         const response = await fetch(
-            bp.buildPath('api/get_watchlist'),
+            bp.buildPath('api/movies_all_list'),
         {
             method: 'POST',
             body: js,
@@ -145,7 +145,7 @@ function prevPage(e)
     {
         //subtract 1 page then reload leaderboard
         setPage(page = page - 1);
-        loadWatchList();
+        loadMovieList();
     }
 }
 //move to next page
@@ -162,7 +162,7 @@ function nextPage(e)
     {
         //add to page then reload leaderboard
         setPage(page = page + 1);
-        loadWatchList();
+        loadMovieList();
     }
 }
 
@@ -182,7 +182,7 @@ const capitalize = (str, lower = false) =>
 async function searchList(movie)
 {
     setSearchMovie(movie);
-    await loadWatchList(movie);
+    await loadMovieList(movie);
 }
 
 return (
@@ -247,7 +247,8 @@ return (
         </div>
         <div className='text-center text-md text-white font-medium px-4 py-4 whitespace-nowrap hover:cursor-pointer'>
         Page {page + 1} of {maxPage}
-        </div>  
+        </div>
+        
         </div>
         <MovieModal
         value={turnOn}
@@ -275,4 +276,4 @@ return (
     );
 }
 
-export default WatchlistContainer;
+export default MovielistContainer;

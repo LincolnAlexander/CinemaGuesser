@@ -163,8 +163,10 @@ function LeaderboardContainer() {
             <span className='leading-[1.2rem] text-3xl font-normal'>→</span>
           </button>
         </div>
-        
       </div>
+      <div className='text-center text-md text-white font-medium px-4 py-4 whitespace-nowrap hover:cursor-pointer'>
+          Page {page + 1} of {maxPage}
+        </div>  
     </>
   );
 }
