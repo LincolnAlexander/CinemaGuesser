@@ -50,7 +50,9 @@ export default function PlayAgainModal(props) {
       return;
     }
   }
-
+  const handleClick = async () =>{
+    await toggleWatchlist();
+  }
   const toggleClick = () =>{
     setClicked(!clicked);
   }
@@ -91,7 +93,8 @@ export default function PlayAgainModal(props) {
               <div className='justify-self-center min-h-[50px]'>
                 <button
                   onClick={() => {
-                    toggleWatchlist()
+                    if(clicked)
+                      handleClick()
                     props.closePlayAgainModal();
                     navigate('/game');
                   }}

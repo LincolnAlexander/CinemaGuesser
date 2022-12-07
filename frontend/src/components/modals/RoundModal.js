@@ -50,6 +50,9 @@ export default function RoundModal(props) {
       return;
     }
   }
+  const handleClick = async () =>{
+    await toggleWatchlist();
+  }
   const toggleClick = () =>
   {
     setClicked(!clicked)
@@ -85,7 +88,7 @@ export default function RoundModal(props) {
                   onClick={() => {
                     props.closeRoundModal();
                     if(clicked)
-                      toggleWatchlist();
+                      handleClick()
                     // navigate('/game');
                   }}
                 >
