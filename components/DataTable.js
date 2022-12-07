@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
-import { View, ImageBackground } from "react-native";
+import { View, ImageBackground, Text } from "react-native";
 
 const TableExample = () => {
   const [list, setList] = useState([]);
@@ -95,15 +95,28 @@ const TableExample = () => {
       >
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>
-            <DataTable.Title>Rank</DataTable.Title>
-            <DataTable.Title>Username</DataTable.Title>
-            <DataTable.Title>Score</DataTable.Title>
+            <DataTable.Title>
+              <Text style={{ color: "#FFD700" }}>Rank</Text>
+            </DataTable.Title>
+            <DataTable.Title>
+              <Text style={{ color: "#FFD700" }}>Username</Text>
+            </DataTable.Title>
+            <DataTable.Title>
+              <Text style={{ color: "#FFD700" }}>Score</Text>
+            </DataTable.Title>
           </DataTable.Header>
           {list.map((listItem, idx) => (
             <DataTable.Row>
-              <DataTable.Cell>{listItem.Rank}</DataTable.Cell>
-              <DataTable.Cell>{listItem.Login}</DataTable.Cell>
-              <DataTable.Cell>{listItem.Score}</DataTable.Cell>
+              <DataTable.Cell>
+                <Text style={{ color: "#fff" }}>{listItem.Rank}</Text>
+                {/* {listItem.Rank} */}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Text style={{ color: "#fff" }}>{listItem.Login}</Text>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Text style={{ color: "#fff" }}>{listItem.Score}</Text>
+              </DataTable.Cell>
             </DataTable.Row>
           ))}
         </DataTable>
