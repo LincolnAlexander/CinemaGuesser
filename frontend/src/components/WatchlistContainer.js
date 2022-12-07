@@ -252,7 +252,7 @@ return (
             {/*Must be used at least once for thead, defines the values of the row*/}
             <tr className='text-pr-yellow text-xl'>
                 {/*w is default width, sm is size on small screens, rounded-tl-lg is rounded corners?*/}
-                <th className='w-20 sm:w-20 px-4 py-4 rounded-tl-lg' colspan="2">Title</th>
+                <th className='w-20 sm:w-20 px-4 py-4 rounded-tl-lg' colSpan="2">Title</th>
             </tr>
             </thead>
 
