@@ -311,30 +311,28 @@ const LoginPage = ({ navigation }) => {
     // const loginPassword = loginPasswordRef.current.value;
 
     let obj = { login: inputs.email, password: inputs.password };
-    
+
     let js = JSON.stringify(obj);
 
     try {
-      
       // 'https://cinema-guesser.herokuapp.com/api/login'
-      
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/login', {
-        method: 'POST',
-        body: js,
-        headers: { 'Content-Type': 'application/json' },
-      });
-      let res = JSON.parse(await response.text());
-     
 
-      if (res.error && res.error !== '') {
+      const response = await fetch(
+        "https://cinema-guesser.herokuapp.com/api/login",
+        {
+          method: "POST",
+          body: js,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      let res = JSON.parse(await response.text());
+
+      if (res.error && res.error !== "") {
         Alert.alert(res.error);
-      }else 
-      {
-       
+      } else {
         navigation.navigate("HomePage");
       }
     } catch (e) {
-      
       Alert.alert(e.toString());
       return;
     }

@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import GameContainer from "../components/GameContainer";
+import Input from "../components/Input";
 import LeaderboardContainer from "../components/LeaderboardContainer";
 
 import {
@@ -39,6 +40,10 @@ const HomePage = ({ navigation }) => {
     if (userData) {
       setUserDetails(JSON.parse(userData));
     }
+  };
+
+  const handleOnchange = (text, input) => {
+    setInputs((prevState) => ({ ...prevState, [input]: text }));
   };
 
   const logout = () => {
@@ -111,7 +116,7 @@ const HomePage = ({ navigation }) => {
           if (movie.Ratings.includes("/")) {
             // var rating = eval(movie.Ratings);
             // setRating(rating * 100);
-            setRating(parseFloat(movie.Ratings)*10);
+            setRating(parseFloat(movie.Ratings) * 10);
           } else setRating(parseInt(movie.Ratings));
 
           setTitle(capitalize(movie.Title));
@@ -283,6 +288,11 @@ const HomePage = ({ navigation }) => {
                   placeholderTextColor="white"
                   keyboardType="numeric"
                 ></TextInput>
+                {/* <Input
+                  onChangeText={(text) => handleOnchange(text, "email")}
+                  placeholder="Enter Guess"
+                /> */}
+                <Button title="Enter" onPress={openRoundModal} />
               </View>
             </View>
           </View>
@@ -381,11 +391,8 @@ const HomePage = ({ navigation }) => {
         </Text>
         <Text style={styles.baseText}>
           The closer you are to the movie rating, the more points you score.
-          
         </Text>
-        <Text style={styles.baseText}>
-          Good Luck Agent!
-        </Text>
+        <Text style={styles.baseText}>Good Luck Agent!</Text>
       </View>
     );
   }
