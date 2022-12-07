@@ -1,9 +1,93 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
 import { View, ImageBackground } from "react-native";
 
+
 const TableExample = () => {
+  const [list, setList] = useState([]);
+  let [maxPage, setMaxPage] = useState();
+  let [page, setPage] = useState(0);
+
+  useEffect(() => {
+    loadLeaderboard();
+  }, []);
+
+  const loadLeaderboard = async (event) => {
+    let obj = {
+      page: page,
+      per_page: 10,
+      sortby: "Score",
+    };
+    let js = JSON.stringify(obj);
+    try {
+      // let bp = require('./Paths.js');
+      // 'https://cinema-guesser.herokuapp.com/api/leaderboard'
+      // bp.buildPath('api/leaderboard')
+      const response = await fetch(
+        "https://cinema-guesser.herokuapp.com/api/leaderboard",
+        {
+          method: "POST",
+          body: js,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      let res = JSON.parse(await response.text());
+
+      setMaxPage(Math.ceil(res.count / 10));
+      setList(res.list);
+
+      // console.log(list);
+
+      //store refreshed token (has accessToken field)
+      // storage.storeToken(res.jwtToken);
+
+      if (res.error !== "") {
+        // setMessage('Username is taken, please try a different one.');
+      } else {
+        // setMessage('');
+      }
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  };
+
+  function combineNames(firstName, lastName) {
+    if (lastName === null) {
+      return firstName;
+    } else if (firstName === null) return lastName;
+    else return firstName + " " + lastName.substring(0, 1).toUpperCase();
+    // let name = firstName + " "+lastName.substring(0, 1).toUpperCase();
+    // console.log(name);
+    // return name;
+  }
+
+  function prevPage(e) {
+    e.preventDefault();
+
+    if (page === 0) {
+      //alert("Can't go back any further.")
+      return;
+    } else {
+      setPage((page = page - 1));
+      loadLeaderboard();
+      //console.log('lol');
+    }
+  }
+
+  function nextPage(e) {
+    e.preventDefault();
+    if (page === maxPage - 1) {
+      //alert("End of List.")
+      return;
+    } else {
+      setPage((page = page + 1));
+      loadLeaderboard();
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
@@ -12,26 +96,17 @@ const TableExample = () => {
       >
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>
+            <DataTable.Title>Rank</DataTable.Title>
             <DataTable.Title>Username</DataTable.Title>
             <DataTable.Title>Score</DataTable.Title>
           </DataTable.Header>
-          <DataTable.Row>
-            <DataTable.Cell>Radhika</DataTable.Cell>
-            <DataTable.Cell>Dosa</DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row>
-            <DataTable.Cell>Krishna</DataTable.Cell>
-            <DataTable.Cell>Uttapam</DataTable.Cell>
-          </DataTable.Row>
-          <DataTable.Row>
-            <DataTable.Cell>Vanshika</DataTable.Cell>
-            <DataTable.Cell>Brownie</DataTable.Cell>
-          </DataTable.Row>
-          <DataTable.Row>
-            <DataTable.Cell>Teena</DataTable.Cell>
-            <DataTable.Cell>Pizza</DataTable.Cell>
-          </DataTable.Row>
+          {list.map((listItem, idx) => (
+              <DataTable.Row>
+                <DataTable.Cell>{listItem.Rank}</DataTable.Cell>
+                <DataTable.Cell>{listItem.Login}</DataTable.Cell>
+                <DataTable.Cell>{listItem.Score}</DataTable.Cell>
+              </DataTable.Row>
+            ))}
         </DataTable>
       </ImageBackground>
     </View>
