@@ -558,7 +558,7 @@ exports.setApp = function ( app, client )
     console.log(mes + ret.accessToken);
     let link = '<body>Click <a href="'+ mes + ret.accessToken+ '">here</a> to reset your password.</body>'
     const msg = {
-      to: "kaedenle@gmail.com",
+      to: req.body.email,
       from: 'cinemaguesser.devteam@gmail.com',
       subject: 'Email Verification Needed',
       text: 'Please click this link to confirm your email',
