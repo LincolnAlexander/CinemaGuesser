@@ -44,7 +44,7 @@ export default function RulesModal(props) {
               alt='scooby-doo pic'
             />
             <XMarkIcon
-              className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:cursor-pointer hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+              className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-pr-red hover:cursor-pointer hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
               onClick={toggleModal}
             >
               Close

@@ -116,7 +116,7 @@ export default function PlayAgainModal(props) {
                 </PlusIcon>)
               }
             <XMarkIcon
-              className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:cursor-pointer hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+              className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:cursor-pointer hover:bg-pr-red hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
               onClick={toggleModal}
             >
               Close

@@ -76,7 +76,7 @@ export default function MovieModal(props) {
         
              {/* <div className='bg-slate-400 rounded-lg shadow-xl min-h-[50px]'></div> */}
                 <XMarkIcon
-                className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                className='absolute top-[15px] right-[15px] block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-pr-red hover:text-white hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
                 onClick={toggleModal}
                 >
                 Close
