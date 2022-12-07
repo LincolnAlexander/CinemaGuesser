@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieModal from './modals/MovieModal';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 function WatchlistContainer()
 {
@@ -11,6 +12,7 @@ let [maxPage, setMaxPage] = useState();
 let [page, setPage] = useState(0);
 const [login, setLogin] = useState(JSON.parse(localStorage.getItem('user_data')).login)
 const [turnOn, setModal] = useState(false);
+const [disableModal, setDisableModal] = useState(false);
 
 const[searchMovie, setSearchMovie] = useState('');
 
@@ -131,6 +133,42 @@ const loadWatchList = async (search) => {
     }
 };
 
+const removeWatchlist = async (title) => {
+    const per_number = 10
+    title = title.toLowerCase()
+    //state page, per_number const, and only score
+    let obj = {
+    login: login,
+    title: title
+    };
+
+    let js = JSON.stringify(obj);
+    try {
+        let bp = require('./Paths.js');
+        // 'https://cinema-guesser.herokuapp.com/api/remove_watchlist'
+        // bp.buildPath('api/remove_watchlist')
+        const response = await fetch(
+            bp.buildPath('api/remove_watchlist'),
+        {
+            method: 'POST',
+            body: js,
+            headers: { 'Content-Type': 'application/json' },
+        }
+        );
+
+        let res = JSON.parse(await response.text());
+
+        if (res.error && res.error !== '') {
+            console.log(res.error);
+        } else {
+
+        }
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+};
+
 //subtract 1 to page unless you're at page 0
 function prevPage(e)
 {
@@ -167,8 +205,10 @@ function nextPage(e)
 }
 
 async function openModal(movie){
-    await loadMovie(movie)
-    setModal(true)
+    if(!disableModal){
+        await loadMovie(movie)
+        setModal(true)
+    }
 }
 function closeRoundModal() {
     setModal(false);
@@ -186,6 +226,18 @@ async function searchList(movie)
     await loadWatchList(movie);
 }
 
+const modalDisable = () => {
+    setDisableModal(true);
+}
+const modalEnable = () => {
+    setDisableModal(false);
+}
+
+const handleRemoval = async (title) =>{
+    await removeWatchlist(title)
+    loadWatchList(searchMovie)
+}
+
 return (
     <>
         {/*whole box that leaderboard will lay on*/}
@@ -200,7 +252,7 @@ return (
             {/*Must be used at least once for thead, defines the values of the row*/}
             <tr className='text-pr-yellow text-xl'>
                 {/*w is default width, sm is size on small screens, rounded-tl-lg is rounded corners?*/}
-                <th className='w-20 sm:w-20 px-4 py-4 rounded-tl-lg'>Title</th>
+                <th className='w-20 sm:w-20 px-4 py-4 rounded-tl-lg' colspan="2">Title</th>
             </tr>
             </thead>
 
@@ -212,7 +264,8 @@ return (
                 <tr
                 className='last:rounded-b-lg last:border-b-0 hover:bg-pr-black hover:bg-opacity-70 border-b border-pr-white border-opacity-10'
                 key={listItem}
-                onClick = {() => openModal(listItem)}>
+                onClick = {() => openModal(listItem)}
+                >
 
                 {/*define data cell
                 rank, first and last name, then score*/}
@@ -220,6 +273,16 @@ return (
                     {capitalize(listItem)}
                     
                 </td>
+                <td align="right float:left">
+                <TrashIcon
+                        className='h-4 w-4 rounded-md hover:cursor-pointer text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                        onMouseOutCapture={modalEnable}
+                        onMouseOver = {modalDisable}
+                        onClick={() => handleRemoval(listItem)}
+                        >
+                    Close
+                </TrashIcon>
+             </td>
                 </tr>
             ))}
             </tbody>
