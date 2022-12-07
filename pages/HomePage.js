@@ -56,14 +56,12 @@ const HomePage = ({ navigation }) => {
 
   function LeaderboardPage() {
     return (
-      <>
-        <div className="flex justify-center text-pr-white mt-8 md:mt-20">
-          <p className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-white font-bold">
-            LeaderBoard
-          </p>
-        </div>
-        <LeaderboardContainer />
-      </>
+      <Text className="flex justify-center text-pr-white mt-8 md:mt-20">
+        <Text className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-white font-bold">
+          LeaderBoard
+        </Text>
+      </Text>
+      // <LeaderboardContainer />
     );
   }
 
@@ -174,183 +172,201 @@ const HomePage = ({ navigation }) => {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#0A0A0A",
-            }}
-          >
-            {/* <GameContainer /> */}
-            <View
-              style={{
-                flex: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+          <View style={styles.container2}>
+            <ImageBackground
+              style={styles.background}
+              source={require("../assets/images/AppBackground.jpg")}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#f1cf54",
-                  fontSize: 19,
-                  marginTop: 5,
-                }}
-              >
-                {title} &#40;{year}&#41;
-              </Text>
               <View
                 style={{
                   flex: 1,
-                  width: "70%",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#0A0A0A",
                 }}
               >
-                <Image
+                {/* <GameContainer /> */}
+                <View
+                  style={{
+                    flex: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#f1cf54",
+                      fontSize: 20,
+                      marginTop: 35,
+                    }}
+                  >
+                    {title} &#40;{year}&#41;
+                  </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      width: "70%",
+                    }}
+                  >
+                    <Image
+                      style={{
+                        flex: 1,
+                        width: "100%",
+                        height: "100%",
+                        resizeMode: "contain",
+                      }}
+                      source={{ uri: poster }}
+                    ></Image>
+                  </View>
+                </View>
+                <View
                   style={{
                     flex: 1,
-                    width: "100%",
-                    height: "100%",
-                    resizeMode: "contain",
-                  }}
-                  source={{ uri: poster }}
-                ></Image>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                borderColor: "red",
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  borderColor: "green",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#f1cf54",
-                    fontSize: 16,
-                    marginTop: 5,
-                    padding: 4,
+                    borderColor: "red",
                   }}
                 >
-                  Description:<Text style={{ color: "white" }}>{desc}</Text>{" "}
-                </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      borderColor: "green",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#f1cf54",
+                        fontSize: 16,
+                        marginTop: 5,
+                        padding: 4,
+                      }}
+                    >
+                      Description:<Text style={{ color: "white" }}>{desc}</Text>{" "}
+                    </Text>
 
-                <Text
-                  style={{
-                    color: "#f1cf54",
-                    fontSize: 16,
-                    marginTop: 5,
-                    padding: 4,
-                  }}
-                >
-                  Genre:<Text style={{ color: "white" }}>{genre}</Text>{" "}
-                </Text>
-                <Text
-                  style={{
-                    color: "#f1cf54",
-                    fontSize: 16,
-                    marginTop: 5,
-                    padding: 4,
-                  }}
-                >
-                  Actors:<Text style={{ color: "white" }}>{actors}</Text>{" "}
-                </Text>
-              </View>
+                    <Text
+                      style={{
+                        color: "#f1cf54",
+                        fontSize: 16,
+                        marginTop: 5,
+                        padding: 4,
+                      }}
+                    >
+                      Genre:<Text style={{ color: "white" }}>{genre}</Text>{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#f1cf54",
+                        fontSize: 16,
+                        marginTop: 5,
+                        padding: 4,
+                      }}
+                    >
+                      Actors:<Text style={{ color: "white" }}>{actors}</Text>{" "}
+                    </Text>
+                  </View>
 
-              <View
-                style={{
-                  flex: 1,
-                  borderColor: "blue",
+                  <View
+                    style={{
+                      flex: 1,
+                      borderColor: "blue",
 
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {/* instead of loadMovieInfo, change it to display the round modal  */}
-                <TextInput
-                  onSubmitEditing={() => openRoundModal()}
-                  style={{
-                    textAlign: "center",
-                    color: "white",
-                    fontSize: 18,
-                    borderBottomColor: "#f1cf54",
-                    borderBottomWidth: 2.5,
-                    width: "70%",
-                  }}
-                  onPressIn={() => setPlaceholder("")}
-                  onChangeText={setGuess}
-                  placeholder={placeholder}
-                  placeholderTextColor="white"
-                  keyboardType="numeric"
-                ></TextInput>
-                {/* <Input
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* instead of loadMovieInfo, change it to display the round modal  */}
+                    <TextInput
+                      onSubmitEditing={() => openRoundModal()}
+                      style={{
+                        textAlign: "center",
+                        color: "white",
+                        fontSize: 18,
+                        borderBottomColor: "#f1cf54",
+                        borderBottomWidth: 2.5,
+                        width: "70%",
+                      }}
+                      onPressIn={() => setPlaceholder("")}
+                      onChangeText={setGuess}
+                      placeholder={placeholder}
+                      placeholderTextColor="white"
+                      keyboardType="numeric"
+                    ></TextInput>
+                    {/* <Input
                   onChangeText={(text) => handleOnchange(text, "email")}
                   placeholder="Enter Guess"
                 /> */}
-                <Button title="Enter" onPress={openRoundModal} />
+                    <Button title="Enter" onPress={openRoundModal} />
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-          <Modal visible={modalVisible} transparent={true}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 22,
-              }}
-            >
-              <View
-                style={{
-                  flex: 0.5,
-                  width: "70%",
-                  height: "10%",
-                  margin: 20,
-                  backgroundColor: "#acacac",
-                  borderRadius: 20,
-                  padding: 35,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
-                }}
-              >
-                <Pressable
+              <Modal visible={modalVisible} transparent={true}>
+                <View
                   style={{
-                    position: "absolute",
-                    right: 10,
-                    top: 5,
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 22,
                   }}
-                  onPress={() => closeRoundModal()}
                 >
-                  <Icon name="close"></Icon>
-                </Pressable>
-                <Text
-                  style={{ textAlign: "left", color: "#f1cf54", fontSize: 20 }}
-                >
-                  Movie Rating:{" "}
-                  <Text style={{ color: "#d00000" }}>{rating}% </Text>
-                </Text>
-                <Text style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}>
-                  You Scored:{" "}
-                  <Text style={{ color: "#d00000" }}> {score}pts </Text>{" "}
-                </Text>
-                <Text style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}>
-                  Total Score:{" "}
-                  <Text style={{ color: "#d00000" }}> {totalScore}pts </Text>{" "}
-                </Text>
-              </View>
-            </View>
-          </Modal>
+                  <View
+                    style={{
+                      flex: 0.5,
+                      width: "70%",
+                      height: "10%",
+                      margin: 20,
+                      backgroundColor: "#acacac",
+                      borderRadius: 20,
+                      padding: 35,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 4,
+                      elevation: 5,
+                    }}
+                  >
+                    <Pressable
+                      style={{
+                        position: "absolute",
+                        right: 10,
+                        top: 5,
+                      }}
+                      onPress={() => closeRoundModal()}
+                    >
+                      <Icon name="close"></Icon>
+                    </Pressable>
+                    <Text
+                      style={{
+                        textAlign: "left",
+                        color: "#f1cf54",
+                        fontSize: 20,
+                      }}
+                    >
+                      Movie Rating:{" "}
+                      <Text style={{ color: "#d00000" }}>{rating}% </Text>
+                    </Text>
+                    <Text
+                      style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}
+                    >
+                      You Scored:{" "}
+                      <Text style={{ color: "#d00000" }}> {score}pts </Text>{" "}
+                    </Text>
+                    <Text
+                      style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}
+                    >
+                      Total Score:{" "}
+                      <Text style={{ color: "#d00000" }}>
+                        {" "}
+                        {totalScore}pts{" "}
+                      </Text>{" "}
+                    </Text>
+                  </View>
+                </View>
+              </Modal>
+            </ImageBackground>
+          </View>
         </ScrollView>
       </View>
     );
@@ -358,41 +374,42 @@ const HomePage = ({ navigation }) => {
 
   function ProfilePage() {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#0A0A0A",
-        }}
-      >
-        <Text>Settings!</Text>
-        <Button title="Logout" onPress={logout} />
+      <View style={{ flex: 1 }}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <View style={{ flex: 0.1, marginVertical: 150 }}></View>
+          <Button title="Logout" onPress={logout} />
+        </ImageBackground>
       </View>
     );
   }
 
   function RulesPage() {
+    const [login, setLogin] = React.useState({ email: "", password: "" });
+
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#0A0A0A",
-        }}
-      >
-        <Text style={styles.baseText}>
-          Use your movie knowledge to guess the movie rating out of 100.
-        </Text>
-        <Text style={styles.baseText}>
-          Your file will be given the movie poster, plot, actors, cast, and box
-          office earnings.
-        </Text>
-        <Text style={styles.baseText}>
-          The closer you are to the movie rating, the more points you score.
-        </Text>
-        <Text style={styles.baseText}>Good Luck Agent!</Text>
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <Text style={styles.baseText}>
+            Your mission, should you choose to accept it is to Guess the movie
+            rating out of 100. You will be given the description of the movie,
+            actors, the movie poster, cast, and earned money in box office. You
+            will play five rounds, and be rewarded based off how close you were
+            to the rating.
+          </Text>
+          <Image
+            source={require("../assets/images/scoob.gif")}
+            style={{ width: 100, height: 100 }}
+          />
+          {/* <Text style={styles.baseText}>
+            Description:<Text style={{ color: "white" }}>{desc}</Text>{" "}
+          </Text> */}
+        </ImageBackground>
       </View>
     );
   }
@@ -458,13 +475,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF",
   },
+  container2: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   baseText: {
+    flex: 1,
     fontSize: 20,
     textAlign: "center",
     fontStyle: "italic",
     fontWeight: "bold",
     color: "white",
-    padding: 2,
+    marginTop: 230,
+    padding: 60,
   },
   cardContainer: {
     width: 320,
@@ -499,6 +523,13 @@ const styles = StyleSheet.create({
     fontFamily: "System",
     color: "#ffffff",
     backgroundColor: "transparent",
+  },
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    alignItems: "center",
   },
 });
 
