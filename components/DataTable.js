@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
 import { View, ImageBackground } from "react-native";
 
-
 const TableExample = () => {
   const [list, setList] = useState([]);
   let [maxPage, setMaxPage] = useState();
@@ -89,9 +88,9 @@ const TableExample = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <ImageBackground
-        style={{ flex: 1 }}
+        style={styles.background}
         source={require("../assets/images/AppBackground.jpg")}
       >
         <DataTable style={styles.container}>
@@ -101,12 +100,12 @@ const TableExample = () => {
             <DataTable.Title>Score</DataTable.Title>
           </DataTable.Header>
           {list.map((listItem, idx) => (
-              <DataTable.Row>
-                <DataTable.Cell>{listItem.Rank}</DataTable.Cell>
-                <DataTable.Cell>{listItem.Login}</DataTable.Cell>
-                <DataTable.Cell>{listItem.Score}</DataTable.Cell>
-              </DataTable.Row>
-            ))}
+            <DataTable.Row>
+              <DataTable.Cell>{listItem.Rank}</DataTable.Cell>
+              <DataTable.Cell>{listItem.Login}</DataTable.Cell>
+              <DataTable.Cell>{listItem.Score}</DataTable.Cell>
+            </DataTable.Row>
+          ))}
         </DataTable>
       </ImageBackground>
     </View>
@@ -119,9 +118,11 @@ const styles = StyleSheet.create({
   container: {
     padding: 100,
     backgroundColor: "#transparent",
+    width: 400,
   },
   tableHeader: {
     backgroundColor: "#transparent",
+    width: 250,
   },
   container2: {
     flex: 1,
@@ -130,7 +131,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   background: {
-    flex: 1,
     width: "100%",
     height: "100%",
     resizeMode: "cover",
