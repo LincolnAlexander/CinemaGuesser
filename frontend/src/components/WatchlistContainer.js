@@ -111,7 +111,7 @@ const loadWatchList = async (search) => {
         // 'https://cinema-guesser.herokuapp.com/api/get_watchlist'
         // bp.buildPath('api/get_watchlist')
         const response = await fetch(
-            bp.buildPath('api/get_watchlist'),
+        bp.buildPath('api/get_watchlist'),
         {
             method: 'POST',
             body: js,
@@ -246,7 +246,7 @@ return (
             <input className='w-80 h-8   border-pr-yellow bg-slate-300 bg-opacity-20  backdrop-blur-sm rounded hover:border-pr-yellow hover:border-2 focus:border-2 focus:outline-none text-pr-white pl-1' placeholder='Enter Movie to Seach' type = 'search' alt = "seach-bar" onChange={(e)=>{searchList(e.target.value)}} value = {searchMovie}></input>
         </div>
         {/*the actual table*/}
-        <table className='w-screen sm:w-1/6 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4 mt-10'>
+        <table className='w-screen sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 max-w-2xl bg-slate-500 bg-opacity-10 backdrop-blur-sm rounded-lg self-center mb-4 mt-10'>
             {/*the above header for the table*/}
             <thead className='text-left bg-slate-500 bg-opacity-5 backdrop-blur-sm'>
             {/*Must be used at least once for thead, defines the values of the row*/}
@@ -275,7 +275,7 @@ return (
                 </td>
                 <td align="right float:left">
                 <TrashIcon
-                        className='h-4 w-4 rounded-md hover:cursor-pointer text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                        className='h-6 w-6 rounded-md hover:cursor-pointer text-gray-400 hover:bg-pr-red hover:text-white   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
                         onMouseOutCapture={modalEnable}
                         onMouseOver = {modalDisable}
                         onClick={() => handleRemoval(listItem)}
