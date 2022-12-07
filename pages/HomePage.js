@@ -16,6 +16,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import GameContainer from "../components/GameContainer";
 import Input from "../components/Input";
 import LeaderboardContainer from "../components/LeaderboardContainer";
+import type { Node } from "react";
+import TableExample from "../components/DataTable";
 
 import {
   StyleSheet,
@@ -108,16 +110,13 @@ const HomePage = ({ navigation, route }) => {
     );
   }
 
-  function LeaderboardPage() {
+  const LeaderboardPage: () => Node = () => {
     return (
-      <Text className="flex justify-center text-pr-white mt-8 md:mt-20">
-        <Text className="text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl text-pr-white font-bold">
-          LeaderBoard
-        </Text>
-      </Text>
-      // <LeaderboardContainer />
+      <View>
+        <TableExample />
+      </View>
     );
-  }
+  };
 
   const GamePage = () => {
     const [placeholder, setPlaceholder] = useState("Guess Rating");
