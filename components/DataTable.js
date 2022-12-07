@@ -95,26 +95,26 @@ const TableExample = () => {
       >
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>
-            <DataTable.Title>
+            <DataTable.Title style={styles.tableHeader}>
               <Text style={{ color: "#FFD700" }}>Rank</Text>
             </DataTable.Title>
-            <DataTable.Title>
+            <DataTable.Title style={styles.tableHeader}>
               <Text style={{ color: "#FFD700" }}>Username</Text>
             </DataTable.Title>
-            <DataTable.Title>
+            <DataTable.Title style={styles.tableHeader}>
               <Text style={{ color: "#FFD700" }}>Score</Text>
             </DataTable.Title>
           </DataTable.Header>
           {list.map((listItem, idx) => (
             <DataTable.Row>
-              <DataTable.Cell>
+              <DataTable.Cell style={styles.container2}>
                 <Text style={{ color: "#fff" }}>{listItem.Rank}</Text>
                 {/* {listItem.Rank} */}
               </DataTable.Cell>
-              <DataTable.Cell>
+              <DataTable.Cell style={styles.container2}>
                 <Text style={{ color: "#fff" }}>{listItem.Login}</Text>
               </DataTable.Cell>
-              <DataTable.Cell>
+              <DataTable.Cell style={styles.container2}>
                 <Text style={{ color: "#fff" }}>{listItem.Score}</Text>
               </DataTable.Cell>
             </DataTable.Row>
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     backgroundColor: "#transparent",
-    width: 250,
+    width: 225,
   },
   container2: {
-    flex: 1,
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
