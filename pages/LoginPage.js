@@ -330,7 +330,7 @@ const LoginPage = ({ navigation }) => {
       if (res.error && res.error !== "") {
         Alert.alert(res.error);
       } else {
-        navigation.navigate("HomePage");
+        navigation.navigate("HomePage", { name: "login" });
       }
     } catch (e) {
       Alert.alert(e.toString());

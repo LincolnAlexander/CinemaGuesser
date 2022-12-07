@@ -66,6 +66,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import LogoutGif from "./pages/LogoutGif";
 import RegisterPage from "./pages/RegisterPage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "./components/Loader";
@@ -112,6 +113,7 @@ const App = () => {
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="RegisterPage" component={RegisterPage} />
             <Stack.Screen name="HomePage" component={HomePage} />
+            <Stack.Screen name="LogoutGif" component={LogoutGif} />
           </Stack.Navigator>
         </>
       )}

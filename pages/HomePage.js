@@ -29,7 +29,7 @@ import { Icon } from "react-native-elements";
 // import { background } from "native-base/lib/typescript/theme/styled-system";
 
 // <Button title="Logout" onPress={logout} />
-const HomePage = ({ navigation }) => {
+const HomePage = ({ navigation, route }) => {
   const [userDetails, setUserDetails] = React.useState();
   React.useEffect(() => {
     getUserData();
@@ -53,6 +53,60 @@ const HomePage = ({ navigation }) => {
     );
     navigation.navigate("LoginPage");
   };
+
+  function logoutGif() {
+    console.log("ehat the heck");
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <View style={{ flex: 0.1, marginVertical: 150 }}></View>
+          <Button title="Logout" onPress={logout} />
+          {/* <Button title="Log Out" onClick={() => setShowDiv(!showDiv)}>
+            Show/Hide
+          </Button>
+          {showDiv && (
+            //console.log("it hit");
+            <Image
+              source={require("../assets/images/scoob.gif")}
+              style={{ width: 1000, height: 1000 }}
+            />
+          )} */}
+        </ImageBackground>
+      </View>
+    );
+  }
+
+  function RulesPage() {
+    const [login, setLogin] = React.useState({ email: "", password: "" });
+
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.background}
+          source={require("../assets/images/AppBackground.jpg")}
+        >
+          <Text style={styles.baseText}>
+            Your mission, should you choose to accept it is to Guess the movie
+            rating out of 100. You will be given the description of the movie,
+            actors, the movie poster, cast, and earned money in box office. You
+            will play five rounds, and be rewarded based off how close you were
+            to the rating.
+          </Text>
+          <Text>This is {route.params.name}'s profile</Text>
+          <Image
+            source={require("../assets/images/scoob.gif")}
+            style={{ width: 100, height: 100 }}
+          />
+          {/* <Text style={styles.baseText}>
+            Description:<Text style={{ color: "white" }}>{desc}</Text>{" "}
+          </Text> */}
+        </ImageBackground>
+      </View>
+    );
+  }
 
   function LeaderboardPage() {
     return (
@@ -303,19 +357,36 @@ const HomePage = ({ navigation }) => {
                 <View
                   style={{
                     flex: 1,
+                    flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 22,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 300,
+                      height: 200,
+                      backgroundColor: "#acacac",
+                      borderRadius: 10,
+                      padding: 50,
+                    }}
+                  >
+                    {/* <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 1,
                   }}
                 >
                   <View
                     style={{
                       flex: 0.5,
                       width: "70%",
-                      height: "10%",
+                      height: "1%",
                       margin: 20,
                       backgroundColor: "#acacac",
-                      borderRadius: 20,
+                      borderRadius: 10,
                       padding: 35,
                       shadowColor: "#000",
                       shadowOffset: {
@@ -324,9 +395,9 @@ const HomePage = ({ navigation }) => {
                       },
                       shadowOpacity: 0.25,
                       shadowRadius: 4,
-                      elevation: 5,
+                      elevation: 10,
                     }}
-                  >
+                  > */}
                     <Pressable
                       style={{
                         position: "absolute",
@@ -346,6 +417,12 @@ const HomePage = ({ navigation }) => {
                     >
                       Movie Rating:{" "}
                       <Text style={{ color: "#d00000" }}>{rating}% </Text>
+                    </Text>
+                    <Text
+                      style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}
+                    >
+                      You Guessed:{" "}
+                      <Text style={{ color: "#d00000" }}>{guess}% </Text>
                     </Text>
                     <Text
                       style={{ marginTop: 5, color: "#f1cf54", fontSize: 20 }}
@@ -373,14 +450,25 @@ const HomePage = ({ navigation }) => {
   };
 
   function ProfilePage() {
+    const [showDiv, setShowDiv] = useState(false);
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <ImageBackground
           style={styles.background}
           source={require("../assets/images/AppBackground.jpg")}
         >
           <View style={{ flex: 0.1, marginVertical: 150 }}></View>
           <Button title="Logout" onPress={logout} />
+          {/* <Button title="Log Out" onClick={() => setShowDiv(!showDiv)}>
+            Show/Hide
+          </Button>
+          {showDiv && (
+            //console.log("it hit");
+            <Image
+              source={require("../assets/images/scoob.gif")}
+              style={{ width: 1000, height: 1000 }}
+            />
+          )} */}
         </ImageBackground>
       </View>
     );
