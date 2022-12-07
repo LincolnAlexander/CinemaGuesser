@@ -251,7 +251,7 @@ module.exports = function ( app, client ){
             search = "";
 
         const db = client.db();
-        const all_movies = await db.collection('Movies').find().toArray();
+        const all_movies = await db.collection('Movies').aggregate([{'$sort': {'Title': 1}}]).toArray();
         let titles = [];
         for(let i = 0; i < all_movies.length; i++){
             if(all_movies[i].Title.toLowerCase().startsWith(search.toLowerCase()))

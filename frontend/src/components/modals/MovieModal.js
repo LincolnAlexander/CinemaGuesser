@@ -48,6 +48,7 @@ export default function MovieModal(props) {
                 
                 <p className='mb-2 text-pr-yellow mr-2 '>Rating: <span className='text-pr-white pr-2'>{props.rating + " via " + props.source}</span></p>
                 
+                <p className='mb-2 text-pr-yellow mr-2 '>Box Office: <span className='text-pr-white pr-2'>{props.boxOffice}</span></p>
                 {props.director ? 
              (<div className='mb-2 text-base text-center sm:text-left'>
                 <span className='text-pr-yellow mr-2 '>Director:</span>
