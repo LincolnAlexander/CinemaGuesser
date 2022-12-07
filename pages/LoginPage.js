@@ -356,9 +356,9 @@ const LoginPage = ({ navigation }) => {
               <Input
                 onChangeText={(text) => handleOnchange(text, "email")}
                 onFocus={() => handleError(null, "username")}
-                iconName="email-outline"
+                iconName="account-outline"
                 label="Login"
-                placeholder="Enter email"
+                placeholder="Enter Login"
                 error={errors.email}
               />
               <Input
