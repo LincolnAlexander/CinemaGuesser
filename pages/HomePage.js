@@ -568,13 +568,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   baseText: {
-    flex: 1,
     fontSize: 20,
     textAlign: "center",
     fontStyle: "italic",
     fontWeight: "bold",
     color: "white",
-    marginTop: 230,
+    marginTop: 150,
     padding: 60,
   },
   cardContainer: {
