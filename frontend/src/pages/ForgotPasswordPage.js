@@ -15,7 +15,7 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
     
     try {
-      //let bp = require('./Paths.js');
+      let bp = require('../components/Paths.js');
       let obj = 
       {
         email: emailRef.current.value
@@ -25,23 +25,23 @@ const ForgotPasswordPage = () => {
       // 'https://cinema-guesser.herokuapp.com/api/email_password' + t
       // bp.buildPath('api/email_verify?key=' + t)
       //console.log(bp.buildPath('api/email_verify?key=' + t));
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/email_password', {
+      const response = await fetch(bp.buildPath('api/email_password'), {
         method: 'POST',
         body: js,
         headers: { 'Content-Type': 'application/json' },
       });
 
       let res = JSON.parse(await response.text());
-      console.log('ll');
       //console.log(res)
 
       if (res.length == 0 || (res.error && res.error !== '')) {
         //console.log(res.error);
         setMessage(res.error);
-    
+        console.log(res.error);
       } 
       else 
       {
+        console.log(res)
         setMessage('Link has been sent to your email');
         setTimeout(() => {
       

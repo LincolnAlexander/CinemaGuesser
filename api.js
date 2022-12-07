@@ -556,6 +556,7 @@ exports.setApp = function ( app, client )
     }
 
     console.log(mes + ret.accessToken);
+    console.log(req.body.email);
     let link = '<body>Click <a href="'+ mes + ret.accessToken+ '">here</a> to reset your password.</body>'
     const msg = {
       to: req.body.email,
