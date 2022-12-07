@@ -55,8 +55,8 @@ export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [firstName, setFirst] = useState("");
   const [lastName, setLast] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                 placeholderTextColor="white"
                 placeholder="Password"
                 onChangeText={(newText) => setPassword(newText)}
-                defaultValue={password}
+                defaultValue={Password}
               />
               <View style={styles.horizontalBar}></View>
             </View>
@@ -116,7 +116,7 @@ export default function RegisterPage() {
                 placeholderTextColor="white"
                 placeholder="Email"
                 onChangeText={(newText) => setEmail(newText)}
-                defaultValue={email}
+                defaultValue={Email}
               />
               <View style={styles.horizontalBar}></View>
               <View style={styles.touchables}>
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     margin: 15,
   },
 
-  password: {
+  Password: {
     margin: 15,
   },
   text: {
@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+import axios from "axios";
 import {
   View,
   StyleSheet,
@@ -227,6 +228,7 @@ import {
   Alert,
   Image,
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import COLORS from "../components/const/colors";
 import Button from "../components/Button";
@@ -235,11 +237,11 @@ import Loader from "../components/Loader";
 
 const RegisterPage = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({
-    email: "",
-    firstname: "",
-    lastname: "",
-    phone: "",
-    password: "",
+    Email: "",
+    FirstName: "",
+    LastName: "",
+    Login: "",
+    Pass: "",
   });
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
@@ -248,44 +250,60 @@ const RegisterPage = ({ navigation }) => {
     Keyboard.dismiss();
     let isValid = true;
 
-    if (!inputs.email) {
-      handleError("Please input email", "email");
+    if (!inputs.Email) {
+      handleError("Please input Email", "Email");
       isValid = false;
-    } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
-      handleError("Please input a valid email", "email");
+      console.log("fix Email");
+    } else if (!inputs.Email.match(/\S+@\S+\.\S+/)) {
+      handleError("Please input a valid Email", "Email");
       isValid = false;
+      console.log("fix Email");
     }
 
-    if (!inputs.fullname) {
-      handleError("Please input fullname", "fullname");
+    if (!inputs.FirstName) {
+      handleError("Please input firstname", "firstname");
       isValid = false;
+      console.log("fix first name");
+    }
+    if (!inputs.LastName) {
+      handleError("Please input lastname", "lastname");
+      isValid = false;
+      console.log("fix last name");
+    }
+    if (!inputs.Login) {
+      handleError("Please input login", "login");
+      isValid = false;
+      console.log("fix login");
     }
 
-    if (!inputs.password) {
-      handleError("Please input password", "password");
+    if (!inputs.Pass) {
+      handleError("Please input Password", "Pass");
       isValid = false;
-    } else if (inputs.password.length < 5) {
-      handleError("Min password length of 5", "password");
+      console.log("fix Password");
+    } else if (inputs.Pass.length < 5) {
+      handleError("Min Password length of 5", "Pass");
       isValid = false;
+      console.log("fix Password");
     }
 
     if (isValid) {
+      console.log("it worked!");
       register();
     }
   };
 
-  const register = () => {
-    setLoading(true);
-    setTimeout(() => {
-      try {
-        setLoading(false);
-        AsyncStorage.setItem("userData", JSON.stringify(inputs));
-        navigation.navigate("LoginPage");
-      } catch (error) {
-        Alert.alert("Error", "Something went wrong");
-      }
-    }, 3000);
-  };
+  // const register = () => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     try {
+  //       setLoading(false);
+  //       AsyncStorage.setItem("userData", JSON.stringify(inputs));
+  //       navigation.navigate("LoginPage");
+  //     } catch (error) {
+  //       Alert.alert("Error", "Something went wrong");
+  //     }
+  //   }, 3000);
+  // };
 
   const handleOnchange = (text, input) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));
@@ -294,100 +312,132 @@ const RegisterPage = ({ navigation }) => {
     setErrors((prevState) => ({ ...prevState, [input]: error }));
   };
 
-  const doRegister = async (event) => {
-    event.preventDefault();
+  // const doRegister = async (event) => {
+  //   event.preventDefault();
 
-    // const loginName = loginNameRef.current.value;
-    // const loginPassword = loginPasswordRef.current.value;
-    // const firstName = firstNameRef.current.value;
-    // const lastName = lastNameRef.current.value;
-    // const email = emailRef.current.value;
+  //   // const loginName = loginNameRef.current.value;
+  //   // const loginPassword = loginPasswordRef.current.value;
+  //   // const firstName = firstNameRef.current.value;
+  //   // const lastName = lastNameRef.current.value;
+  //   // const Email = EmailRef.current.value;
 
-    let obj = {
-      FirstName: inputs.firstname,
-      LastName: inputs.lastName,
-      Login: inputs.email,
-      Pass: inputs.password,
-      Email: inputs.email,
+  //   let obj = {
+  //     FirstName: inputs.firstname,
+  //     LastName: inputs.lastName,
+  //     Login: inputs.login,
+  //     Password: inputs.Password,
+  //     Email: inputs.Email,
+  //   };
+  //   let js = JSON.stringify(obj);
+
+  //   try {
+  //     const response = await fetch(
+  //       "https://cinema-guesser.herokuapp.com/api/register",
+  //       {
+  //         method: "POST",
+  //         body: js,
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+  //     let res = JSON.parse(await response.text());
+
+  //     if (res.error !== "") {
+  //       Alert.alert("Error", "Something went wrong");
+  //     } else {
+  //       navigation.navigate("LoginPage");
+  //     }
+  //   } catch (e) {
+  //     Alert.alert(alert(e.toString()));
+  //     return;
+  //   }
+  // };
+
+  const register = async () => {
+    setLoading(true);
+
+    const payload = {
+      FirstName: inputs.FirstName,
+      LastName: inputs.LastName,
+      Login: inputs.Login,
+      Pass: inputs.Pass,
+      Email: inputs.Email,
     };
-    let js = JSON.stringify(obj);
-
     try {
-      
-      const response = await fetch('https://cinema-guesser.herokuapp.com/api/register', {
-        method: 'POST',
-        body: js,
-        headers: { 'Content-Type': 'application/json' },
-      });
-      let res = JSON.parse(await response.text());
+      const baseUrl = "https://cinema-guesser.herokuapp.com";
+      const res = await axios.post(baseUrl + "/api/register", payload);
+      setLoading(false);
+      console.log("respond form register sc is  " + res);
+      alert("Please check your Email to verify your account!");
+      navigation.navigate("LoginPage");
+    } catch (error) {
+      console.log(error.response.data);
 
-      if (res.error !== '') {
-        Alert.alert("Error", "Something went wrong");
-        
-      } else {
-        
-        
-        navigation.navigate("LoginPage");
-      }
-    } catch (e) {
-      ;
-      Alert.alert(alert(e.toString()));
-      return;
+      setLoading(false);
     }
   };
-  
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
       {/* <ScrollView
         contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 1 }}
       > */}
-        <View style={styles.container}>
+      <View style={styles.container}>
         <ImageBackground
           style={styles.background}
           source={require("../assets/images/AppBackground.jpg")}
         >
-          <View style={{ marginTop: "15%", paddingHorizontal: 10, flex: 1, }}>
-            <Input style = {styles.inputBox}
-              onChangeText={(text) => handleOnchange(text, "firstname")}
-              onFocus={() => handleError(null, "firstname")}
+          <View style={{ marginTop: "15%", paddingHorizontal: 10, flex: 1 }}>
+            <Input
+              style={styles.inputBox}
+              onChangeText={(text) => handleOnchange(text, "FirstName")}
+              onFocus={() => handleError(null, "FirstName")}
               iconName="account-outline"
               label="FirstName"
-              placeholder="Enter Firstame"
-              error={errors.fullname}
-              
+              placeholder="Enter FirstName"
+              error={errors.firstName}
             />
             <Input
-              onChangeText={(text) => handleOnchange(text, "lastname")}
-              onFocus={() => handleError(null, "lastname")}
+              onChangeText={(text) => handleOnchange(text, "LastName")}
+              onFocus={() => handleError(null, "LastName")}
               iconName="account-outline"
               label="LastName"
               placeholder="Enter Lastname"
-              error={errors.fullname}
-              
-            />
-            <Input
-              onChangeText={(text) => handleOnchange(text, "email")}
-              onFocus={() => handleError(null, "email")}
-              iconName="email-outline"
-              label="Email"
-              placeholder="Enter email address"
-              error={errors.email}
+              error={errors.LastName}
             />
 
-            
             <Input
-              onChangeText={(text) => handleOnchange(text, "password")}
-              onFocus={() => handleError(null, "password")}
+              onChangeText={(text) => handleOnchange(text, "Login")}
+              onFocus={() => handleError(null, "Login")}
+              iconName="account-outline"
+              label="Login"
+              placeholder="Enter Login"
+              error={errors.login}
+              // Password
+            />
+
+            <Input
+              onChangeText={(text) => handleOnchange(text, "Email")}
+              onFocus={() => handleError(null, "Email")}
+              iconName="email-outline"
+              label="Email"
+              placeholder="Enter Email Address"
+              error={errors.Email}
+              Password
+            />
+
+            <Input
+              onChangeText={(text) => handleOnchange(text, "Pass")}
+              onFocus={() => handleError(null, "Pass")}
               iconName="lock-outline"
               label="Password"
-              placeholder="Enter password"
-              error={errors.password}
-              password
+              placeholder="Enter Password"
+              error={errors.Password}
+              Password
             />
 
             <View style={styles.touchables}>
-              {<Button title="Register" onPress={doRegister} />}
+              {<Button title="Register" onPress={validate} />}
               <Text
                 onPress={() => navigation.navigate("LoginPage")}
                 style={{
@@ -401,9 +451,9 @@ const RegisterPage = ({ navigation }) => {
               </Text>
             </View>
           </View>
-          </ImageBackground> 
-        </View>
-        {/* </ImageBackground>  */}
+        </ImageBackground>
+      </View>
+      {/* </ImageBackground>  */}
       {/* </ScrollView> */}
     </SafeAreaView>
   );
@@ -435,7 +485,6 @@ const styles = StyleSheet.create({
     // margin: '5%',
   },
 
-  
   text: {
     color: "white",
     textAlign: "center",
@@ -449,14 +498,10 @@ const styles = StyleSheet.create({
   //   height: 3,
   //   width: 275,
   // },
-  
 
   touchables: {
     flex: 1,
     alignItems: "center",
     // justifyContent: 'center',
   },
-
- 
-  
 });
