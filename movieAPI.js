@@ -253,9 +253,8 @@ module.exports = function ( app, client ){
         const db = client.db();
         const all_movies = await db.collection('Movies').find().toArray();
         let titles = [];
-        const regex = new RegExp("^" + search)
         for(let i = 0; i < all_movies.length; i++){
-            if(regex.test(all_movies[i].Title))
+            if(all_movies[i].Title.toLowerCase().startsWith(search.toLowerCase()))
                 titles.push(all_movies[i].Title);
         }
         let length = titles.length;
