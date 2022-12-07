@@ -401,6 +401,7 @@ const HomePage = ({ navigation }) => {
 
   return (
     <Tab.Navigator
+      screenOptions={{ headerShown: false }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -425,11 +426,27 @@ const HomePage = ({ navigation }) => {
         tabBarStyle: { backgroundColor: "#0A0A0A" },
       })}
     >
-      <Tab.Screen name="Play" component={GamePage} />
+      <Tab.Screen
+        name="Play"
+        component={GamePage}
+        options={{ headerShown: false }}
+      />
       {/* <Tab.Screen name="Watch List" component={WatchListPage} /> */}
-      <Tab.Screen name="Rules" component={RulesPage} />
-      <Tab.Screen name="Profile" component={ProfilePage} />
-      <Tab.Screen name="Leaderboard" component={LeaderboardPage} />
+      <Tab.Screen
+        name="Rules"
+        component={RulesPage}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfilePage}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Leaderboard"
+        component={LeaderboardPage}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };

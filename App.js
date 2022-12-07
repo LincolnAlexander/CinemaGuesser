@@ -89,7 +89,7 @@ const App = () => {
         if (userData.loggedIn) {
           setInitialRouteName("HomePage");
         } else {
-          setInitialRouteName("LoginPAge");
+          setInitialRouteName("LoginPage");
         }
       } else {
         setInitialRouteName("RegisterPage");
