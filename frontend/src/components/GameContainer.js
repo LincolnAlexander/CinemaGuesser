@@ -373,7 +373,7 @@ function GameContainer() {
             {/* <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1"> */}
             <button
               data-action='decrement'
-              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-red hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
               onClick={decrement}
             >
               <span className='m-auto text-2xl font-light'>−</span>
@@ -387,7 +387,7 @@ function GameContainer() {
             ></input>
             <button
               data-action='increment'
-              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-pr-yellow hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
+              className='flex-none my-1 bg-pr-gray text-pr-black hover:bg-green-600 hover:text-pr-white h-full w-8 rounded-2xl cursor-pointer outline-none'
               onClick={increment}
             >
               <span className='m-auto text-2xl font-light'>+</span>

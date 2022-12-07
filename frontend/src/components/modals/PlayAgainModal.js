@@ -105,12 +105,12 @@ export default function PlayAgainModal(props) {
               (<CheckIcon
                 className='absolute top-[15px] right-[60px] 
                 block h-8 w-8 rounded-md bg-green-600 text-black-400 hover:bg-green-800 hover:text-gray
-                focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer' title='Add Movie to WatchList'
+                focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer' title='Remove Movie from WatchList'
                 onClick = {toggleClick}>
                 </CheckIcon>):
                 (<PlusIcon 
                   className='absolute top-[15px] right-[60px] 
-                  block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-gray-700 hover:text-white 
+                  block h-8 w-8 rounded-md bg-gray-900 text-gray-400 hover:bg-green-600 hover:text-white 
                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:cursor-pointer' title='Add Movie to WatchList' 
                 onClick = {toggleClick}>
                 </PlusIcon>)
